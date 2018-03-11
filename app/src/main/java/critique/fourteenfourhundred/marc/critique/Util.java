@@ -20,6 +20,20 @@ import org.json.JSONObject;
 
 public class Util {
 
+
+    public static JSONObject makeJson(Object[]... params){
+        try {
+            JSONObject f = new JSONObject();
+            for (int i =0; i < params.length;i++) {
+                f.put((String)params[i][0], params[i][1]);
+            }
+            return f;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void postRequest(Activity activity,String url,JSONObject data,Response.Listener rl,Response.ErrorListener re){
         RequestQueue queue = Volley.newRequestQueue(activity);
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.POST, url, data,rl,re);

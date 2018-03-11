@@ -1,5 +1,6 @@
 package critique.fourteenfourhundred.marc.critique;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,13 +18,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(String username,String password){
 
-        JSONObject loginInfo = new JSONObject();
-        try {
-            loginInfo.put("username",username);
-            loginInfo.put("password",password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        JSONObject loginInfo = Util.makeJson(
+                new Object[]{"username",username},
+                new Object[]{"password",password}
+        );
 
         Util.postRequest(LoginActivity.this,Data.url+"login", loginInfo,
                 new Response.Listener<JSONObject>(){
@@ -49,13 +47,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void startApp(String apiKey){
+
         Data.apiKey=apiKey;
+
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
+
+        setContentView(R.layout.activity_login);
 
 
         final Button button = findViewById(R.id.loginButton);
