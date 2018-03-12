@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+        login("marc","nohash");
 
         final Button button = findViewById(R.id.loginButton);
         final EditText usernameBox = findViewById(R.id.usernameBox);

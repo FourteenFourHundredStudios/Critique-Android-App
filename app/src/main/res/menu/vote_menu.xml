@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <item
+        android:id="@+id/action_downvote"
+        android:icon="@drawable/arrow_down"
+        android:title="yee"
+        myapp:showAsAction="always"
+        android:width="200dp"
+
+        />
+    <item
+        android:id="@+id/action_upvote"
+        android:icon="@drawable/arrow_up"
+        android:width="200dp"
+        android:title="yee"
+        myapp:showAsAction="always" />
+
+</menu>

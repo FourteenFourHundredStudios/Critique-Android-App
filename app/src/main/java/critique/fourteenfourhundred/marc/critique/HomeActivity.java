@@ -7,7 +7,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.ActionMenuView;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class HomeActivity extends AppCompatActivity {
@@ -34,6 +36,14 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        menu.clear();
+        return true;
+    }
 
 }
 
