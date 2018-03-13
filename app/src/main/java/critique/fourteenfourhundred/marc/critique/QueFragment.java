@@ -14,59 +14,83 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 
-
-public class QueFragment extends Fragment {
-    public QueFragment(){
-
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_que, container, false);
-
-        setHasOptionsMenu(true);
-
-        return rootView;
-    }
+public class QueFragment extends Fragment implements View.OnClickListener {
+        public QueFragment(){
 
 
-    @Override
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-
-        //inflater.inflate(R.menu.vote_menu, menu);
-
-
-
-        Toolbar toolbar2 = (Toolbar) getActivity().findViewById(R.id.bottom_toolbar);
-        toolbar2.getMenu().clear();
-        toolbar2.inflateMenu(R.menu.vote_menu);
-
-
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case R.id.action_upvote:
-                Util.showDialog(getActivity(),"Up vote!");
-                // Do Activity menu item stuff here
-                return true;
-            case R.id.action_downvote:
-                Util.showDialog(getActivity(),"down vote!");
-                // Do Activity menu item stuff here
-                return true;
-            default:
-                break;
         }
 
-        return false;
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_que, container, false);
+
+
+
+            /*
+            Button button = (Button) getActivity().findViewById(R.id.voteGood);
+
+
+
+            button.setOnClickListener(this);
+*/
+
+
+            ImageButton voteBad = (ImageButton) rootView.findViewById(R.id.voteBad);
+            voteBad.setOnClickListener(this);
+
+            ImageButton voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
+            voteGood.setOnClickListener(this);
+
+            /*
+            new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    Util.showDialog(getActivity(),"GOOD!");
+                }
+            }
+             */
+
+            return rootView;
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            switch(view.getId()) {
+                case R.id.voteGood:
+                    Util.showDialog(getActivity(),"GOOD!");
+                    return;
+                case R.id.voteBad:
+                    Util.showDialog(getActivity(),"BAD!");
+                    return;
+            }
+        }
+
+
+        @Override
+        public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
+            super.onCreateOptionsMenu(menu, inflater);
+
+
+            //inflater.inflate(R.menu.vote_menu, menu);
+
+
+
+            //Toolbar toolbar2 = (Toolbar) getActivity().findViewById(R.id.bottom_toolbar);
+            //toolbar2.getMenu().clear();
+            //toolbar2.inflateMenu(R.menu.vote_menu);
+
+
+        }
+
+    public void myClickMethod(View v) {
+
     }
+
+
 
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.ActionMenuView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -44,6 +45,10 @@ public class HomeActivity extends AppCompatActivity {
         menu.clear();
         return true;
     }
+
+
+
+
 
 }
 

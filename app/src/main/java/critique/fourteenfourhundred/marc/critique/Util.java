@@ -1,9 +1,12 @@
 package critique.fourteenfourhundred.marc.critique;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,6 +23,13 @@ import org.json.JSONObject;
 
 public class Util {
 
+
+    public static void bindClickButtonEventsToFragment(QueFragment fragment, int[] ids){
+        for(int id:ids){
+            Button button = (Button) fragment.getActivity().findViewById(R.id.voteGood);
+            button.setOnClickListener((View.OnClickListener) fragment);
+        }
+    }
 
     public static JSONObject makeJson(Object[]... params){
         try {
