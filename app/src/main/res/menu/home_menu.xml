@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/sendButton"
-        android:title="send!"
+        android:id="@+id/openCompose"
+        android:title="send"
+        android:icon="@drawable/send_icon"
         app:showAsAction="always" />
 
 </menu>

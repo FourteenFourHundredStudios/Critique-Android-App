@@ -25,45 +25,65 @@ public class SelectMutualsActivity extends AppCompatActivity {
 
     ListView mutualsList;
 
-    User mutuals[] = new User[]{new User("marc"),new User("john"),new User("max")};
+    User mutuals[];
+
+    final Activity me = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_select_mutuals);
-
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         setTitle("Mutuals");
 
 
+        populateMutualsList();
 
 
+    }
 
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
-        mutualsList = (ListView) findViewById(R.id.mutualsList);
-        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), mutuals);
-        mutualsList.setAdapter(customAdapter);
 
+    public void populateMutualsList(){
+
+
+        API.getMutuals(this,new Response.Listener<JSONObject>(){
+            public void onResponse(JSONObject response) {
+                try {
+                    if(response.get("status").equals("ok")){
+                        JSONArray mutualNames = new JSONArray(response.get("message").toString());
+
+                        mutuals= new User[mutualNames.length()];
+
+                        for(int i=0;i<mutualNames.length();i++)mutuals[i]=new User(mutualNames.get(0).toString());
+
+                        mutualsList = (ListView) findViewById(R.id.mutualsList);
+                        CustomAdapter customAdapter = new CustomAdapter(me.getApplicationContext(), mutuals);
+                        mutualsList.setAdapter(customAdapter);
+
+                    }else{
+                        Util.showDialog(me,response.get("message").toString());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
     @Override
     public void onBackPressed() {
+        finish();
         super.onBackPressed();
     }
 
+
+    //in the future it would make more sense to have this Activity return the selected users so it is reusable
     public void send(){
         JSONArray to = new JSONArray();
         for(User i : mutuals)if(i.getSelected())to.put(i.getUsername());
 
         //Util.showDialog(this, to.toString());
-
-        final Activity a = this;
 
         String title = getIntent().getStringExtra("title");
         String content = getIntent().getStringExtra("content");
@@ -74,8 +94,9 @@ public class SelectMutualsActivity extends AppCompatActivity {
                     String status = response.getString("status");
                     if(status.equals("error")){
                         String msg = response.getString("message");
-                        Util.showDialog(a, msg);
+                        Util.showDialog(me, msg);
                     }else{
+                        setResult(2);
                         finish();
                     }
 

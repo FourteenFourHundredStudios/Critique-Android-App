@@ -21,7 +21,7 @@ public class HomePageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-      //  ComposeFragment tab1 = new ComposeFragment();
+      //  ProfileFragment tab1 = new ProfileFragment();
 
         switch (position) {
             case 0:
@@ -29,7 +29,7 @@ public class HomePageAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return new FriendsFragment();
             case 2:
-                return new ComposeFragment();
+                return new ProfileFragment();
             default:
                 return null;
         }
@@ -49,7 +49,7 @@ public class HomePageAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return "Friends";
             case 2:
-                return "Post";
+                return "Profile";
             default:
                 return null;
         }

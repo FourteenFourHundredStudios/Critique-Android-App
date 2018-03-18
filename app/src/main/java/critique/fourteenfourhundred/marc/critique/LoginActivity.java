@@ -60,9 +60,8 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        //login("marc","nohash");
-        Intent intent = new Intent(getApplicationContext(), ComposeActivity.class);
-        startActivity(intent);
+        login("marc","nohash");
+
 
 
         final Button button = findViewById(R.id.loginButton);

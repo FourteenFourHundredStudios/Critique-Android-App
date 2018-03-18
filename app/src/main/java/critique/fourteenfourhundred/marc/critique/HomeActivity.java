@@ -1,6 +1,7 @@
 package critique.fourteenfourhundred.marc.critique;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabLayout;
@@ -34,18 +35,34 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-
     }
 
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         menu.clear();
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+
         return true;
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.openCompose:
+                Intent intent = new Intent(getApplicationContext(), ComposeActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /*
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mutuals_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }*/
 
 
 

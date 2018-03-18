@@ -26,14 +26,16 @@ public class ComposeActivity extends AppCompatActivity {
         s.setQueryHint("Post title");*/
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_TITLE);
-        //getSupportActionBar().setDisplayShowTitleEnabled(true);
+
         getSupportActionBar().setCustomView(R.layout.compose_menu);
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.close_button);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         EditText e = findViewById(R.id.postTitle);
         e.requestFocus();
@@ -45,9 +47,18 @@ public class ComposeActivity extends AppCompatActivity {
 
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==2){
+            finish();
+        }
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
-        finish(); // close this activity as oppose to navigating up
+
+        //Util.showDialog(this,"here?");
+
+        finish();
 
         return false;
     }
@@ -58,7 +69,7 @@ public class ComposeActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), SelectMutualsActivity.class);
         intent.putExtra("title", title);
         intent.putExtra("content", content);
-        startActivity(intent);
+        startActivityForResult(intent,0);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -66,6 +77,9 @@ public class ComposeActivity extends AppCompatActivity {
             case R.id.sendButton:
                 createPost();
                 break;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
         return true;
     }

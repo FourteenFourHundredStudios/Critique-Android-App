@@ -17,7 +17,7 @@ public class API {
 
 
     public static void createPost(final Activity me,JSONArray recipients,String type,String title,String content, Response.Listener<JSONObject> callback){
-        JSONObject loginInfo = Util.makeJson(
+        JSONObject params = Util.makeJson(
                 new Object[]{"apiKey",Data.apiKey},
                 new Object[]{"to",recipients},
                 new Object[]{"type",type},
@@ -25,11 +25,28 @@ public class API {
                 new Object[]{"title",title}
         );
         //Util.showDialog(me,loginInfo.toString());
-        Util.postRequest(me,Data.url+"sendPost", loginInfo, callback,
+        Util.postRequest(me,Data.url+"sendPost", params, callback,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        Util.showDialog(me, "error");
+                        Util.showDialog(me, "Connectivity error probably!");
+                    }
+                }
+        );
+
+    }
+
+
+    public static void getMutuals(final Activity me, Response.Listener<JSONObject> callback){
+        JSONObject params = Util.makeJson(
+                new Object[]{"apiKey",Data.apiKey}
+        );
+        //Util.showDialog(me,loginInfo.toString());
+        Util.postRequest(me,Data.url+"getFollows", params, callback,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Util.showDialog(me, "Connectivity error probably!");
                     }
                 }
         );
