@@ -10,7 +10,6 @@ import android.widget.EditText;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
@@ -61,7 +60,10 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        login("marc","nohash");
+        //login("marc","nohash");
+        Intent intent = new Intent(getApplicationContext(), ComposeActivity.class);
+        startActivity(intent);
+
 
         final Button button = findViewById(R.id.loginButton);
         final EditText usernameBox = findViewById(R.id.usernameBox);

@@ -6,7 +6,7 @@ package critique.fourteenfourhundred.marc.critique;
 
 public class Data {
 
-    public static String apiKey=null;
+    public static String apiKey="1";
     public static String url="http://10.0.0.4:5000/";
 
 }
