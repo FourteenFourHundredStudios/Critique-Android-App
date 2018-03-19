@@ -37,6 +37,24 @@ public class API {
     }
 
 
+    public static void getQue(final Activity me,Response.Listener<JSONObject> callback){
+        JSONObject params = Util.makeJson(
+                new Object[]{"apiKey",Data.apiKey},
+                new Object[]{"votes",new JSONArray()}
+        );
+        //Util.showDialog(me,loginInfo.toString());
+        Util.postRequest(me,Data.url+"getPosts", params, callback,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Util.showDialog(me, "Connectivity error probably!");
+                    }
+                }
+        );
+
+    }
+
+
     public static void getMutuals(final Activity me, Response.Listener<JSONObject> callback){
         JSONObject params = Util.makeJson(
                 new Object[]{"apiKey",Data.apiKey}

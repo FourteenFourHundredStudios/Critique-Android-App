@@ -17,6 +17,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.android.volley.Response;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class QueFragment extends Fragment implements View.OnClickListener {
@@ -27,19 +33,7 @@ public class QueFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_que, container, false);
-
-
-
-            /*
-            Button button = (Button) getActivity().findViewById(R.id.voteGood);
-
-
-
-            button.setOnClickListener(this);
-*/
-
-
+            final View rootView = inflater.inflate(R.layout.fragment_que, container, false);
 
 
 
@@ -50,17 +44,30 @@ public class QueFragment extends Fragment implements View.OnClickListener {
             voteGood.setOnClickListener(this);
 
 
-          //  ImageView profilePic = (ImageView) rootView.findViewById(R.id.profilePic);
-           // profilePic.setClipToOutline(true);
+            API.getQue(getActivity(),new Response.Listener<JSONObject>(){
+                public void onResponse(JSONObject response) {
+                    try {
 
-            /*
-            new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    Util.showDialog(getActivity(),"GOOD!");
-                }
-            }
-             */
+                        if(response.get("status").equals("ok")) {
+                            JSONObject post= new JSONObject(new JSONArray(response.get("message").toString()).get(0).toString());
+
+                            Util.showDialog(getActivity(),post.toString());
+
+                            TextView title = (TextView) rootView.findViewById(R.id.postTitle);
+                            title.setText(post.get("title").toString());
+                            TextView content = (TextView) rootView.findViewById(R.id.postContent);
+                            content.setText(post.get("content").toString());
+                            TextView sender = (TextView) rootView.findViewById(R.id.postSender);
+                            sender.setText(post.get("username").toString());
+                        }else{
+                            Util.showDialog(getActivity(),response.getString("message"));
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                };
+            });
+
 
             return rootView;
         }
@@ -82,15 +89,6 @@ public class QueFragment extends Fragment implements View.OnClickListener {
         @Override
         public void onCreateOptionsMenu (Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
-
-
-            //inflater.inflate(R.menu.vote_menu, menu);
-
-
-
-            //Toolbar toolbar2 = (Toolbar) getActivity().findViewById(R.id.bottom_toolbar);
-            //toolbar2.getMenu().clear();
-            //toolbar2.inflateMenu(R.menu.vote_menu);
 
 
         }
