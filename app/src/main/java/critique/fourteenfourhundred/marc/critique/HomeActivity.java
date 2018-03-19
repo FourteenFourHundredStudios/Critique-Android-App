@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -33,6 +34,10 @@ public class HomeActivity extends AppCompatActivity {
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+
+
+        tabLayout.setSelectedTabIndicatorHeight(0);
+
 
 
     }

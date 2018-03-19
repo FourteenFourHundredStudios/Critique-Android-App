@@ -16,6 +16,15 @@
     </style>
 
 
+    <style name="HomeActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextStyle">@style/MyTitleTextStyle</item>
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="android:background">#B0E0E6</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
     <style name="searchStyle" parent="Widget.AppCompat.SearchView">
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:textColorHint">@color/colorPrimaryDark</item>
@@ -23,16 +32,17 @@
 
     <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="titleTextStyle">@style/MyTitleTextStyle</item>
-        <item name="android:elevation">0dp</item>
-        <item name="elevation">0dp</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
+        <item name="android:elevation">0dp</item>
+        <item name="elevation">0dp</item>
     </style>
+
 
     <style name="MyTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:elevation">0dp</item>
-        <item name="elevation">0dp</item>
+
         <item name="android:windowContentOverlay">@null</item>
     </style>
 

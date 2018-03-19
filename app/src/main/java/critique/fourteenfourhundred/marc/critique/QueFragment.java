@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 
 public class QueFragment extends Fragment implements View.OnClickListener {
@@ -39,11 +40,18 @@ public class QueFragment extends Fragment implements View.OnClickListener {
 */
 
 
+
+
+
             ImageButton voteBad = (ImageButton) rootView.findViewById(R.id.voteBad);
             voteBad.setOnClickListener(this);
 
             ImageButton voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
             voteGood.setOnClickListener(this);
+
+
+          //  ImageView profilePic = (ImageView) rootView.findViewById(R.id.profilePic);
+           // profilePic.setClipToOutline(true);
 
             /*
             new View.OnClickListener() {

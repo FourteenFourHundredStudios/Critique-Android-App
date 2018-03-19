@@ -9,4 +9,18 @@
             <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+
+
+
+
+
+    <style name="HomeTheme" parent="Theme.AppCompat">
+
+
+        <item name="actionBarStyle">@style/HomeActionBar</item>
+
+        <item name="android:background">#B0E0E6</item>
+
+    </style>
+
 </resources>
