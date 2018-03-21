@@ -22,8 +22,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Object[]{"password",password}
         );
 
-        Util.postRequest(LoginActivity.this,Data.url+"login", loginInfo,
-                new Response.Listener<JSONObject>(){
+        Util.postRequest(LoginActivity.this,Data.url+"login", loginInfo,new Response.Listener<JSONObject>(){
                     public void onResponse(JSONObject response) {
                         try {
                             if (response.get("status").equals("error")) {

@@ -26,6 +26,9 @@ import org.json.JSONObject;
 
 
 public class QueFragment extends Fragment implements View.OnClickListener {
+
+        View rootView;
+
         public QueFragment(){
 
 
@@ -33,7 +36,7 @@ public class QueFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            final View rootView = inflater.inflate(R.layout.fragment_que, container, false);
+            rootView = inflater.inflate(R.layout.fragment_que, container, false);
 
 
 
@@ -44,6 +47,13 @@ public class QueFragment extends Fragment implements View.OnClickListener {
             voteGood.setOnClickListener(this);
 
 
+            loadPost();
+
+
+            return rootView;
+        }
+
+        public void loadPost(){
             API.getQue(getActivity(),new Response.Listener<JSONObject>(){
                 public void onResponse(JSONObject response) {
                     try {
@@ -51,7 +61,9 @@ public class QueFragment extends Fragment implements View.OnClickListener {
                         if(response.get("status").equals("ok")) {
                             JSONObject post= new JSONObject(new JSONArray(response.get("message").toString()).get(0).toString());
 
-                            Util.showDialog(getActivity(),post.toString());
+                            //Util.showDialog(getActivity(),post.toString());
+                            Data.lastPost=new JSONArray();
+                            Data.lastPost.put(0,post.get("_id"));
 
                             TextView title = (TextView) rootView.findViewById(R.id.postTitle);
                             title.setText(post.get("title").toString());
@@ -67,9 +79,6 @@ public class QueFragment extends Fragment implements View.OnClickListener {
                     }
                 };
             });
-
-
-            return rootView;
         }
 
 
@@ -77,10 +86,13 @@ public class QueFragment extends Fragment implements View.OnClickListener {
         public void onClick(View view) {
             switch(view.getId()) {
                 case R.id.voteGood:
-                    Util.showDialog(getActivity(),"GOOD!");
+                    //Util.showDialog(getActivity(),"GOOD!");
+                    Data.lastVote=1;
+                    loadPost();
                     return;
                 case R.id.voteBad:
-                    Util.showDialog(getActivity(),"BAD!");
+                    Data.lastVote=0;
+                    loadPost();
                     return;
             }
         }

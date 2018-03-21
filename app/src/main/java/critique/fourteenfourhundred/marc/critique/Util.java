@@ -3,7 +3,9 @@ package critique.fourteenfourhundred.marc.critique;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by Marc on 3/5/18.
@@ -49,6 +53,26 @@ public class Util {
         RequestQueue queue = Volley.newRequestQueue(activity);
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.POST, url, data,rl,re);
         queue.add(getRequest);
+    }
+
+
+
+    public static byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+
+
+    public static String getStringImage(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+
+
+        return temp;
     }
 
 
