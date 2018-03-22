@@ -2,11 +2,13 @@ package critique.fourteenfourhundred.marc.critique;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
@@ -50,26 +52,27 @@ public class API {
     }
 
 
-    public static void getMyPatch(final Activity me, final Callback callback){
-        JSONObject params = Util.makeJson(
-                new Object[]{"apiKey",Data.apiKey}
-        );
-        ImageRequest request = new ImageRequest("",
+    public static void getPatch(final Activity me, String username,final Callback callback){
+
+        RequestQueue queue = Volley.newRequestQueue(me);
+
+        ImageRequest request = new ImageRequest(Data.url+"getPatch/"+Data.apiKey+"/"+username,
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
+
+
                         callback.onResponse(bitmap);
                     }
-
-
-
                 }, 0, 0, null,
                 new Response.ErrorListener() {
+                    @Override
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                });
 
+                });
+        queue.add(request);
     }
 
 
