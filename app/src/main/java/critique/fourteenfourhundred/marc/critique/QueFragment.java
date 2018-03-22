@@ -30,6 +30,8 @@ import org.json.JSONObject;
 public class QueFragment extends Fragment implements View.OnClickListener {
 
         View rootView;
+        JSONObject currentPost = new JSONObject();
+
 
         public QueFragment(){
 
@@ -56,78 +58,64 @@ public class QueFragment extends Fragment implements View.OnClickListener {
         }
 
         public void loadPost(){
-            API.getQue(getActivity(),new Response.Listener<JSONObject>(){
-                public void onResponse(JSONObject response) {
-                    try {
+            QueHandler.getNextInQue(getActivity(),new Callback(){
+                public void onResponse(JSONObject post){
+                    try{
 
-                        if(response.get("status").equals("ok")) {
+                        ((TextView) rootView.findViewById(R.id.postTitle)).setText(post.getString("title"));
+                        ((TextView) rootView.findViewById(R.id.postContent)).setText(post.getString("content"));
+                        ((TextView) rootView.findViewById(R.id.postSender)).setText(post.getString("username"));
+                        ((TextView) rootView.findViewById(R.id.postVoteCount)).setText(post.getString("votes")+" votes");
 
-                            if(new JSONArray(response.get("message").toString()).length()!=0) {
-
-                                JSONObject post = new JSONObject(new JSONArray(response.get("message").toString()).get(0).toString());
-
-                                //Util.showDialog(getActivity(),post.toString());
-                                Data.lastPost = new JSONArray();
-                                Data.lastPost.put(0, post.get("_id"));
-
-                                TextView title = (TextView) rootView.findViewById(R.id.postTitle);
-                                title.setText(post.get("title").toString());
-                                TextView content = (TextView) rootView.findViewById(R.id.postContent);
-                                content.setText(post.get("content").toString());
-                                TextView sender = (TextView) rootView.findViewById(R.id.postSender);
-                                sender.setText(post.get("username").toString());
-
-                                TextView postVoteCount = (TextView) rootView.findViewById(R.id.postVoteCount);
-                                postVoteCount.setText(post.get("votes").toString()+" votes");
-
-
-
-                                API.getPatch(getActivity(), post.get("username").toString(), new Callback() {
-                                    public void onResponse(Bitmap img) {
-                                        ImageView userPatch = (ImageView) rootView.findViewById(R.id.queProfilePic);
-                                        userPatch.setImageBitmap(img);
-                                    }
-                                });
-                            }else{
-
-                                TextView title = (TextView) rootView.findViewById(R.id.postTitle);
-                                title.setText("Oh no!");
-                                TextView content = (TextView) rootView.findViewById(R.id.postContent);
-                                content.setText("Your Que is empty :(");
-                                TextView sender = (TextView) rootView.findViewById(R.id.postSender);
-                                sender.setText("");
-                                TextView postVoteCount = (TextView) rootView.findViewById(R.id.postVoteCount);
-                                sender.setText("");
-                                CardView userPatchHolder = (CardView) rootView.findViewById(R.id.queProfilePicHolder);
-                                userPatchHolder.setVisibility(View.GONE);
-                                ImageView userPatch = (ImageView) rootView.findViewById(R.id.queProfilePic);
-                                userPatch.setVisibility(View.GONE);
+                        API.getPatch(getActivity(), post.getString("username"), new Callback() {
+                            public void onResponse(Bitmap img) {
+                                ((ImageView) rootView.findViewById(R.id.queProfilePic)).setImageBitmap(img);
                             }
+                        });
 
+                        currentPost=post;
 
-                        }else{
-                            Util.showDialog(getActivity(),response.getString("message"));
-                        }
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-                };
+                }
+                public void onError(int code){
+                    ((TextView) rootView.findViewById(R.id.postTitle)).setText("Oh no!");
+                    ((TextView) rootView.findViewById(R.id.postContent)).setText("Your que is empty :(");
+                    ((TextView) rootView.findViewById(R.id.postSender)).setText("");
+                    ((TextView) rootView.findViewById(R.id.postVoteCount)).setText("");
+                }
             });
         }
 
 
         @Override
         public void onClick(View view) {
-            switch(view.getId()) {
-                case R.id.voteGood:
-                    //Util.showDialog(getActivity(),"GOOD!");
-                    Data.lastVote=1;
-                    loadPost();
-                    return;
-                case R.id.voteBad:
-                    Data.lastVote=0;
-                    loadPost();
-                    return;
+            try {
+                switch (view.getId()) {
+                    case R.id.voteGood:
+                        //Util.showDialog(getActivity(),"GOOD!");
+                        //Data.lastVote=1;
+                        API.castVotes(getActivity(), currentPost.getString("_id"),1,new Callback(){
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                loadPost();
+                            }
+                        });
+
+                        return;
+                    case R.id.voteBad:
+                        //Data.lastVote=0;
+                        API.castVotes(getActivity(), currentPost.getString("_id"),0,new Callback(){
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                loadPost();
+                            }
+                        });
+                        return;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
 

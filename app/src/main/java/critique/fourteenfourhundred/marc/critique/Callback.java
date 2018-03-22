@@ -15,7 +15,13 @@ public class Callback {
 
     }
 
+
+
     public void onResponse(Bitmap image){
+
+    }
+
+    public void onError(int code){
 
     }
 

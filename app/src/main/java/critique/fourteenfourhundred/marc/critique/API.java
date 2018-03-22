@@ -136,10 +136,47 @@ public class API {
     }
 
 
-
-    public static void getQue(final Activity me,Response.Listener<JSONObject> callback){
+    public static void castVotes(final Activity me, String postId, int vote, final Callback callback){
 
         try {
+
+
+            JSONArray votes = new JSONArray();
+            votes.put(new JSONObject().put("id",postId).put("vote",vote));
+
+            JSONObject params = Util.makeJson(
+                    new Object[]{"apiKey", Data.apiKey},
+                    new Object[]{"votes", votes}
+            );
+
+
+            //Util.showDialog(me,loginInfo.toString());
+            Util.postRequest(me, Data.url + "castVotes", params, new Response.Listener<JSONObject>(){
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            callback.onResponse(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            Util.showDialog(me, "Connectivity error probably!");
+                        }
+                    }
+            );
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public static void getQue(final Activity me, final Callback callback){
+
+        try {
+
+            /*
             JSONArray votes = new JSONArray();
 
             if (Data.lastPost.length() > 0) {
@@ -150,14 +187,19 @@ public class API {
                             new Object[]{"vote", Data.lastVote}
                     ));
                 }
-            }
+            }*/
 
             JSONObject params = Util.makeJson(
-                    new Object[]{"apiKey", Data.apiKey},
-                    new Object[]{"votes", votes}
+                    new Object[]{"apiKey", Data.apiKey}
             );
             //Util.showDialog(me,loginInfo.toString());
-            Util.postRequest(me, Data.url + "getPosts", params, callback,
+                    Util.postRequest(me, Data.url + "getPosts", params, new Response.Listener<JSONObject>(){
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            callback.onResponse(response);
+                        }
+                    },
                     new Response.ErrorListener() {
                         public void onErrorResponse(VolleyError error) {
                             error.printStackTrace();
