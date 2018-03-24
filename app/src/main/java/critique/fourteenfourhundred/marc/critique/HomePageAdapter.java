@@ -25,7 +25,7 @@ public class HomePageAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                return new QueFragment();
+                return new QueHolderFragment();
             case 1:
                 return new FriendsFragment();
             case 2:

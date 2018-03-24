@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.pager);
 
 
-
+        viewPager.setOffscreenPageLimit(5);
 
 
         // Create an adapter that knows which fragment should be shown on each page
