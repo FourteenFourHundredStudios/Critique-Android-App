@@ -28,10 +28,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-public class QueFragment extends Fragment implements View.OnClickListener {
+public class QueFragment extends Fragment {
 
         View rootView;
-        JSONObject currentPost = new JSONObject();
+        JSONObject post = new JSONObject();
 
 
         public QueFragment(){
@@ -39,30 +39,44 @@ public class QueFragment extends Fragment implements View.OnClickListener {
 
         }
 
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             rootView = inflater.inflate(R.layout.fragment_que, container, false);
 
+            try {
+                post = (JSONObject) new JSONObject(this.getArguments().getString("post"));
+                loadPost();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
-
-            ImageButton voteBad = (ImageButton) rootView.findViewById(R.id.voteBad);
-            voteBad.setOnClickListener(this);
-
-            ImageButton voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
-            voteGood.setOnClickListener(this);
-
-
-            loadPost();
 
 
             return rootView;
         }
 
 
+        /*
+
+                    QueHandler.getNextInQue(getActivity(),new Callback(){
+                        public void onResponse(JSONObject post){
+
+                        }
+
+                                     public void onError(int code){
+                    ((TextView) rootView.findViewById(R.id.postTitle)).setText("Oh no!");
+                    ((TextView) rootView.findViewById(R.id.postContent)).setText("Your que is empty :(");
+                    ((TextView) rootView.findViewById(R.id.postSender)).setText("");
+                    ((TextView) rootView.findViewById(R.id.postVoteCount)).setText("");
+                }
+                    });
+         */
+
 
         public void loadPost(){
-            QueHandler.getNextInQue(getActivity(),new Callback(){
-                public void onResponse(JSONObject post){
+
                     try{
 
                         ((TextView) rootView.findViewById(R.id.postTitle)).setText(post.getString("title"));
@@ -76,52 +90,20 @@ public class QueFragment extends Fragment implements View.OnClickListener {
                             }
                         });
 
-                        currentPost=post;
+                        //currentPost=post;
 
                     }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
-                public void onError(int code){
-                    ((TextView) rootView.findViewById(R.id.postTitle)).setText("Oh no!");
-                    ((TextView) rootView.findViewById(R.id.postContent)).setText("Your que is empty :(");
-                    ((TextView) rootView.findViewById(R.id.postSender)).setText("");
-                    ((TextView) rootView.findViewById(R.id.postVoteCount)).setText("");
-                }
-            });
-        }
 
 
 
-        @Override
-        public void onClick(View view) {
-            try {
-                switch (view.getId()) {
-                    case R.id.voteGood:
-                        //Util.showDialog(getActivity(),"GOOD!");
-                        //Data.lastVote=1;
-                        API.castVotes(getActivity(), currentPost.getString("_id"),1,new Callback(){
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                loadPost();
-                            }
-                        });
 
-                        return;
-                    case R.id.voteBad:
-                        //Data.lastVote=0;
-                        API.castVotes(getActivity(), currentPost.getString("_id"),0,new Callback(){
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                loadPost();
-                            }
-                        });
-                        return;
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+
+
+
+
 
 
         @Override

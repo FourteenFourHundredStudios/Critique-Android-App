@@ -61,6 +61,12 @@ public class HomeActivity extends AppCompatActivity {
         HomePageAdapter adapter = new HomePageAdapter(this, getSupportFragmentManager());
 
 
+        viewPager.setFocusableInTouchMode(true);
+        viewPager.setFocusable(true);
+        viewPager.setEnabled(true);
+        viewPager.setClickable(true);
+        viewPager.setFocusableInTouchMode(true);
+
 
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
