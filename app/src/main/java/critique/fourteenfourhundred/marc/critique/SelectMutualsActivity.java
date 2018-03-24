@@ -54,7 +54,7 @@ public class SelectMutualsActivity extends AppCompatActivity {
 
                         mutuals= new User[mutualNames.length()];
 
-                        for(int i=0;i<mutualNames.length();i++)mutuals[i]=new User(mutualNames.get(0).toString());
+                        for(int i=0;i<mutualNames.length();i++)mutuals[i]=new User(mutualNames.get(i).toString());
 
                         mutualsList = (ListView) findViewById(R.id.mutualsList);
                         CustomAdapter customAdapter = new CustomAdapter(me.getApplicationContext(), mutuals);

@@ -213,6 +213,29 @@ public class API {
 
     }
 
+    public static void doSearch(final Activity me, String search,final Callback callback){
+
+        try {
+
+            Util.postRequest(me, Data.url + "search/"+search, new JSONObject(), new Response.Listener<JSONObject>(){
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            callback.onResponse(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            Util.showDialog(me, "Connectivity error probably!");
+                        }
+                    }
+            );
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 
     public static void getMutuals(final Activity me, Response.Listener<JSONObject> callback){
         JSONObject params = Util.makeJson(

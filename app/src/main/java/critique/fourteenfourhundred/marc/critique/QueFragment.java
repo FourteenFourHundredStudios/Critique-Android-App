@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
@@ -57,6 +58,8 @@ public class QueFragment extends Fragment implements View.OnClickListener {
             return rootView;
         }
 
+
+
         public void loadPost(){
             QueHandler.getNextInQue(getActivity(),new Callback(){
                 public void onResponse(JSONObject post){
@@ -87,6 +90,7 @@ public class QueFragment extends Fragment implements View.OnClickListener {
                 }
             });
         }
+
 
 
         @Override

@@ -1,17 +1,43 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0D000000"
-    android:padding="35dp"
-    android:paddingTop="20dp"
+
     tools:context="critique.fourteenfourhundred.marc.critique.FriendsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="15sp"
-        android:text="This is the friends fragment!" />
 
-</FrameLayout>
+    <RelativeLayout
+
+        android:id="@+id/SearchBarHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="#ffffff"
+        android:elevation="2dp">
+
+        <EditText
+            android:id="@+id/mutualSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:background="#25000000"
+            android:hint="Search for mutuals here"
+            android:padding="6dp"
+            android:textColor="#FFFFFF" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/mutualsListFriends"
+        android:layout_below="@+id/SearchBarHolder"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</RelativeLayout>

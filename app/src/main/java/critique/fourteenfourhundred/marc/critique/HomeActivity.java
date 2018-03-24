@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,7 +39,11 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class HomeActivity extends AppCompatActivity {
+
+
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +51,25 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         // Find the view pager that will allow the user to swipe between fragments
-        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+
+
+
+
 
         // Create an adapter that knows which fragment should be shown on each page
         HomePageAdapter adapter = new HomePageAdapter(this, getSupportFragmentManager());
 
+
+
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
 
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+
+        //tabLayout.setSelectedTabIndicatorHeight(0);
 
 
-        tabLayout.setSelectedTabIndicatorHeight(0);
+
 
 
 
@@ -77,8 +88,12 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.openCompose:
+
+
                 Intent intent = new Intent(getApplicationContext(), ComposeActivity.class);
                 startActivity(intent);
+                //viewPager.setCurrentItem(1, true);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
