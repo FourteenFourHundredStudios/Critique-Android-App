@@ -6,7 +6,7 @@
    android:background="#0D000000"
     android:layout_margin="0dp"
     android:orientation="vertical"
-
+    android:fillViewport="true"
     tools:context="critique.fourteenfourhundred.marc.critique.QueFragment">
 
 
@@ -99,19 +99,20 @@
     </LinearLayout>
 
 
-
-
-    <ScrollView
-        android:layout_below="@id/usernameBar"
-        android:layout_above="@id/bottom_toolbar"
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
-        android:paddingHorizontal="20dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_toolbar"
+        android:layout_below="@id/usernameBar"
+        android:fillViewport="true"
+        android:paddingHorizontal="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:orientation="vertical">
 
 
             <TextView
@@ -136,13 +137,12 @@
                 android:typeface="monospace"></TextView>
 
 
-
         </LinearLayout>
 
 
+    </android.support.v4.widget.NestedScrollView>
 
 
-    </ScrollView>
 
     <!--
     android:layout_height="?attr/actionBarSize"

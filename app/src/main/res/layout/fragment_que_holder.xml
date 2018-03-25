@@ -4,12 +4,18 @@
     android:layout_height="match_parent"
     tools:context="critique.fourteenfourhundred.marc.critique.QueHolderFragment">
 
-    <critique.fourteenfourhundred.marc.critique.DeactivatedViewPager
-        android:id="@+id/pageHolder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+
+
+        <ViewFlipper
+            android:id="@+id/contentHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        </ViewFlipper>
+
+
 
 
     <android.support.v7.widget.Toolbar
