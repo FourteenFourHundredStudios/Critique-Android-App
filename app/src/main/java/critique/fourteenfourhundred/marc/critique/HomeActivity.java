@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -61,12 +62,14 @@ public class HomeActivity extends AppCompatActivity {
         HomePageAdapter adapter = new HomePageAdapter(this, getSupportFragmentManager());
 
 
+        /*
         viewPager.setFocusableInTouchMode(true);
         viewPager.setFocusable(true);
         viewPager.setEnabled(true);
         viewPager.setClickable(true);
-        viewPager.setFocusableInTouchMode(true);
+        viewPager.setFocusableInTouchMode(true);*/
 
+       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);

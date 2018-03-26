@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +38,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     public int remainingPosts=2;
     public int currentPostCount=0;
 
+    public boolean queLoading=true;
 
     public static ArrayList<JSONObject> que = new ArrayList<JSONObject>();
 
@@ -103,43 +105,90 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     }
 
 
-    public void loadPost(boolean start){
+    public void loadPost(final boolean start){
+
 
 
             remainingPosts--;
 
-            if(remainingPosts==1 || start) {
+            if((remainingPosts==2 || start) && queLoading) {
+
+                Log.i("MESSAGE","loading posts");
 
                 //int x=l;
-
-                //if(!start)layout.removeViewsInLayout(0,layout.getChildCount()-1);
+                if(!start){
+                    //layout.removeViewAt(layout.getDisplayedChild()+1);
+                }
 
                 layout.showNext();
 
                 API.getQue(getActivity(), new Callback() {
-                    public void onResponse(JSONObject json) {
+                    public void onResponse(final JSONObject json) {
 
                         //layout.showNext();
                         try {
                             if (json.getString("status").equals("ok")) {
 
-                                JSONArray posts = new JSONArray(json.getString("message"));
+                                final JSONArray posts = new JSONArray(json.getString("message"));
 
                                 remainingPosts = posts.length();
                                 currentPostCount=0;
 
                                 //for(View f:)
                                 que.clear();
-                                layout.removeAllViews();
-                                for (int i = 0; i < posts.length(); i++) {
-                                    QueFragment post = new QueFragment();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("post", posts.get(i).toString());
-                                    post.setArguments(bundle);
-                                    que.add(new JSONObject(posts.get(i).toString()));
-                                    getFragmentManager().beginTransaction().add(layout.getId(), post).commit();
-                                }
 
+                                layout.post(new Runnable() {
+                                    public void run() {
+                                        try {
+
+                                            //Util.showDialog(getActivity(),layout.getChildCount()+"");
+                                            //layout.removeAllViews();
+
+
+
+                                            if(!start) {
+                                                int x = layout.getDisplayedChild();
+
+                                                //layout.removeViewAt(1);
+
+                                                //Util.showDialog(getActivity(),"count "+x);
+
+
+
+
+
+
+                                            }
+
+
+                                            int end = posts.length();
+
+                                            if(posts.length()==0)queLoading=false;
+
+                                            //if(start)end--;
+
+                                            for (int i = 0; i < end; i++) {
+
+                                                JSONObject ar = new JSONObject(posts.get(i).toString());
+
+                                                //Util.showDialog(getActivity(),ar.getString("title"));
+
+                                                Log.e("HMMM",ar.getString("title"));
+
+                                                QueFragment post = new QueFragment();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("post", posts.get(i).toString());
+                                                post.setArguments(bundle);
+                                                que.add(new JSONObject(posts.get(i).toString()));
+                                                getFragmentManager().beginTransaction().add(layout.getId(), post).commit();
+                                            }
+                                            Log.e("HMMM","---------");
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+
+                                        }
+                                    }
+                                });
 
                                 //layout.showNext();
                             }else{
@@ -159,6 +208,9 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                 //layout.removeViewAt(currentPostCount);
             }
 
+            //if(!start)layout.removeViewAt(remainingPosts);
+
+            Log.e("AT",layout.getDisplayedChild()+"");
 
 
     }
