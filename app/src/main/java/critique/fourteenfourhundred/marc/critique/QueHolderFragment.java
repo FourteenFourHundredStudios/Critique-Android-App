@@ -54,7 +54,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                     API.castVotes(getActivity(), currentPost.getString("_id"),1,new Callback(){
                         @Override
                         public void onResponse(JSONObject response) {
-                            loadPost();
+                            loadPost(false);
                         }
                     });
 
@@ -65,7 +65,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                     API.castVotes(getActivity(), currentPost.getString("_id"),0,new Callback(){
                         @Override
                         public void onResponse(JSONObject response) {
-                            loadPost();
+                            loadPost(false);
                         }
                     });
                     return;
@@ -96,23 +96,30 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
         ImageButton voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
         voteGood.setOnClickListener(this);
 
-        loadPost();
+        loadPost(true);
 
 
         return rootView;
     }
 
 
-    public void loadPost(){
+    public void loadPost(boolean start){
 
 
             remainingPosts--;
 
-            if(remainingPosts==1) {
+            if(remainingPosts==1 || start) {
+
+                //int x=l;
+
+                //if(!start)layout.removeViewsInLayout(0,layout.getChildCount()-1);
+
+                layout.showNext();
 
                 API.getQue(getActivity(), new Callback() {
                     public void onResponse(JSONObject json) {
-                        que.clear();
+
+                        //layout.showNext();
                         try {
                             if (json.getString("status").equals("ok")) {
 
@@ -122,7 +129,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                 currentPostCount=0;
 
                                 //for(View f:)
-
+                                que.clear();
+                                layout.removeAllViews();
                                 for (int i = 0; i < posts.length(); i++) {
                                     QueFragment post = new QueFragment();
                                     Bundle bundle = new Bundle();
@@ -131,7 +139,9 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                     que.add(new JSONObject(posts.get(i).toString()));
                                     getFragmentManager().beginTransaction().add(layout.getId(), post).commit();
                                 }
-                                layout.showNext();
+
+
+                                //layout.showNext();
                             }else{
                                 Util.showDialog(getActivity(),json.getString("message"));
                             }
@@ -141,8 +151,12 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                     }
                 });
             }else {
+
+
                 currentPostCount++;
                 layout.showNext();
+
+                //layout.removeViewAt(currentPostCount);
             }
 
 
