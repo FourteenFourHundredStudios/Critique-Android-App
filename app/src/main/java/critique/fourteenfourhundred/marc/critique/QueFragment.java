@@ -6,11 +6,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +43,18 @@ public class QueFragment extends Fragment {
 
 
 
+
+    public static QueFragment newInstance(String text) {
+
+        QueFragment f = new QueFragment();
+
+        Bundle b = new Bundle();
+        b.putString("post", text);
+        f.setArguments(b);
+        return f;
+    }
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             rootView = inflater.inflate(R.layout.fragment_que, container, false);
@@ -48,6 +62,13 @@ public class QueFragment extends Fragment {
             try {
                 post = (JSONObject) new JSONObject(this.getArguments().getString("post"));
                 loadPost();
+
+                //getParentFragment().onAttach(getContext());
+
+
+
+
+
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -57,22 +78,6 @@ public class QueFragment extends Fragment {
             return rootView;
         }
 
-
-        /*
-
-                    QueHandler.getNextInQue(getActivity(),new Callback(){
-                        public void onResponse(JSONObject post){
-
-                        }
-
-                                     public void onError(int code){
-                    ((TextView) rootView.findViewById(R.id.postTitle)).setText("Oh no!");
-                    ((TextView) rootView.findViewById(R.id.postContent)).setText("Your que is empty :(");
-                    ((TextView) rootView.findViewById(R.id.postSender)).setText("");
-                    ((TextView) rootView.findViewById(R.id.postVoteCount)).setText("");
-                }
-                    });
-         */
 
 
         public void loadPost(){

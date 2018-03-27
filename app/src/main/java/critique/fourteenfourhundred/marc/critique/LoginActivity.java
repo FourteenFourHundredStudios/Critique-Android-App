@@ -22,6 +22,9 @@ public class LoginActivity extends AppCompatActivity {
                 new Object[]{"password",password}
         );
 
+
+
+
         Util.postRequest(LoginActivity.this,Data.url+"login", loginInfo,new Response.Listener<JSONObject>(){
                     public void onResponse(JSONObject response) {
                         try {
@@ -59,7 +62,9 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        login("marc","nohash");
+
+        debug();
+
 
 
 
@@ -77,4 +82,26 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+
+    public void debug(){
+
+        login("marc","nohash");
+
+        /*
+        Util.postRequest(LoginActivity.this,Data.url+"reset", new JSONObject(),new Response.Listener<JSONObject>(){
+                    public void onResponse(JSONObject response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Util.showDialog(LoginActivity.this, "errorccc");
+                    }
+                }
+        );*/
+
+    }
+
 }

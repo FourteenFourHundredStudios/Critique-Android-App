@@ -3,6 +3,8 @@ package critique.fourteenfourhundred.marc.critique;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -30,13 +33,15 @@ import java.util.ArrayList;
 public class QueHolderFragment extends Fragment implements View.OnClickListener {
 
     public View rootView;
-    public ViewFlipper layout;
+    public ViewFlipper viewFlipper;
     //public ArrayList<QueFragment> posts=new ArrayList<QueFragment>();
     public Animation slide_in_left, slide_out_right;
     public JSONObject currentPost;
 
     public int remainingPosts=2;
     public int currentPostCount=0;
+
+    public View toRemove;
 
     public boolean queLoading=true;
 
@@ -56,7 +61,40 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                     API.castVotes(getActivity(), currentPost.getString("_id"),1,new Callback(){
                         @Override
                         public void onResponse(JSONObject response) {
-                            loadPost(false);
+                            //loadPost(false);
+                            //toRemove=layout.getChildAt(layout.getDisplayedChild());
+
+                            //Log.e("hmmm",viewFlipper.getChildCount()+"");
+
+                            toRemove=viewFlipper.getCurrentView();
+
+                            viewFlipper.showPrevious();
+
+
+
+
+                            /*
+                            viewFlipper.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loadPost(false);
+                                }
+                            });*/
+
+                            getActivity().runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    viewFlipper.removeView(toRemove);
+                                    loadPost(false);
+                                    currentPostCount++;
+                                }
+                            });
+
+
+
+
+
                         }
                     });
 
@@ -64,12 +102,6 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                 case R.id.voteBad:
                     //Data.lastVote=0;
 
-                    API.castVotes(getActivity(), currentPost.getString("_id"),0,new Callback(){
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            loadPost(false);
-                        }
-                    });
                     return;
             }
         } catch (Exception e) {
@@ -79,17 +111,20 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_que_holder, container, false);
 
-        layout = (ViewFlipper) rootView.findViewById(R.id.contentHolder);
+        viewFlipper = (ViewFlipper) rootView.findViewById(R.id.contentHolder);
+
 
         slide_in_left = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_in_left);
         slide_out_right = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_out_right);
 
-        layout.setInAnimation(slide_in_left);
-        layout.setOutAnimation(slide_out_right);
+        viewFlipper.setInAnimation(slide_in_left);
+        viewFlipper.setOutAnimation(slide_out_right);
+
 
 
         ImageButton voteBad = (ImageButton) rootView.findViewById(R.id.voteBad);
@@ -105,115 +140,38 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     }
 
 
-    public void loadPost(final boolean start){
-
-
-
-            remainingPosts--;
-
-            if((remainingPosts==2 || start) && queLoading) {
-
-                Log.i("MESSAGE","loading posts");
-
-                //int x=l;
-                if(!start){
-                    //layout.removeViewAt(layout.getDisplayedChild()+1);
-                }
-
-                layout.showNext();
-
-                API.getQue(getActivity(), new Callback() {
-                    public void onResponse(final JSONObject json) {
-
-                        //layout.showNext();
+        public void loadPost(final boolean start) {
+            Log.e("COUNT",viewFlipper.getChildCount()+"");
+            if(start || viewFlipper.getChildCount()<3){
+                API.getQue(getActivity(),new Callback(){
+                    public void onResponse(JSONObject response) {
                         try {
-                            if (json.getString("status").equals("ok")) {
-
-                                final JSONArray posts = new JSONArray(json.getString("message"));
-
-                                remainingPosts = posts.length();
-                                currentPostCount=0;
-
-                                //for(View f:)
-                                que.clear();
-
-                                layout.post(new Runnable() {
-                                    public void run() {
-                                        try {
-
-                                            //Util.showDialog(getActivity(),layout.getChildCount()+"");
-                                            //layout.removeAllViews();
+                            currentPostCount=0;
+                            que.clear();
+                            Log.e("HERE","GOT RESPONSE");
+                            JSONArray posts = new JSONArray(response.getString("message"));
+                            for(int i=0;i<posts.length();i++){
+                                Log.e("ffff","ADDING POST");
+                                String postData=posts.get(i).toString();
+                                final QueView post = new QueView(getContext(),postData);
+                                que.add(new JSONObject(postData));
 
 
-
-                                            if(!start) {
-                                                int x = layout.getDisplayedChild();
-
-                                                //layout.removeViewAt(1);
-
-                                                //Util.showDialog(getActivity(),"count "+x);
+                                        viewFlipper.addView(post.getSelf());
 
 
-
-
-
-
-                                            }
-
-
-                                            int end = posts.length();
-
-                                            if(posts.length()==0)queLoading=false;
-
-                                            //if(start)end--;
-
-                                            for (int i = 0; i < end; i++) {
-
-                                                JSONObject ar = new JSONObject(posts.get(i).toString());
-
-                                                //Util.showDialog(getActivity(),ar.getString("title"));
-
-                                                Log.e("HMMM",ar.getString("title"));
-
-                                                QueFragment post = new QueFragment();
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString("post", posts.get(i).toString());
-                                                post.setArguments(bundle);
-                                                que.add(new JSONObject(posts.get(i).toString()));
-                                                getFragmentManager().beginTransaction().add(layout.getId(), post).commit();
-                                            }
-                                            Log.e("HMMM","---------");
-                                        }catch (Exception e){
-                                            e.printStackTrace();
-
-                                        }
-                                    }
-                                });
-
-                                //layout.showNext();
-                            }else{
-                                Util.showDialog(getActivity(),json.getString("message"));
                             }
-                        } catch (Exception e) {
+                            //Util.showDialog(getActivity(),viewFlipper.getChildCount()+"");
+                            viewFlipper.setDisplayedChild(posts.length()-1);
+
+                        }catch (Exception e){
                             e.printStackTrace();
                         }
                     }
                 });
-            }else {
-
-
-                currentPostCount++;
-                layout.showNext();
-
-                //layout.removeViewAt(currentPostCount);
             }
+        }
 
-            //if(!start)layout.removeViewAt(remainingPosts);
-
-            Log.e("AT",layout.getDisplayedChild()+"");
-
-
-    }
 
 
 
