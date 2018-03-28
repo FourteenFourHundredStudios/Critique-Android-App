@@ -40,7 +40,9 @@ public class QueView extends View{
     }
 
 
-
+    public JSONObject getPost(){
+        return post;
+    }
 
 
     public View getSelf(){

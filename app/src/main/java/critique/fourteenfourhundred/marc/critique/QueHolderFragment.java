@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class QueHolderFragment extends Fragment implements View.OnClickListener {
 
     public View rootView;
-    public ViewFlipper viewFlipper;
+    public ViewSwitcher viewFlipper;
     //public ArrayList<QueFragment> posts=new ArrayList<QueFragment>();
     public Animation slide_in_left, slide_out_right;
     public JSONObject currentPost;
@@ -44,8 +44,12 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     public View toRemove;
 
     public boolean queLoading=true;
+    public int untilLoad=1;
 
-    public static ArrayList<JSONObject> que = new ArrayList<JSONObject>();
+
+    //public boolean firstView
+
+    public static ArrayList<QueView> que = new ArrayList<QueView>();
 
     public QueHolderFragment() {
         // Required empty public constructor
@@ -54,46 +58,19 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         try {
-            currentPost=que.get(currentPostCount);
+            //currentPost=que.get(currentPostCount);
+            untilLoad--;
+
+            currentPost = que.get(0).getPost();
+
+
             switch (view.getId()) {
                 case R.id.voteGood:
 
-                    API.castVotes(getActivity(), currentPost.getString("_id"),1,new Callback(){
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            //loadPost(false);
-                            //toRemove=layout.getChildAt(layout.getDisplayedChild());
 
-                            //Log.e("hmmm",viewFlipper.getChildCount()+"");
-
-                            toRemove=viewFlipper.getCurrentView();
-
-                            viewFlipper.showPrevious();
-
-
-
-
-                            /*
-                            viewFlipper.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    loadPost(false);
-                                }
-                            });*/
-
-                            getActivity().runOnUiThread(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    viewFlipper.removeView(toRemove);
-                                    loadPost(false);
-                                    currentPostCount++;
-                                }
-                            });
-
-
-
-
+                    continueQue();
+                    API.castVotes(getActivity(), currentPost.getString("_id"),1,new Callback() {
+                        public void onResponse(JSONObject response){
 
                         }
                     });
@@ -101,7 +78,12 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                     return;
                 case R.id.voteBad:
                     //Data.lastVote=0;
+                    continueQue();
+                    API.castVotes(getActivity(), currentPost.getString("_id"),0,new Callback() {
+                        public void onResponse(JSONObject response){
 
+                        }
+                    });
                     return;
             }
         } catch (Exception e) {
@@ -110,13 +92,35 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     }
 
 
+    public void continueQue(){
+        viewFlipper.showNext();
+
+        viewFlipper.post(new Runnable() {
+            @Override
+            public void run() {
+                if(untilLoad==0){
+                    untilLoad=1;
+                    try {
+                        if(que.size()==1)loadPost(false);
+                        viewFlipper.removeViewAt(0);
+                        viewFlipper.addView(que.remove(0).getSelf());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
+    }
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_que_holder, container, false);
 
-        viewFlipper = (ViewFlipper) rootView.findViewById(R.id.contentHolder);
+        viewFlipper = (ViewSwitcher) rootView.findViewById(R.id.contentHolder);
 
 
         slide_in_left = AnimationUtils.loadAnimation(getActivity(),android.R.anim.slide_in_left);
@@ -139,7 +143,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
         return rootView;
     }
 
-
+/*
         public void loadPost(final boolean start) {
             Log.e("COUNT",viewFlipper.getChildCount()+"");
             if(start || viewFlipper.getChildCount()<3){
@@ -156,7 +160,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                 final QueView post = new QueView(getContext(),postData);
                                 que.add(new JSONObject(postData));
 
-
+                                //viewFlipper.re
                                         viewFlipper.addView(post.getSelf());
 
 
@@ -170,8 +174,34 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                     }
                 });
             }
-        }
+        }*/
 
+        public void loadPost(final boolean start) {
+                API.getQue(getActivity(),new Callback(){
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray posts = new JSONArray(response.getString("message"));
+                            for(int i=0;i<posts.length();i++){
+                                String postData=posts.get(i).toString();
+                                final QueView post = new QueView(getContext(),postData);
+
+                                if(!start) {
+                                    que.add(post);
+                                }else{
+                                    if (i<=1) {
+                                        viewFlipper.addView(post.getSelf());
+                                    } else {
+                                        que.add(post);
+                                    }
+                                }
+                            }
+                            //viewFlipper.showNext();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        }
 
 
 
