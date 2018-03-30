@@ -39,6 +39,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     public Animation slide_in_left, slide_out_right;
     public JSONObject currentPost;
 
+    public ImageButton voteGood, voteBad;
+
     public int remainingPosts=2;
     public int currentPostCount=0;
 
@@ -75,35 +77,6 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
             continueQue();
 
-
-                //JSONArray val=votes;
-
-
-
-        //AsyncTask.execute(new Runnable() {
-
-
-            /*
-
-                    API.castVotes(getActivity(), currentPost.getString("_id"), vote, new Callback() {
-                        public void onResponse(JSONObject response) {
-
-                            try {
-                                if (response.getString("status").equals("error")) {
-                                    Util.showDialog(getActivity(), response.getString("message"));
-                                }
-
-                                buttonsLocked--;
-                                if(autoNext){
-                                    autoNext=false;
-                                    vote(vote);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    */
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -145,12 +118,11 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     public void continueQue(){
         Log.e("sliding next post","sliding next post "+que.size());
 
+        /*
         if(voteLock){
             Log.e("VOTE LOCKED","VOTE LOCKED");
             return;
-        }
-
-        if( que.size()<2||viewFlipper.getChildCount()>1)return;
+        }*/
 
         final QueView post= que.get(1);
         post.getSelf().setVisibility(View.INVISIBLE);
@@ -158,7 +130,10 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
 
 
-
+        if(voteLock){
+            Log.e("VOTE LOCKED","VOTE LOCKED");
+            return;
+        }
 
         post.getSelf().post(new Runnable() {
             @Override
@@ -177,6 +152,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
                         if(que.size()==3){
                             voteLock=true;
+                            voteGood.setEnabled(false);
+                            voteBad.setEnabled(false);
                             ((HomeActivity)getActivity()).startLoadAnimation();
                             Log.e("voting","loading...");
 
@@ -227,11 +204,13 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
 
 
-        ImageButton voteBad = (ImageButton) rootView.findViewById(R.id.voteBad);
+        voteBad = (ImageButton) rootView.findViewById(R.id.voteBad);
         voteBad.setOnClickListener(this);
 
-        ImageButton voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
+        voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
         voteGood.setOnClickListener(this);
+
+
 
         //setHasOptionsMenu(true);
 
@@ -324,6 +303,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                     }
                                 }
                                 voteLock=false;
+                                voteGood.setEnabled(true);
+                                voteBad.setEnabled(true);
                                 ((HomeActivity)getActivity()).stopLoadAnimation();
                                 Log.e("VOTE LOCK","VOTES UNLOCKED");
                                 Log.e("getting posts","done!");
