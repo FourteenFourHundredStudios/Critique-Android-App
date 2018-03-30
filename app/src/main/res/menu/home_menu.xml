@@ -15,7 +15,7 @@
     <item
         android:id="@+id/openCompose"
         android:checkable="true"
-        android:enabled="false"
+        android:enabled="true"
         android:icon="@drawable/send_icon"
         android:title="send"
         app:showAsAction="always" />

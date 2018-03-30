@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -126,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.openCompose:
 
-
+                Log.e("ok","fff");
                 Intent intent = new Intent(getApplicationContext(), ComposeActivity.class);
                 startActivity(intent);
                 //viewPager.setCurrentItem(1, true);
