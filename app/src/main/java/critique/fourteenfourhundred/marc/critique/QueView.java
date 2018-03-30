@@ -21,6 +21,7 @@ public class QueView extends View{
 
     public JSONObject post;
     public View rootView;
+    public Bitmap patch;
 
     public QueView(Context context,String post) {
         super(context);
@@ -38,6 +39,9 @@ public class QueView extends View{
         }
         //rootView = inflate(context, R.layout.fragment_que, this);
     }
+
+
+//    public void g
 
 
     public JSONObject getPost(){
@@ -62,6 +66,7 @@ public class QueView extends View{
 
     public void init(){
         try {
+            
             ((TextView) rootView.findViewById(R.id.postTitle)).setText(post.getString("title"));
             ((TextView) rootView.findViewById(R.id.postContent)).setText(post.getString("content"));
             ((TextView) rootView.findViewById(R.id.postSender)).setText(post.getString("username"));
