@@ -52,15 +52,52 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     public boolean queLoading=true;
     public int untilLoad=0;
 
-    public boolean buttonsLocked=false;
-
+    public int buttonsLocked=0;
+    public boolean autoNext=false;
 
     //public boolean firstView
+
 
     public static ArrayList<QueView> que = new ArrayList<QueView>();
 
     public QueHolderFragment() {
         // Required empty public constructor
+    }
+
+
+    public void vote(final int vote){
+        buttonsLocked++;
+        if (que.size() > 1) {
+            continueQue();
+        }
+
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    API.castVotes(getActivity(), currentPost.getString("_id"), vote, new Callback() {
+                        public void onResponse(JSONObject response) {
+
+                            try {
+                                if (response.getString("status").equals("error")) {
+                                    Util.showDialog(getActivity(), response.getString("message"));
+                                }
+
+                                buttonsLocked--;
+                                if(autoNext){
+                                    autoNext=false;
+                                    vote(vote);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -70,39 +107,21 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
 
 
-
+            if(buttonsLocked==0) {
                 switch (view.getId()) {
                     case R.id.voteGood:
 
-
-                        if(!buttonsLocked && que.size()>1) {
-                            continueQue();
-                        }
-
-                        API.castVotes(getActivity(), currentPost.getString("_id"), 1, new Callback() {
-                            public void onResponse(JSONObject response) {
-
-                                try {
-                                    if (response.getString("status").equals("error")){
-                                        Util.showDialog(getActivity(),response.getString("message"));
-                                    }
-
-                                        buttonsLocked = false;
-
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-
-
+                        vote(1);
                         return;
                     case R.id.voteBad:
                         //Data.lastVote=0;
 
-
+                        vote(0);
                         return;
                 }
+            }else{
+                autoNext=true;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,11 +151,12 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                     public void onAnimationEnd(Animation animation) {
                         viewFlipper.removeViewAt(0);
                         que.remove(0);
+                        currentPost = que.get(0).getPost();
                         if(que.size()==3){
                             loadPost(false);
-                        }else{
-                            currentPost = que.get(0).getPost();
                         }
+
+
 
                     }
 
@@ -240,6 +260,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                     post.getSelf().setVisibility(View.INVISIBLE);
 
                                     if(i==0) {
+                                        //
                                         if (start) {
                                             currentPost = post.getPost();
                                             viewFlipper.addView(post.getSelf());
@@ -249,8 +270,6 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                                     slideUp(post.getSelf(), null);
                                                 }
                                             });
-                                        }else{
-                                            currentPost = post.getPost();
                                         }
                                     }
                                 }
