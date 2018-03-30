@@ -1,4 +1,4 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

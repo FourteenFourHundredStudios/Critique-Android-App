@@ -1,7 +1,4 @@
-package critique.fourteenfourhundred.marc.critique;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+package com.fourteenfourhundred.critique.storage;
 
 /**
  * Created by Marc on 3/6/18.

@@ -1,9 +1,7 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique.activities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,12 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.android.volley.Response;
+import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.util.Util;
+import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,6 +41,32 @@ public class SelectMutualsActivity extends AppCompatActivity {
 
 
     }
+
+
+    public class User {
+
+        String username="";
+        boolean selected = false;
+
+
+        public User(String username){
+            this.username=username;
+        }
+
+        public boolean getSelected(){
+            return selected;
+        }
+
+        void toggleSelected(){
+            selected = !selected;
+        }
+
+        public String getUsername(){
+            return username;
+        }
+
+    }
+
 
 
     public void populateMutualsList(){

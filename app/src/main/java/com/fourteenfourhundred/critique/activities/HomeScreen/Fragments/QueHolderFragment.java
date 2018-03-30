@@ -1,34 +1,22 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.ViewFlipper;
-import android.widget.ViewSwitcher;
+
+import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.util.Util.Callback;
+import com.fourteenfourhundred.critique.views.QueView;
+import com.fourteenfourhundred.critique.util.Util;
+import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -71,9 +59,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
             continueQue();
         }
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
+        //AsyncTask.execute(new Runnable() {
+
                 try {
                     API.castVotes(getActivity(), currentPost.getString("_id"), vote, new Callback() {
                         public void onResponse(JSONObject response) {
@@ -96,8 +83,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-            }
-        });
+          //  }
+        //});
     }
 
     @Override
@@ -274,7 +261,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                     }
                                 }
                             }else{
-                                Util.showDialog(getActivity(),response.getString("message"));
+                                Util.showDialog(getActivity(),"Loading error: "+response.getString("message"));
                             }
                             //viewFlipper.showNext();
                         }catch (Exception e){

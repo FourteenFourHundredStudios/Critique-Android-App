@@ -1,4 +1,4 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,10 @@ import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.util.Util;
+import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
+import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONObject;
 
@@ -25,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        Util.postRequest(LoginActivity.this,Data.url+"login", loginInfo,new Response.Listener<JSONObject>(){
+        Util.postRequest(LoginActivity.this, Data.url+"login", loginInfo,new Response.Listener<JSONObject>(){
                     public void onResponse(JSONObject response) {
                         try {
                             if (response.get("status").equals("error")) {

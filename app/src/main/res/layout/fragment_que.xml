@@ -7,7 +7,7 @@
     android:layout_margin="0dp"
     android:orientation="vertical"
     android:fillViewport="true"
-    tools:context="critique.fourteenfourhundred.marc.critique.QueFragment">
+    tools:context="com.fourteenfourhundred.critique.critique.comk.fourteenfourhundred.marc.com.QueFragment">
 
 
 

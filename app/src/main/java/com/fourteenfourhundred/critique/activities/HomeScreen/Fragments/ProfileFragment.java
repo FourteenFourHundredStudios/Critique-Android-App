@@ -1,8 +1,6 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,13 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.Volley;
-
-import java.net.URL;
+import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.util.Util.Callback;
+import com.fourteenfourhundred.critique.critique.R;
 
 
 public class ProfileFragment extends Fragment {

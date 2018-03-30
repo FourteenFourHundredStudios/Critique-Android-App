@@ -1,9 +1,7 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique.API;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -13,6 +11,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
+import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.util.Util;
+import com.fourteenfourhundred.critique.util.VolleyMultipartRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +34,7 @@ public class API {
 
     public static void createPost(final Activity me,JSONArray recipients,String type,String title,String content, Response.Listener<JSONObject> callback){
         JSONObject params = Util.makeJson(
-                new Object[]{"apiKey",Data.apiKey},
+                new Object[]{"apiKey", Data.apiKey},
                 new Object[]{"to",recipients},
                 new Object[]{"type",type},
                 new Object[]{"content",content},
@@ -52,7 +53,7 @@ public class API {
     }
 
 
-    public static void getPatch(final Activity me, String username,final Callback callback){
+    public static void getPatch(final Activity me, String username,final Util.Callback callback){
 
         RequestQueue queue = Volley.newRequestQueue(me);
 
@@ -79,7 +80,7 @@ public class API {
 
 
 
-    public static void changePatch(final Activity me, final Bitmap img, final Callback callback) {
+    public static void changePatch(final Activity me, final Bitmap img, final Util.Callback callback) {
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, Data.url + "setPatch",
                 new Response.Listener<NetworkResponse>() {
                     @Override
@@ -136,7 +137,7 @@ public class API {
     }
 
 
-    public static void castVotes(final Activity me, String postId, int vote, final Callback callback){
+    public static void castVotes(final Activity me, String postId, int vote, final Util.Callback callback){
 
         try {
 
@@ -172,7 +173,7 @@ public class API {
     }
 
 
-    public static void getQue(final Activity me, final Callback callback){
+    public static void getQue(final Activity me, final Util.Callback callback){
 
         try {
 
@@ -213,7 +214,7 @@ public class API {
 
     }
 
-    public static void doSearch(final Activity me, String search,final Callback callback){
+    public static void doSearch(final Activity me, String search,final Util.Callback callback){
 
         try {
 

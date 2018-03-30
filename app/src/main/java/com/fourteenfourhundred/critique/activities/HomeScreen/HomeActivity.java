@@ -1,44 +1,32 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique.activities.HomeScreen;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ActionMenuView;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
+import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.activities.ComposeActivity;
+import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.FriendsFragment;
+import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.ProfileFragment;
+import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueHolderFragment;
+import com.fourteenfourhundred.critique.util.Util;
+import com.fourteenfourhundred.critique.critique.R;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -131,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     try {
                         final Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), path);
-                        API.changePatch(HomeActivity.this,bitmap,new Callback(){
+                        API.changePatch(HomeActivity.this,bitmap,new Util.Callback(){
                             public void onResponse(JSONObject response){
                                 try {
                                     if (response.get("status").equals("ok")) {
@@ -162,6 +150,42 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+
+
+    public class HomePageAdapter extends FragmentStatePagerAdapter {
+        private Context mContext;
+
+
+
+        public HomePageAdapter(Context context, FragmentManager fm) {
+            super(fm);
+            mContext = context;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            //  ProfileFragment tab1 = new ProfileFragment();
+
+            switch (position) {
+                case 0:
+                    return new QueHolderFragment();
+                case 1:
+                    return new FriendsFragment();
+                case 2:
+                    return new ProfileFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+
+            return 3;
+        }
+
+
+    }
 
 
 

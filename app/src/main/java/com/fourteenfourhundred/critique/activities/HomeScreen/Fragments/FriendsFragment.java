@@ -1,8 +1,6 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +15,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.android.volley.Response;
+import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.util.Util.Callback;
+import com.fourteenfourhundred.critique.util.Util;
+import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,8 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static android.R.layout.simple_list_item_1;
-import static critique.fourteenfourhundred.marc.critique.R.layout.fragment_friends;
+import static com.fourteenfourhundred.critique.critique.R.layout.fragment_friends;
 
 
 public class FriendsFragment extends Fragment {

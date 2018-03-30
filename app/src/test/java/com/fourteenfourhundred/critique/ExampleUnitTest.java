@@ -1,4 +1,4 @@
-package critique.fourteenfourhundred.marc.critique;
+package com.fourteenfourhundred.critique;
 
 import org.junit.Test;
 
