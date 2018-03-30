@@ -2,10 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item
+        android:id="@+id/action_syncing"
+        android:icon="@drawable/loading_symbol"
+        android:title="loading"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.ImageView">
+
+    </item>
+
     <item
         android:id="@+id/openCompose"
-        android:title="send"
+        android:checkable="true"
+        android:enabled="false"
         android:icon="@drawable/send_icon"
+        android:title="send"
         app:showAsAction="always" />
+
+
+
+
 
 </menu>

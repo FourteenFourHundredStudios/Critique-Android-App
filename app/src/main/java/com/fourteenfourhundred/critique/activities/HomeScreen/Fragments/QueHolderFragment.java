@@ -1,19 +1,25 @@
 package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.util.Util.Callback;
 import com.fourteenfourhundred.critique.views.QueView;
 import com.fourteenfourhundred.critique.util.Util;
@@ -45,6 +51,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     public boolean autoNext=false;
 
     //public boolean firstView
+
+    ImageView syncIcon;
 
     public JSONArray votes=new JSONArray();
     public boolean voteLock=false;
@@ -150,6 +158,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
 
 
+
+
         post.getSelf().post(new Runnable() {
             @Override
             public void run() {
@@ -167,6 +177,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
                         if(que.size()==3){
                             voteLock=true;
+                            ((HomeActivity)getActivity()).startLoadAnimation();
                             Log.e("voting","loading...");
 
 
@@ -222,6 +233,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
         ImageButton voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
         voteGood.setOnClickListener(this);
 
+        //setHasOptionsMenu(true);
 
 
 
@@ -312,6 +324,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                     }
                                 }
                                 voteLock=false;
+                                ((HomeActivity)getActivity()).stopLoadAnimation();
                                 Log.e("VOTE LOCK","VOTES UNLOCKED");
                                 Log.e("getting posts","done!");
                             }else{

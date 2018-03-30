@@ -11,9 +11,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.fourteenfourhundred.critique.API.API;
@@ -33,6 +36,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
     ViewPager viewPager;
+    ImageView syncIcon;
+    Menu menu;
+    Animation loadAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         // Create an adapter that knows which fragment should be shown on each page
         HomePageAdapter adapter = new HomePageAdapter(this, getSupportFragmentManager());
 
-
+        loadAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         /*
         viewPager.setFocusableInTouchMode(true);
         viewPager.setFocusable(true);
@@ -65,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //tabLayout.setSelectedTabIndicatorHeight(0);
 
-
+        //setProgressBarIndeterminateVisibility(Boolean.TRUE);
 
 
 
@@ -73,13 +79,47 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void stopLoadAnimation() {
+
+        loadAnimation.cancel();
+        syncIcon.setVisibility(View.INVISIBLE);
+    }
+
+    public void startLoadAnimation() {
+        if(menu!=null) {
+            syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
+            syncIcon.setImageResource(R.drawable.loading_symbol);
+            syncIcon.setVisibility(View.VISIBLE);
+
+
+
+            loadAnimation.setRepeatCount(Animation.INFINITE);
+            syncIcon.startAnimation(loadAnimation);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
         getMenuInflater().inflate(R.menu.home_menu, menu);
+        this.menu=menu;
 
+        //startLoadAnimation();
+
+        //LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        /*
+        syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
+        syncIcon.setImageResource(R.drawable.loading_symbol);
+        syncIcon.setVisibility(View.VISIBLE);
+
+
+        Animation f = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        f.setRepeatCount(Animation.INFINITE);
+        syncIcon.startAnimation(f);*/
         return true;
+
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
