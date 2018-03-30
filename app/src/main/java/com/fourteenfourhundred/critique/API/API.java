@@ -137,13 +137,12 @@ public class API {
     }
 
 
-    public static void castVotes(final Activity me, String postId, int vote, final Util.Callback callback){
+    public static void castVotes(final Activity me, JSONArray votes, final Util.Callback callback){
 
         try {
 
 
-            JSONArray votes = new JSONArray();
-            votes.put(new JSONObject().put("id",postId).put("vote",vote));
+
 
             JSONObject params = Util.makeJson(
                     new Object[]{"apiKey", Data.apiKey},

@@ -3,6 +3,7 @@ package com.fourteenfourhundred.critique.views;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,17 +26,20 @@ public class QueView extends View{
     public View rootView;
     public Bitmap patch;
 
-    public QueView(Context context,String post) {
+    public QueView(final Context context,String post) {
         super(context);
 
         try {
             this.post = new JSONObject(post);
             //rootView = View.inflate(context, R.layout.fragment_que, null);
 
-            LayoutInflater inflater = LayoutInflater.from(context);
-            rootView= inflater.inflate(R.layout.fragment_que, null, false);
 
+            LayoutInflater inflater = LayoutInflater.from(context);
+            rootView = inflater.inflate(R.layout.fragment_que, null, false);
             init();
+
+
+
         }catch (Exception e){
             e.printStackTrace();
         }

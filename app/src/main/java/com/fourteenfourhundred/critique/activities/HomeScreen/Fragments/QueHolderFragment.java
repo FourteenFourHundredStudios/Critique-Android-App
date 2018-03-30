@@ -3,6 +3,7 @@ package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,12 +41,13 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     public boolean queLoading=true;
     public int untilLoad=0;
 
-    public int buttonsLocked=0;
+    public boolean buttonsLocked=false;
     public boolean autoNext=false;
 
     //public boolean firstView
 
-
+    public JSONArray votes=new JSONArray();
+    public boolean voteLock=false;
     public static ArrayList<QueView> que = new ArrayList<QueView>();
 
     public QueHolderFragment() {
@@ -53,15 +55,28 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     }
 
 
-    public void vote(final int vote){
-        buttonsLocked++;
-        if (que.size() > 1) {
+    public void vote(final int voteVal){
+        //buttonsLocked++;
+       // if (que.size() > 1) {
+
+
+        try {
+            JSONObject vote=new JSONObject().put("id",currentPost.getString("_id")).put("vote",voteVal);
+
+            votes.put(vote);
+
             continueQue();
-        }
+
+
+                //JSONArray val=votes;
+
+
 
         //AsyncTask.execute(new Runnable() {
 
-                try {
+
+            /*
+
                     API.castVotes(getActivity(), currentPost.getString("_id"), vote, new Callback() {
                         public void onResponse(JSONObject response) {
 
@@ -80,6 +95,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                             }
                         }
                     });
+                    */
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -94,7 +110,8 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
 
 
-            if(buttonsLocked==0) {
+         //   if(!buttonsLocked) {
+
                 switch (view.getId()) {
                     case R.id.voteGood:
 
@@ -106,9 +123,10 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                         vote(0);
                         return;
                 }
-            }else{
-                autoNext=true;
-            }
+          //  }
+           // }else{
+             //   autoNext=true;
+            //}
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,13 +135,20 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
 
     public void continueQue(){
+        Log.e("sliding next post","sliding next post "+que.size());
 
+        if(voteLock){
+            Log.e("VOTE LOCKED","VOTE LOCKED");
+            return;
+        }
 
-        if(que.size()<2||viewFlipper.getChildCount()>1)return;
+        if( que.size()<2||viewFlipper.getChildCount()>1)return;
 
         final QueView post= que.get(1);
         post.getSelf().setVisibility(View.INVISIBLE);
         viewFlipper.addView(post.getSelf());
+
+
 
         post.getSelf().post(new Runnable() {
             @Override
@@ -139,8 +164,30 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                         viewFlipper.removeViewAt(0);
                         que.remove(0);
                         currentPost = que.get(0).getPost();
+
                         if(que.size()==3){
-                            loadPost(false);
+                            voteLock=true;
+                            Log.e("voting","loading...");
+
+
+                                API.castVotes(getActivity(), votes, new Util.Callback() {
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        Log.e("voting","done!");
+                                        if (!response.getString("status").equals("error")) {
+                                            votes=new JSONArray();
+                                            loadPost(false);
+
+                                        }else{
+                                            Util.showDialog(getActivity(), "error voting: "+response.getString("message"));
+                                        }
+                                    }catch (Exception e){
+
+                                    }
+                                }
+                            });
+
+
                         }
 
 
@@ -231,13 +278,17 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
     }
 
         public void loadPost(final boolean start) {
+            Log.e("getting posts","loading...");
+
             AsyncTask.execute(new Runnable() {
                 @Override
                 public void run() {
+
                 API.getQue(getActivity(),new Callback(){
                     public void onResponse(JSONObject response) {
                         try {
                             if(response.getString("status").equals("ok")) {
+
                                 JSONArray posts = new JSONArray(response.getString("message"));
                                 for (int i = 0; i < posts.length(); i++) {
                                     String postData = posts.get(i).toString();
@@ -260,8 +311,11 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                         }
                                     }
                                 }
+                                voteLock=false;
+                                Log.e("VOTE LOCK","VOTES UNLOCKED");
+                                Log.e("getting posts","done!");
                             }else{
-                                Util.showDialog(getActivity(),"Loading error: "+response.getString("message"));
+                                Util.showDialog(getActivity(),""+response.getString("message"));
                             }
                             //viewFlipper.showNext();
                         }catch (Exception e){
