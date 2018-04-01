@@ -2,6 +2,7 @@ package com.fourteenfourhundred.critique.API;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -56,6 +57,8 @@ public class API {
     public static void getPatch(final Activity me, String username,final Util.Callback callback){
 
         RequestQueue queue = Volley.newRequestQueue(me);
+
+       // Log.e("IMAGE PATH",Data.url+"getPatch/"+Data.apiKey+"/"+username);
 
         ImageRequest request = new ImageRequest(Data.url+"getPatch/"+Data.apiKey+"/"+username,
                 new Response.Listener<Bitmap>() {
@@ -125,7 +128,12 @@ public class API {
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 long imagename = System.currentTimeMillis();
-                params.put("pic", new DataPart(imagename + ".png", Util.getFileDataFromDrawable(img)));
+
+                 Bitmap i=img;
+
+                 i = Bitmap.createScaledBitmap(img, 120, 120, false);
+
+                params.put("pic", new DataPart(imagename + ".png", Util.getFileDataFromDrawable(i)));
                 return params;
             }
         };

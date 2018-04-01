@@ -28,7 +28,7 @@
         <activity
             android:name="com.fourteenfourhundred.critique.activities.SelectMutualsActivity"
             android:label="@string/title_activity_mutuals"
-            android:theme="@style/AppTheme.NoActionBar" />
+            />
 
     </application>
 

@@ -1,18 +1,16 @@
 package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -21,7 +19,7 @@ import android.widget.ImageView;
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.util.Util.Callback;
-import com.fourteenfourhundred.critique.views.QueView;
+import com.fourteenfourhundred.critique.views.PostView;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -58,10 +56,15 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
     public JSONArray votes=new JSONArray();
     public boolean voteLock=false;
-    public static ArrayList<QueView> que = new ArrayList<QueView>();
+    public static ArrayList<PostView> que = new ArrayList<PostView>();
 
     public QueHolderFragment() {
         // Required empty public constructor
+        //SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        //SharedPreferences.Editor editor = sharedPref.edit();
+        //editor.clear();
+
+        //editor.commit();
     }
 
 
@@ -124,7 +127,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
             return;
         }*/
 
-        final QueView post= que.get(1);
+        final PostView post= que.get(1);
         post.getSelf().setVisibility(View.INVISIBLE);
         viewFlipper.addView(post.getSelf());
 
@@ -149,7 +152,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                         viewFlipper.removeViewAt(0);
                         que.remove(0);
                         currentPost = que.get(0).getPost();
-
+                        saveQue();
                         if(que.size()==3){
                             voteLock=true;
                             voteGood.setEnabled(false);
@@ -165,10 +168,11 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                         if (!response.getString("status").equals("error")) {
                                             votes=new JSONArray();
                                             loadPost(false);
-
+                                            //saveQue();
                                         }else{
                                             Util.showDialog(getActivity(), "error voting: "+response.getString("message"));
                                         }
+
                                     }catch (Exception e){
 
                                     }
@@ -212,15 +216,59 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
 
 
 
+
+
         //setHasOptionsMenu(true);
 
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        //int defaultValue = getResources().g
+        String q = sharedPref.getString("que", "[]");
+
+        try{
+            JSONArray j=new JSONArray(q);
+            if(j.length()==0){
+                loadPost(true);
+            }else{
+                for(int i=0;i<j.length();i++){
+                    final PostView post = new PostView(getContext(),j.get(i).toString());
+                    que.add(post);
+                    votes=new JSONArray(sharedPref.getString("votes", "[]"));
+                    if(i==0) {
+                        currentPost = post.getPost();
+                        viewFlipper.addView(post.getSelf());
+                        post.getSelf().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                slideUp(post.getSelf(), null);
+                            }
+                        });
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
-        loadPost(true);
+
+
+
 
         return rootView;
     }
 
+    public void saveQue(){
+        JSONArray save=new JSONArray();
+        for (PostView post: que){
+            save.put(post.getPost());
+        }
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.putString("que", save.toString());
+        editor.putString("votes", votes.toString());
+        editor.apply();
+    }
 
     public void slideUp(View view, Animation.AnimationListener al){
         view.setVisibility(View.VISIBLE);
@@ -283,7 +331,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                 JSONArray posts = new JSONArray(response.getString("message"));
                                 for (int i = 0; i < posts.length(); i++) {
                                     String postData = posts.get(i).toString();
-                                    final QueView post = new QueView(getContext(),postData);
+                                    final PostView post = new PostView(getContext(),postData);
                                     que.add(post);
 
                                     post.getSelf().setVisibility(View.INVISIBLE);
@@ -305,6 +353,7 @@ public class QueHolderFragment extends Fragment implements View.OnClickListener 
                                 voteLock=false;
                                 voteGood.setEnabled(true);
                                 voteBad.setEnabled(true);
+                                saveQue();
                                 ((HomeActivity)getActivity()).stopLoadAnimation();
                                 Log.e("VOTE LOCK","VOTES UNLOCKED");
                                 Log.e("getting posts","done!");

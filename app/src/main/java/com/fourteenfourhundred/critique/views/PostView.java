@@ -20,13 +20,13 @@ import org.json.JSONObject;
  * Created by Marc on 27/3/18.
  */
 
-public class QueView extends View{
+public class PostView extends View{
 
     public JSONObject post;
     public View rootView;
     public Bitmap patch;
 
-    public QueView(final Context context,String post) {
+    public PostView(final Context context, String post) {
         super(context);
 
         try {
@@ -78,9 +78,24 @@ public class QueView extends View{
             ((TextView) rootView.findViewById(R.id.postSender)).setText(post.getString("username"));
             ((TextView) rootView.findViewById(R.id.postVoteCount)).setText(post.getString("votes") + " votes");
 
+
             API.getPatch((Activity)getContext(), post.getString("username"), new Callback() {
-                public void onResponse(Bitmap img) {
-                    ((ImageView) rootView.findViewById(R.id.queProfilePic)).setImageBitmap(img);
+                public void onResponse(final Bitmap img) {
+
+                    try {
+
+                        ((ImageView) rootView.findViewById(R.id.queProfilePic)).setImageBitmap(img);
+                        ((ImageView) rootView.findViewById(R.id.queProfilePic)).invalidate();
+
+
+
+                        //Log.e("GETTING PIC","GETTING PIC POST"+post.getString("title"));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    //((ImageView) rootView.findViewById(R.id.queProfilePic)).invalidate();
+
                 }
             });
         }catch (Exception e){
