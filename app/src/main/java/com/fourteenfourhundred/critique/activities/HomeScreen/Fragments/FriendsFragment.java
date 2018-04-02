@@ -1,6 +1,7 @@
 package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.fourteenfourhundred.critique.API.API;
@@ -49,15 +51,38 @@ public class FriendsFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 try {
                     if(response.get("status").equals("ok")){
-                        JSONArray mutualNames = new JSONArray(response.get("message").toString());
+                        final JSONArray mutualNames = new JSONArray(response.get("mutuals").toString());
 
                         mutuals= new String[mutualNames.length()];
 
-                        for(int i=0;i<mutualNames.length();i++)mutuals[i]=mutualNames.get(i).toString();
+                        /*
+                        for(int i=0;i<mutualNames.length();i++){
+                            mutuals[i]=new JSONObject(mutualNames.get(i).toString()).getString("username");
+                        }*/
 
                         listView = (ListView) rootView.findViewById(R.id.mutualsListFriends);
                         ArrayList<String> lst = new ArrayList<String>(Arrays.asList(mutuals));
-                        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1,lst);
+                        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1,lst){
+                            @Override
+                            public View getView(int position, View covertView, ViewGroup parent){
+                                View v=null;
+                                try {
+                                    v = LayoutInflater.from(rootView.getContext()).inflate(android.R.layout.simple_list_item_1, null);
+                                    TextView mutual = (TextView) v.findViewById(android.R.id.text1);
+                                    JSONObject user=new JSONObject(mutualNames.get(position).toString());
+                                    mutual.setText(user.getString("username"));
+
+                                    if(user.getString("isMutual").equals("false")){
+                                        mutual.setTextColor(Color.RED);
+                                        mutual.setText(user.getString("username")+" (not mutual)");
+                                    }
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                return v;
+                            }
+                        };
                         listView.setAdapter(adapter);
                         listClickHandler();
 

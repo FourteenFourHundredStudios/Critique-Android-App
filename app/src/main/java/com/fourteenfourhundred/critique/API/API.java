@@ -250,7 +250,7 @@ public class API {
                 new Object[]{"apiKey",Data.apiKey}
         );
         //Util.showDialog(me,loginInfo.toString());
-        Util.postRequest(me,Data.url+"getFollows", params, callback,
+        Util.postRequest(me,Data.url+"getMutuals", params, callback,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
