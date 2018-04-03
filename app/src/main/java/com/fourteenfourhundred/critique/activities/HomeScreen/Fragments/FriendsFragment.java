@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.util.Util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
@@ -33,9 +35,9 @@ import static com.fourteenfourhundred.critique.critique.R.layout.fragment_friend
 
 public class FriendsFragment extends Fragment {
 
-    String mutuals[];
+    JSONObject mutuals[];
     View rootView;
-    ArrayAdapter<String> adapter;
+    ArrayAdapter<JSONObject> adapter;
     ListView listView;
     boolean isEmpty=true;
 
@@ -53,30 +55,36 @@ public class FriendsFragment extends Fragment {
                     if(response.get("status").equals("ok")){
                         final JSONArray mutualNames = new JSONArray(response.get("mutuals").toString());
 
-                        mutuals= new String[mutualNames.length()];
+                        mutuals= new JSONObject[mutualNames.length()];
 
-                        /*
+
                         for(int i=0;i<mutualNames.length();i++){
-                            mutuals[i]=new JSONObject(mutualNames.get(i).toString()).getString("username");
-                        }*/
+                            mutuals[i]=new JSONObject(mutualNames.get(i).toString());
+                        }
 
                         listView = (ListView) rootView.findViewById(R.id.mutualsListFriends);
-                        ArrayList<String> lst = new ArrayList<String>(Arrays.asList(mutuals));
-                        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1,lst){
+                        ArrayList<JSONObject> lst = new ArrayList<JSONObject>(Arrays.asList(mutuals));
+                        adapter = new ArrayAdapter<JSONObject>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1,lst){
                             @Override
                             public View getView(int position, View covertView, ViewGroup parent){
                                 View v=null;
                                 try {
                                     v = LayoutInflater.from(rootView.getContext()).inflate(android.R.layout.simple_list_item_1, null);
-                                    TextView mutual = (TextView) v.findViewById(android.R.id.text1);
-                                    JSONObject user=new JSONObject(mutualNames.get(position).toString());
-                                    mutual.setText(user.getString("username"));
+                                    TextView label = (TextView) v.findViewById(android.R.id.text1);
+                                    if(isEmpty) {
 
-                                    if(user.getString("isMutual").equals("false")){
-                                        mutual.setTextColor(Color.RED);
-                                        mutual.setText(user.getString("username")+" (not mutual)");
+
+
+                                        JSONObject user = new JSONObject(mutuals[position].toString());
+                                        label.setText(user.getString("username"));
+
+                                        if (user.getString("isMutual").equals("false")) {
+                                            label.setTextColor(Color.RED);
+                                            label.setText(user.getString("username") + " (not mutual)");
+                                        }
+                                    }else{
+                                        label.setText(adapter.getItem(position).getString("username"));
                                     }
-
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
@@ -115,7 +123,7 @@ public class FriendsFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    follow(adapter.getItem(position));
+                                   // follow(adapter.getItem(position));
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -143,13 +151,14 @@ public class FriendsFragment extends Fragment {
             adapter.clear();
 
             for(int i=0;i<mutualNames.length();i++){
-                //mutuals[i]=mutualNames.get(i).toString();
-                adapter.add(mutualNames.get(i).toString());
+                //mutuals[i]=new JSONObject(mutualNames.get(i).toString());
+                adapter.add(new JSONObject(mutualNames.get(i).toString()).put("isMutual","true"));
+                Log.e("hh",mutualNames.get(i).toString());
             }
 
             adapter.notifyDataSetChanged();
             listView.deferNotifyDataSetChanged();
-
+            ((HomeActivity)getActivity()).stopLoadAnimation();
 
 
         }catch (Exception e){
@@ -164,20 +173,8 @@ public class FriendsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //Util.showDialog(getActivity(),s.toString());
-
                 if(s.toString().trim().length()>0) {
+                    ((HomeActivity)getActivity()).startLoadAnimation();
                     isEmpty=false;
                     API.doSearch(getActivity(), s.toString().trim(), new Callback() {
                         public void onResponse(JSONObject object) {
@@ -199,6 +196,19 @@ public class FriendsFragment extends Fragment {
                     listView.deferNotifyDataSetChanged();
                     isEmpty=true;
                 }
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Util.showDialog(getActivity(),s.toString());
+
 
 
             }

@@ -93,7 +93,6 @@ public class HomeActivity extends AppCompatActivity {
             syncIcon.setVisibility(View.VISIBLE);
 
 
-
             loadAnimation.setRepeatCount(Animation.INFINITE);
             syncIcon.startAnimation(loadAnimation);
         }

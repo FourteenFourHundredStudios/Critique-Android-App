@@ -1,5 +1,6 @@
 package com.fourteenfourhundred.critique.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +9,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.android.volley.Response;
+import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.activities.SelectMutualsActivity;
 import com.fourteenfourhundred.critique.critique.R;
+import com.fourteenfourhundred.critique.util.Util;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ComposeActivity extends AppCompatActivity {
 
+    String title;
+    String content;
     //rename to activity
 
     @Override
@@ -47,8 +56,32 @@ public class ComposeActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode==2){
-            finish();
+        if(resultCode== Activity.RESULT_OK){
+
+            try {
+                API.createPost(this, new JSONArray(data.getStringExtra("selected")), "text", title, content, new Response.Listener<JSONObject>() {
+                    public void onResponse(JSONObject response) {
+                        try {
+
+                            String status = response.getString("status");
+                            if (status.equals("error")) {
+                                String msg = response.getString("message");
+                                Util.showDialog(ComposeActivity.this, msg);
+                            } else {
+                                //setResult(2);
+                                finish();
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                finish();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -63,11 +96,12 @@ public class ComposeActivity extends AppCompatActivity {
     }
 
     public void createPost(){
-        String content= ((EditText)findViewById(R.id.postContent)).getText().toString();
-        String title= ((EditText)findViewById(R.id.postTitle)).getText().toString();
+
         Intent intent = new Intent(getApplicationContext(), SelectMutualsActivity.class);
-        intent.putExtra("title", title);
-        intent.putExtra("content", content);
+        //intent.putExtra("title", title);
+        //intent.putExtra("content", content);
+        content= ((EditText)findViewById(R.id.postContent)).getText().toString();
+        title= ((EditText)findViewById(R.id.postTitle)).getText().toString();
         startActivityForResult(intent,0);
     }
 

@@ -2,8 +2,10 @@ package com.fourteenfourhundred.critique.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SelectMutualsActivity extends AppCompatActivity {
@@ -45,12 +48,16 @@ public class SelectMutualsActivity extends AppCompatActivity {
 
     public class User {
 
-        String username="";
+        JSONObject self;
         boolean selected = false;
 
 
-        public User(String username){
-            this.username=username;
+        public User(String self){
+            try {
+                this.self=new JSONObject(self);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         public boolean getSelected(){
@@ -62,7 +69,21 @@ public class SelectMutualsActivity extends AppCompatActivity {
         }
 
         public String getUsername(){
-            return username;
+            try {
+                return self.getString("username");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        public String isMutual(){
+            try {
+                return self.getString("isMutual");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
     }
@@ -76,11 +97,14 @@ public class SelectMutualsActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     if(response.get("status").equals("ok")){
-                        JSONArray mutualNames = new JSONArray(response.get("message").toString());
+                        JSONArray mutualNames = new JSONArray(response.get("mutuals").toString());
 
                         mutuals= new User[mutualNames.length()];
 
-                        for(int i=0;i<mutualNames.length();i++)mutuals[i]=new User(mutualNames.get(i).toString());
+                        for(int i=0;i<mutualNames.length();i++){
+                            Log.e("f",mutualNames.get(i).toString());
+                            mutuals[i]=new User(mutualNames.get(i).toString());
+                        }
 
                         mutualsList = (ListView) findViewById(R.id.mutualsList);
                         CustomAdapter customAdapter = new CustomAdapter(me.getApplicationContext(), mutuals);
@@ -100,6 +124,9 @@ public class SelectMutualsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
+       // Intent returnIntent = new Intent();
+        //returnIntent.putExtra("selected",to.toString());
+        setResult(Activity.RESULT_CANCELED);
         super.onBackPressed();
     }
 
@@ -111,6 +138,12 @@ public class SelectMutualsActivity extends AppCompatActivity {
 
         //Util.showDialog(this, to.toString());
 
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("selected",to.toString());
+        setResult(Activity.RESULT_OK,returnIntent);
+
+        finish();
+        /*
         String title = getIntent().getStringExtra("title");
         String content = getIntent().getStringExtra("content");
         API.createPost(this,to,"text",title,content,new Response.Listener<JSONObject>(){
@@ -131,7 +164,7 @@ public class SelectMutualsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
