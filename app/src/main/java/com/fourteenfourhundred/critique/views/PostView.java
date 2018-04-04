@@ -24,6 +24,7 @@ public class PostView extends View{
 
     public JSONObject post;
     public View rootView;
+    Context context;
     public Bitmap patch;
 
     public PostView(final Context context, String post) {
@@ -32,10 +33,9 @@ public class PostView extends View{
         try {
             this.post = new JSONObject(post);
             //rootView = View.inflate(context, R.layout.fragment_que, null);
+            this.context=context;
 
 
-            LayoutInflater inflater = LayoutInflater.from(context);
-            rootView = inflater.inflate(R.layout.fragment_que, null, false);
             init();
 
 
@@ -72,7 +72,10 @@ public class PostView extends View{
 
     public void init(){
         try {
-            
+
+            LayoutInflater inflater = LayoutInflater.from(context);
+            rootView = inflater.inflate(R.layout.fragment_que, null, false);
+
             ((TextView) rootView.findViewById(R.id.postTitle)).setText(post.getString("title"));
             ((TextView) rootView.findViewById(R.id.postContent)).setText(post.getString("content"));
             ((TextView) rootView.findViewById(R.id.postSender)).setText(post.getString("username"));
