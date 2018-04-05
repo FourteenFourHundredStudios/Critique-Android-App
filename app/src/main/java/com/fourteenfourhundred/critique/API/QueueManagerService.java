@@ -80,15 +80,19 @@ public class QueueManagerService {
                 votes.put(vote);
             }
 
-            if (votes.length() == 3 && !isVoting) {
+            if (queue.size()==3 && !isVoting) {
                 isVoting=true;
                 Log.e("votes",votes.toString());
-                API.castVotes(activity, votes, new Util.Callback() {
+
+                JSONArray v=new JSONArray(votes.toString());
+                votes = new JSONArray();
+
+                API.castVotes(activity, v, new Util.Callback() {
                     public void onResponse(JSONObject response) {
                         try {
                             Log.e("voting", "done!");
                             if (!response.getString("status").equals("error")) {
-                                votes = new JSONArray();
+
                                 loadPostsIntoQue(new Util.Callback(){
                                     @Override
                                     public void onFinished() {
@@ -123,11 +127,11 @@ public class QueueManagerService {
             queueFragment.setVoteLock(true);
         }
 
-        if(queue.size()>1){
+        if(queue.size()>0){
             view = queue.remove(0);
         }
 
-        currentView=view;
+        if(!(view instanceof  EmptyView))currentView=view;
 
 
 
