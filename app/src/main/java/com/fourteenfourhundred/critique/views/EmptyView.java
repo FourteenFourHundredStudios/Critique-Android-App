@@ -16,7 +16,7 @@ public class EmptyView extends PostView{
 
     public void init(){
         LayoutInflater inflater = LayoutInflater.from(context);
-        rootView = inflater.inflate(R.layout.empty_post, null, false);
+        rootView = inflater.inflate(R.layout.fragment_empty_post, null, false);
     }
 
 }

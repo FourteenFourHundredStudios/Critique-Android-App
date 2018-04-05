@@ -47,6 +47,8 @@ public class PostView extends View{
     }
 
 
+
+
 //    public void g
 
 

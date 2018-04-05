@@ -24,7 +24,7 @@ import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.activities.ComposeActivity;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.FriendsFragment;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.ProfileFragment;
-import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueHolderFragment;
+import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -208,7 +208,7 @@ public class HomeActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return new QueHolderFragment();
+                    return new QueueFragment();
                 case 1:
                     return new FriendsFragment();
                 case 2:
