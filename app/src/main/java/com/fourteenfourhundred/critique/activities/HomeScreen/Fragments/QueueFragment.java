@@ -130,6 +130,7 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setVoteLock(boolean locked){
+        if(locked==voteLock)return;
         voteLock=locked;
         voteGood.setEnabled(!locked);
         voteBad.setEnabled(!locked);

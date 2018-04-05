@@ -21,8 +21,14 @@ public class QueueManagerService {
     public Activity activity;
 
     public ArrayList<PostView> queue = new ArrayList<PostView>();
+    public JSONArray votes= new JSONArray();
 
     public EmptyView emptyView;
+    public PostView currentView;
+
+    public boolean queEmpty=false;
+
+    public boolean isVoting=false;
 
     public QueueManagerService(QueueFragment fragment){
         this.queueFragment=fragment;
@@ -31,24 +37,30 @@ public class QueueManagerService {
 
          emptyView = new EmptyView(context);
 
-        //queueFragment.setVoteLock(true);
-        loadPostsIntoQue();
+        queueFragment.setVoteLock(true);
+        loadPostsIntoQue(new Util.Callback(){
+            @Override
+            public void onFinished() {
+                queueFragment.renderNextPost();
+                queueFragment.setVoteLock(false);
+            }
+        });
     }
 
-    public void loadPostsIntoQue(){
+    public void loadPostsIntoQue(final Util.Callback callback){
         API.getQue(activity,new Util.Callback() {
             public void onResponse(JSONObject response) {
-                boolean newPosts;
                 try {
                     if (response.getString("status").equals("ok")) {
                         JSONArray posts = new JSONArray(response.getString("message"));
-                        newPosts = (posts.length()==0);
+                        queEmpty = (posts.length()==0);
                         for (int i = 0; i < posts.length(); i++) {
                             String postData = posts.get(i).toString();
                             final PostView post = new PostView(activity, postData);
                             queue.add(post);
                         }
 
+                        if(callback!=null)callback.onFinished();
                     }else{
                         Util.showDialog(activity,"Error loading queue! "+response.getString("message"));
                     }
@@ -60,16 +72,65 @@ public class QueueManagerService {
     }
 
 
-    public void vote(int vote){
-        
+    public void vote(int voteValue){
+        try {
+
+            if(currentView!=null) {
+                JSONObject vote = new JSONObject().put("id", currentView.getPost().getString("_id")).put("vote", voteValue);
+                votes.put(vote);
+            }
+
+            if (votes.length() == 3 && !isVoting) {
+                isVoting=true;
+                Log.e("votes",votes.toString());
+                API.castVotes(activity, votes, new Util.Callback() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.e("voting", "done!");
+                            if (!response.getString("status").equals("error")) {
+                                votes = new JSONArray();
+                                loadPostsIntoQue(new Util.Callback(){
+                                    @Override
+                                    public void onFinished() {
+                                        queueFragment.setVoteLock(false);
+                                        isVoting=false;
+                                    }
+                                });
+
+                            } else {
+                                Util.showDialog(activity, "error voting: " + response.getString("message"));
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public PostView getNextPost(){
         PostView view=new EmptyView(context);
+        currentView=null;
+
+
+
+        if(queue.size()==2 && isVoting){
+
+            queueFragment.setVoteLock(true);
+        }
 
         if(queue.size()>1){
             view = queue.remove(0);
         }
+
+        currentView=view;
+
+
+
 
         return view;
     }

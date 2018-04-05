@@ -16,15 +16,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.QueueManagerService;
 import com.fourteenfourhundred.critique.activities.ComposeActivity;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.FriendsFragment;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.ProfileFragment;
@@ -50,38 +46,51 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
+        // Find the view pager that will allow the user to swipe between fragments
         viewPager = (ViewPager) findViewById(R.id.pager);
 
 
         viewPager.setOffscreenPageLimit(5);
 
 
-
+        // Create an adapter that knows which fragment should be shown on each page
+        HomePageAdapter adapter = new HomePageAdapter(this, getSupportFragmentManager());
 
         loadAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        /*
+        viewPager.setFocusableInTouchMode(true);
+        viewPager.setFocusable(true);
+        viewPager.setEnabled(true);
+        viewPager.setClickable(true);
+        viewPager.setFocusableInTouchMode(true);*/
 
+       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
 
-        HomePageAdapter adapter = new HomePageAdapter(this, getSupportFragmentManager());
+        // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
 
 
+        //tabLayout.setSelectedTabIndicatorHeight(0);
+
+        //setProgressBarIndeterminateVisibility(Boolean.TRUE);
+
+
+
+
     }
-
-
-
 
 
     public void stopLoadAnimation() {
 
+
         loadAnimation.cancel();
         syncIcon.setVisibility(View.INVISIBLE);
+
     }
 
     public void startLoadAnimation() {
         if(menu!=null) {
-            syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
-            syncIcon.setImageResource(R.drawable.loading_symbol);
+
             syncIcon.setVisibility(View.VISIBLE);
 
 
@@ -97,6 +106,22 @@ public class HomeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.home_menu, menu);
         this.menu=menu;
 
+        syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
+        syncIcon.setImageResource(R.drawable.loading_symbol);
+
+        //startLoadAnimation();
+
+        //LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        /*
+        syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
+        syncIcon.setImageResource(R.drawable.loading_symbol);
+        syncIcon.setVisibility(View.VISIBLE);
+
+
+        Animation f = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        f.setRepeatCount(Animation.INFINITE);
+        syncIcon.startAnimation(f);*/
         return true;
 
     }
