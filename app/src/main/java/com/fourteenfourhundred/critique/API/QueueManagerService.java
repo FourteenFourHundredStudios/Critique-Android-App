@@ -73,6 +73,10 @@ public class QueueManagerService {
 
 
     public void vote(int voteValue){
+
+
+
+
         try {
 
             if(currentView!=null) {
@@ -80,7 +84,7 @@ public class QueueManagerService {
                 votes.put(vote);
             }
 
-            if (queue.size()==3 && !isVoting) {
+            if ((queue.size()==3 && !isVoting)) {
                 isVoting=true;
                 Log.e("votes",votes.toString());
 
@@ -120,18 +124,21 @@ public class QueueManagerService {
         PostView view=new EmptyView(context);
         currentView=null;
 
+        if(!(view instanceof  EmptyView)) {
+
+            if (queue.size() == 2 && isVoting) {
+
+                queueFragment.setVoteLock(true);
+            }
+
+            if (queue.size() > 0) {
+                view = queue.remove(0);
+            }
 
 
-        if(queue.size()==2 && isVoting){
+                currentView = view;
 
-            queueFragment.setVoteLock(true);
         }
-
-        if(queue.size()>0){
-            view = queue.remove(0);
-        }
-
-        if(!(view instanceof  EmptyView))currentView=view;
 
 
 
