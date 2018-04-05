@@ -135,10 +135,67 @@ public class QueueManagerService {
         }
     }
 
+    public void checkForNewPosts(){
+        try {
+
+            //if we're checking for new posts, that means the queue is empty, which means we should vote on all old unvoted posts, because the vote count prob wont equal 3
+            if(votes.length()>0) {
+                JSONArray v = new JSONArray(votes.toString());
+                votes = new JSONArray();
+
+
+                API.castVotes(activity, v, new Util.Callback() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.e("voting", "done!");
+                            if (!response.getString("status").equals("error")) {
+
+                                loadPostsIntoQue(new Util.Callback() {
+                                    @Override
+                                    public void onFinished() {
+                                        queueFragment.setVoteLock(false);
+                                        isVoting = false;
+                                        if(queue.size()>0)queueFragment.forcePostRender(queue.remove(0));
+                                    }
+                                });
+
+                            } else {
+                                Util.showDialog(activity, "error voting: " + response.getString("message"));
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+            }else{
+                loadPostsIntoQue(new Util.Callback() {
+                    @Override
+                    public void onFinished() {
+                        queueFragment.setVoteLock(false);
+                        isVoting = false;
+                        if(queue.size()>0)queueFragment.forcePostRender(queue.remove(0));
+
+                    }
+                });
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     public PostView getNextPost(){
         PostView view=new EmptyView(context);
         currentView=null;
 
+        if(queue.size()==0){
+            queueFragment.setVoteLock(true);
+        }
 
 
         if(queue.size()==2 && isVoting){
@@ -153,7 +210,8 @@ public class QueueManagerService {
         if(!(view instanceof  EmptyView)){
             currentView=view;
         }else{
-            //loadPostsIntoQue(null);
+
+            checkForNewPosts();
         }
 
 

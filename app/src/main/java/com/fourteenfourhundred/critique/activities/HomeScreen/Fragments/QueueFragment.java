@@ -95,6 +95,34 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    public void forcePostRender(final PostView post){
+        frame.addView(post.getSelf());
+        post.getSelf().post(new Runnable() {
+            @Override
+            public void run() {
+                AnimationUtil.slideUp(post.getSelf(), new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        if(activePost!=null){
+                            AnimationUtil.fadeOut(activePost.getSelf(),null);
+                        }
+                        activePost=post;
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+            }
+        });
+    }
+
     public void renderNextPost(){
 
         final PostView nextPost = queue.getNextPost();
@@ -129,31 +157,20 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void setVoteLock(boolean locked){
-        if(locked==voteLock)return;
-        voteLock=locked;
+    public void setVoteLock(boolean locked) {
+        if (locked == voteLock) return;
+        voteLock = locked;
         voteGood.setEnabled(!locked);
         voteBad.setEnabled(!locked);
-        if(locked) {
-            ((HomeActivity)getActivity()).startLoadAnimation();
+        if (locked) {
+            ((HomeActivity) getActivity()).startLoadAnimation();
 
-        }else{
+        } else {
             ((HomeActivity) getActivity()).stopLoadAnimation();
         }
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
