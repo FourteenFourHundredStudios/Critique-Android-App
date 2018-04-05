@@ -48,11 +48,19 @@ public class Util {
 
         }
 
+        public void onFinished(){
 
+        }
+
+        public void onFinished(boolean state){
+
+        }
 
         public void onResponse(Bitmap image){
 
         }
+
+
 
         public void onError(int code){
 

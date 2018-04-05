@@ -57,7 +57,7 @@ public class QueueManagerService {
                         for (int i = 0; i < posts.length(); i++) {
                             String postData = posts.get(i).toString();
                             final PostView post = new PostView(activity, postData);
-                            queue.add(post);
+                            //queue.add(post);
                         }
 
                         if(callback!=null)callback.onFinished();
@@ -124,20 +124,19 @@ public class QueueManagerService {
         PostView view=new EmptyView(context);
         currentView=null;
 
-        if(!(view instanceof  EmptyView)) {
-
-            if (queue.size() == 2 && isVoting) {
-
-                queueFragment.setVoteLock(true);
-            }
-
-            if (queue.size() > 0) {
-                view = queue.remove(0);
-            }
 
 
-                currentView = view;
+        if(queue.size()==2 && isVoting){
 
+            queueFragment.setVoteLock(true);
+        }
+
+        if(queue.size()>0){
+            view = queue.remove(0);
+        }
+
+        if(!(view instanceof  EmptyView)){
+            currentView=view;
         }
 
 
