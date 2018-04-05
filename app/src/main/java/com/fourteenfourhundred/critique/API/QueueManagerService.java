@@ -155,7 +155,15 @@ public class QueueManagerService {
                                     public void onFinished() {
                                         queueFragment.setVoteLock(false);
                                         isVoting = false;
-                                        if(queue.size()>0)queueFragment.forcePostRender(queue.remove(0));
+
+                                        if(queEmpty){
+                                            queueFragment.forcePostRender(new EmptyView(context));
+                                            return;
+                                        }else{
+                                            queueFragment.forcePostRender(queue.remove(0));
+                                        }
+
+                                        //if(queue.size()>0)
                                     }
                                 });
 
@@ -176,7 +184,13 @@ public class QueueManagerService {
                     public void onFinished() {
                         queueFragment.setVoteLock(false);
                         isVoting = false;
-                        if(queue.size()>0)queueFragment.forcePostRender(queue.remove(0));
+
+                        if(queEmpty){
+                            queueFragment.forcePostRender(new EmptyView(context));
+                            return;
+                        }else{
+                            queueFragment.forcePostRender(queue.remove(0));
+                        }
 
                     }
                 });

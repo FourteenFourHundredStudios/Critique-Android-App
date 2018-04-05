@@ -96,7 +96,9 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
 
 
     public void forcePostRender(final PostView post){
+        post.getSelf().setVisibility(View.INVISIBLE);
         frame.addView(post.getSelf());
+
         post.getSelf().post(new Runnable() {
             @Override
             public void run() {
@@ -126,6 +128,12 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     public void renderNextPost(){
 
         final PostView nextPost = queue.getNextPost();
+
+        if(nextPost instanceof EmptyView){
+            setVoteLock(true);
+            return;
+        }
+
         nextPost.getSelf().setVisibility(View.INVISIBLE);
         frame.addView(nextPost.getSelf());
 
