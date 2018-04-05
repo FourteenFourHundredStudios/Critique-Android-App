@@ -2,6 +2,7 @@ package com.fourteenfourhundred.critique.API;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueueFragment;
@@ -30,12 +31,17 @@ public class QueueManagerService {
 
     public boolean isVoting=false;
 
+    public API api;
+
+
     public QueueManagerService(QueueFragment fragment){
         this.queueFragment=fragment;
         this.activity=queueFragment.getActivity();
         this.context=activity.getApplicationContext();
 
          emptyView = new EmptyView(context);
+
+         api=new API(activity);
 
         queueFragment.setVoteLock(true);
         loadPostsIntoQue(new Util.Callback(){
@@ -48,25 +54,34 @@ public class QueueManagerService {
     }
 
     public void loadPostsIntoQue(final Util.Callback callback){
-        API.getQue(activity,new Util.Callback() {
-            public void onResponse(JSONObject response) {
-                try {
-                    if (response.getString("status").equals("ok")) {
-                        JSONArray posts = new JSONArray(response.getString("message"));
-                        queEmpty = (posts.length()==0);
-                        for (int i = 0; i < posts.length(); i++) {
-                            String postData = posts.get(i).toString();
-                            final PostView post = new PostView(activity, postData);
-                            //queue.add(post);
-                        }
 
-                        if(callback!=null)callback.onFinished();
-                    }else{
-                        Util.showDialog(activity,"Error loading queue! "+response.getString("message"));
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                API.getQue(activity, new Util.Callback() {
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("status").equals("ok")) {
+                                JSONArray posts = new JSONArray(response.getString("message"));
+                                queEmpty = (posts.length() == 0);
+                                for (int i = 0; i < posts.length(); i++) {
+                                    String postData = posts.get(i).toString();
+                                    final PostView post = new PostView(activity, api,postData);
+                                    //queueFragment..add(post.getSelf());
+                                    queue.add(post);
+
+                                }
+
+                                if (callback != null) callback.onFinished();
+                            } else {
+                                Util.showDialog(activity, "Error loading queue! " + response.getString("message"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                });
+
             }
         });
     }
@@ -137,6 +152,8 @@ public class QueueManagerService {
 
         if(!(view instanceof  EmptyView)){
             currentView=view;
+        }else{
+            //loadPostsIntoQue(null);
         }
 
 

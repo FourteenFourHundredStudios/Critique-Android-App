@@ -30,7 +30,9 @@ public class ProfileFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
 
-        API.getPatch(getActivity(),"self",new Callback(){
+        API api = new API(getActivity());
+
+        api.getPatch(getActivity(),"self",new Callback(){
             public void onResponse(Bitmap img){
                 ImageView userPatch = (ImageView)rootView.findViewById(R.id.userPatch);
                 userPatch.setImageBitmap(img);

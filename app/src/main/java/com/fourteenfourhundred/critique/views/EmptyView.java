@@ -11,7 +11,7 @@ public class EmptyView extends PostView{
 
 
     public EmptyView(Context context) {
-        super(context, "{}");
+        super(context,null ,"{}");
     }
 
     public void init(){

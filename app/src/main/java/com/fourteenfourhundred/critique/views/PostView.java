@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,17 +27,25 @@ public class PostView extends View{
     public View rootView;
     Context context;
     public Bitmap patch;
+    public API api;
 
-    public PostView(final Context context, String post) {
+
+    public PostView(final Context context, API api,String post) {
         super(context);
 
         try {
             this.post = new JSONObject(post);
+            this.api=api;
             //rootView = View.inflate(context, R.layout.fragment_que, null);
             this.context=context;
 
 
-            init();
+           // ((Activity)getContext()).runOnUiThread(new Runnable() {
+             //   public void run() {
+                    init();
+              //  }
+            //});
+
 
 
 
@@ -75,8 +84,13 @@ public class PostView extends View{
     public void init(){
         try {
 
+
+
             LayoutInflater inflater = LayoutInflater.from(context);
             rootView = inflater.inflate(R.layout.fragment_que, null, false);
+
+
+
 
             ((TextView) rootView.findViewById(R.id.postTitle)).setText(post.getString("title"));
             ((TextView) rootView.findViewById(R.id.postContent)).setText(post.getString("content"));
@@ -84,22 +98,30 @@ public class PostView extends View{
             ((TextView) rootView.findViewById(R.id.postVoteCount)).setText(post.getString("votes") + " votes");
 
 
-            API.getPatch((Activity)getContext(), post.getString("username"), new Callback() {
-                public void onResponse(final Bitmap img) {
 
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
                     try {
-
-                        ((ImageView) rootView.findViewById(R.id.queProfilePic)).setImageBitmap(img);
-                        ((ImageView) rootView.findViewById(R.id.queProfilePic)).invalidate();
-
+                    api.getPatch((Activity) getContext(), post.getString("username"), new Callback() {
+                        public void onResponse(final Bitmap img) {
 
 
-                        //Log.e("GETTING PIC","GETTING PIC POST"+post.getString("title"));
-                    }catch (Exception e){
+
+                                ((ImageView) rootView.findViewById(R.id.queProfilePic)).setImageBitmap(img);
+                                //((ImageView) rootView.findViewById(R.id.queProfilePic)).invalidate();
+
+
+                                //Log.e("GETTING PIC","GETTING PIC POST"+post.getString("title"));
+
+
+                            //((ImageView) rootView.findViewById(R.id.queProfilePic)).invalidate();
+
+                        }
+                    });
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    //((ImageView) rootView.findViewById(R.id.queProfilePic)).invalidate();
 
                 }
             });

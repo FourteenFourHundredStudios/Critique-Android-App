@@ -33,6 +33,14 @@ public class API {
     CONVERT ALL OF THESE API CALLS TO USE CALLBACK CLASS
      */
 
+    Activity activity;
+    RequestQueue queue;
+
+    public API(Activity activity){
+        this.activity=activity;
+        queue=Volley.newRequestQueue(activity);
+    }
+
     public static void createPost(final Activity me,JSONArray recipients,String type,String title,String content, Response.Listener<JSONObject> callback){
         JSONObject params = Util.makeJson(
                 new Object[]{"apiKey", Data.apiKey},
@@ -54,9 +62,8 @@ public class API {
     }
 
 
-    public static void getPatch(final Activity me, String username,final Util.Callback callback){
+    public void getPatch(final Activity me, String username,final Util.Callback callback){
 
-        RequestQueue queue = Volley.newRequestQueue(me);
 
        // Log.e("IMAGE PATH",Data.url+"getPatch/"+Data.apiKey+"/"+username);
 
