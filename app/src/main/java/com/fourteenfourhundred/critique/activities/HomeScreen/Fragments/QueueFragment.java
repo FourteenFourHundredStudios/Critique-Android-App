@@ -60,14 +60,15 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
         voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
         voteGood.setOnClickListener(this);
 
-        queue=new QueueManagerService(this);
+
 
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-
+        getActivity().invalidateOptionsMenu();
+        queue=new QueueManagerService(this);
     }
 
 
