@@ -90,8 +90,8 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     public void onPause(){
 
         super.onPause();
-        //queue.castVotes();
-        //queue.saveAll();
+        queue.castVotes();
+        queue.saveAll();
 
         //queue.saveVotes();
         //queue.saveQue();

@@ -62,7 +62,6 @@ public class QueueManagerService {
         try{
             JSONArray j=new JSONArray(q);
             if(j.length()==0){
-                Log.e("NEW","NEW");
                 loadPostsIntoQue(new Util.Callback(){
                     @Override
                     public void onFinished() {
@@ -71,7 +70,6 @@ public class QueueManagerService {
                     }
                 });
             }else{
-                Log.e("OLD","OLD");
                 currentView = new PostView(activity,api,c);
 
                 votes=new JSONArray(sharedPref.getString("votes", "[]"));
