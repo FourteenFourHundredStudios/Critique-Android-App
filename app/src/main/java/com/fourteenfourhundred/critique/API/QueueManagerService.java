@@ -33,7 +33,8 @@ public class QueueManagerService {
     public boolean isVoting=false;
 
     public API api;
-
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
 
     public QueueManagerService(QueueFragment fragment){
         this.queueFragment=fragment;
@@ -44,28 +45,24 @@ public class QueueManagerService {
 
         api=new API(activity);
 
+        sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
         queueInit();
 
-        /*
-        queueFragment.setVoteLock(true);
-        loadPostsIntoQue(new Util.Callback(){
-            @Override
-            public void onFinished() {
-                queueFragment.renderNextPost();
-                queueFragment.setVoteLock(false);
-            }
-        });
-        */
+
     }
 
     public void queueInit(){
 
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         String q = sharedPref.getString("que", "[]");
+        String c = sharedPref.getString("currentPost", null);
         queueFragment.setVoteLock(true);
         try{
             JSONArray j=new JSONArray(q);
             if(j.length()==0){
+                Log.e("NEW","NEW");
                 loadPostsIntoQue(new Util.Callback(){
                     @Override
                     public void onFinished() {
@@ -74,14 +71,15 @@ public class QueueManagerService {
                     }
                 });
             }else{
+                Log.e("OLD","OLD");
+                currentView = new PostView(activity,api,c);
+
                 votes=new JSONArray(sharedPref.getString("votes", "[]"));
                 for(int i=0;i<j.length();i++){
                     final PostView post = new PostView(activity,api,j.get(i).toString());
-                    if(i==0){
-                        currentView=post;
-                    }else {
-                        queue.add(post);
-                    }
+
+                    queue.add(post);
+
                 }
                 queueFragment.forcePostRender(currentView,new Util.Callback(){
                     public void onFinished(){
@@ -133,11 +131,13 @@ public class QueueManagerService {
     }
 
     public void castVotes() {
+        if(votes.length()==0 || isVoting)return;
+        Log.e("votes","casting votes!");
         try {
             isVoting=true;
             JSONArray v = new JSONArray(votes.toString());
             votes = new JSONArray();
-
+            saveVotes();
             API.castVotes(activity, v, new Util.Callback() {
                 public void onResponse(JSONObject response) {
                     try {
@@ -148,6 +148,7 @@ public class QueueManagerService {
                                 public void onFinished() {
                                     queueFragment.setVoteLock(false);
                                     isVoting = false;
+                                    saveVotes();
                                 }
                             });
 
@@ -171,14 +172,14 @@ public class QueueManagerService {
             if(currentView!=null) {
                 JSONObject vote = new JSONObject().put("id", currentView.getPost().getString("_id")).put("vote", voteValue);
                 votes.put(vote);
-                Log.e("voted","VOTED!");
             }
 
-            if ((queue.size()==3 && !isVoting)) {
+            if ((queue.size()==3)) {
 
 
                 castVotes();
             }
+            saveVotes();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -205,18 +206,32 @@ public class QueueManagerService {
 
     }
 
+    public void saveVotes(){
+        editor.putString("votes", votes.toString());
+        editor.commit();
+
+    }
+
 
     public void saveQue(){
         JSONArray save=new JSONArray();
         for (PostView post: queue){
             save.put(post.getPost());
         }
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.clear();
+
         editor.putString("que", save.toString());
-        editor.putString("votes", votes.toString());
-        editor.apply();
+        if(currentView!=null){
+            editor.putString("currentPost", currentView.getPost().toString());
+        }else {
+            editor.putString("currentPost", null);
+        }
+        editor.commit();
+
+    }
+
+    public void saveAll(){
+        saveQue();
+        saveVotes();
     }
 
 
@@ -235,7 +250,7 @@ public class QueueManagerService {
         }
 
         if(queue.size()>0){
-            saveQue();
+
             view = queue.remove(0);
 
         }
@@ -270,7 +285,7 @@ public class QueueManagerService {
         }
 
 
-
+        saveAll();
 
         return view;
     }

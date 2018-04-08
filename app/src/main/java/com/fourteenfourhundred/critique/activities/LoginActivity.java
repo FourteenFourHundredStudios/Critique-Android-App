@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.util.ExitService;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.critique.R;
@@ -54,6 +55,9 @@ public class LoginActivity extends AppCompatActivity {
     public void startApp(String apiKey){
 
         Data.apiKey=apiKey;
+
+
+        //startService(new Intent(this, ExitService.class));
 
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         startActivity(intent);

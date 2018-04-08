@@ -30,6 +30,12 @@
             android:label="@string/title_activity_mutuals"
             />
 
+        <service
+            android:enabled="true"
+            android:name="com.fourteenfourhundred.critique.util.ExitService"
+            android:exported="false"
+            android:stopWithTask="false" />
+
     </application>
 
 </manifest>

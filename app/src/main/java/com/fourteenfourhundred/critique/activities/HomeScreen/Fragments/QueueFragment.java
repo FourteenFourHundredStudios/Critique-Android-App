@@ -87,15 +87,37 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    public void onPause(){
+
+        super.onPause();
+        //queue.castVotes();
+        //queue.saveAll();
+
+        //queue.saveVotes();
+        //queue.saveQue();
+        //queue.castVotes();
+    }
 
     public void vote(int vote){
 
-        queue.vote(vote);
+         queue.vote(vote);
         renderNextPost();
     }
 
     public void forcePostRender(final PostView post){
         forcePostRender(post,null);
+    }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            Log.e("hidden","hidden!");
+            //queue.castVotes();
+        } else {
+
+        }
     }
 
 
