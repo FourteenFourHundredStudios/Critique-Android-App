@@ -2,6 +2,7 @@ package com.fourteenfourhundred.critique.API;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -39,10 +40,13 @@ public class QueueManagerService {
         this.activity=queueFragment.getActivity();
         this.context=activity.getApplicationContext();
 
-         emptyView = new EmptyView(context);
+        emptyView = new EmptyView(context);
 
-         api=new API(activity);
+        api=new API(activity);
 
+        queueInit();
+
+        /*
         queueFragment.setVoteLock(true);
         loadPostsIntoQue(new Util.Callback(){
             @Override
@@ -51,7 +55,48 @@ public class QueueManagerService {
                 queueFragment.setVoteLock(false);
             }
         });
+        */
     }
+
+    public void queueInit(){
+
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        String q = sharedPref.getString("que", "[]");
+        queueFragment.setVoteLock(true);
+        try{
+            JSONArray j=new JSONArray(q);
+            if(j.length()==0){
+                loadPostsIntoQue(new Util.Callback(){
+                    @Override
+                    public void onFinished() {
+                        queueFragment.renderNextPost();
+                        queueFragment.setVoteLock(false);
+                    }
+                });
+            }else{
+                votes=new JSONArray(sharedPref.getString("votes", "[]"));
+                for(int i=0;i<j.length();i++){
+                    final PostView post = new PostView(activity,api,j.get(i).toString());
+                    if(i==0){
+                        currentView=post;
+                    }else {
+                        queue.add(post);
+                    }
+                }
+                queueFragment.forcePostRender(currentView,new Util.Callback(){
+                    public void onFinished(){
+                        queueFragment.setVoteLock(false);
+                    }
+                });
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     public void loadPostsIntoQue(final Util.Callback callback){
 
@@ -71,11 +116,12 @@ public class QueueManagerService {
                                     queue.add(post);
 
                                 }
-
+                                saveQue();
                                 if (callback != null) callback.onFinished();
                             } else {
                                 Util.showDialog(activity, "Error loading queue! " + response.getString("message"));
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -86,49 +132,52 @@ public class QueueManagerService {
         });
     }
 
+    public void castVotes() {
+        try {
+            isVoting=true;
+            JSONArray v = new JSONArray(votes.toString());
+            votes = new JSONArray();
+
+            API.castVotes(activity, v, new Util.Callback() {
+                public void onResponse(JSONObject response) {
+                    try {
+                        if (!response.getString("status").equals("error")) {
+
+                            loadPostsIntoQue(new Util.Callback() {
+                                @Override
+                                public void onFinished() {
+                                    queueFragment.setVoteLock(false);
+                                    isVoting = false;
+                                }
+                            });
+
+                        } else {
+                            Util.showDialog(activity, "error voting: " + response.getString("message"));
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public void vote(int voteValue){
-
-
-
-
         try {
-
             if(currentView!=null) {
                 JSONObject vote = new JSONObject().put("id", currentView.getPost().getString("_id")).put("vote", voteValue);
                 votes.put(vote);
+                Log.e("voted","VOTED!");
             }
 
             if ((queue.size()==3 && !isVoting)) {
-                isVoting=true;
-                Log.e("votes",votes.toString());
 
-                JSONArray v=new JSONArray(votes.toString());
-                votes = new JSONArray();
 
-                API.castVotes(activity, v, new Util.Callback() {
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.e("voting", "done!");
-                            if (!response.getString("status").equals("error")) {
-
-                                loadPostsIntoQue(new Util.Callback(){
-                                    @Override
-                                    public void onFinished() {
-                                        queueFragment.setVoteLock(false);
-                                        isVoting=false;
-                                    }
-                                });
-
-                            } else {
-                                Util.showDialog(activity, "error voting: " + response.getString("message"));
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                castVotes();
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -157,6 +206,19 @@ public class QueueManagerService {
     }
 
 
+    public void saveQue(){
+        JSONArray save=new JSONArray();
+        for (PostView post: queue){
+            save.put(post.getPost());
+        }
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.putString("que", save.toString());
+        editor.putString("votes", votes.toString());
+        editor.apply();
+    }
+
 
     public PostView getNextPost(){
         PostView view=new EmptyView(context);
@@ -173,7 +235,9 @@ public class QueueManagerService {
         }
 
         if(queue.size()>0){
+            saveQue();
             view = queue.remove(0);
+
         }
 
         if(!(view instanceof  EmptyView)){

@@ -75,21 +75,19 @@ public class HomeActivity extends AppCompatActivity {
         //setProgressBarIndeterminateVisibility(Boolean.TRUE);
 
 
-
-
     }
 
 
     public void stopLoadAnimation() {
-
-
-        loadAnimation.cancel();
+        if(syncIcon==null)return;
         syncIcon.setVisibility(View.INVISIBLE);
+        loadAnimation.cancel();
+
 
     }
 
     public void startLoadAnimation() {
-        if(menu!=null) {
+        if(menu!=null || syncIcon!=null) {
 
             syncIcon.setVisibility(View.VISIBLE);
 

@@ -94,8 +94,12 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
         renderNextPost();
     }
 
-
     public void forcePostRender(final PostView post){
+        forcePostRender(post,null);
+    }
+
+
+    public void forcePostRender(final PostView post,final Callback callback){
         post.getSelf().setVisibility(View.INVISIBLE);
         frame.addView(post.getSelf());
 
@@ -113,7 +117,7 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-
+                        if(callback!=null)callback.onFinished();
                     }
 
                     @Override
@@ -166,7 +170,7 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     }
 
     public void setVoteLock(boolean locked) {
-        if (locked == voteLock) return;
+        if (locked == voteLock ) return;
         voteLock = locked;
         voteGood.setEnabled(!locked);
         voteBad.setEnabled(!locked);
