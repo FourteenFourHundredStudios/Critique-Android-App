@@ -134,8 +134,9 @@ public class QueueManagerService {
         try {
             isVoting=true;
             JSONArray v = new JSONArray(votes.toString());
-            votes = new JSONArray();
             saveVotes();
+            votes = new JSONArray();
+
             API.castVotes(activity, v, new Util.Callback() {
                 public void onResponse(JSONObject response) {
                     try {

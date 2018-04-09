@@ -187,6 +187,39 @@ public class API {
     }
 
 
+    public static void getArchive(final Activity me, final Util.Callback callback){
+
+        try {
+
+
+
+
+            JSONObject params = Util.makeJson(
+                    new Object[]{"apiKey", Data.apiKey}
+            );
+
+
+            //Util.showDialog(me,loginInfo.toString());
+            Util.postRequest(me, Data.url + "getArchive", params, new Response.Listener<JSONObject>(){
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            callback.onResponse(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            Util.showDialog(me, "Connectivity error probably!");
+                        }
+                    }
+            );
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
     public static void getQue(final Activity me, final Util.Callback callback){
 
         try {

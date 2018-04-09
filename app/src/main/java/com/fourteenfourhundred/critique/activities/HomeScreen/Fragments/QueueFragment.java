@@ -93,9 +93,6 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
         queue.castVotes();
         queue.saveAll();
 
-        //queue.saveVotes();
-        //queue.saveQue();
-        //queue.castVotes();
     }
 
     public void vote(int vote){

@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     android:background="#0D000000"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.fourteenfourhundred.critique.critique.comk.fourteenfourhundred.marc.com.ProfileFragment">
+    tools:context="com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity">
 
     <RelativeLayout
+        android:id="@+id/topContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -57,6 +58,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/scoreText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10dp"
@@ -67,6 +69,37 @@
             android:layout_marginBottom="10dp"
             android:textSize="15sp" />
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:layout_below="@id/scoreText"
+            app:tabMode="fixed" >
+
+            <android.support.design.widget.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="All"/>
+
+            <android.support.design.widget.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Best"/>
+
+            <android.support.design.widget.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Me"/>
+
+        </android.support.design.widget.TabLayout>
+
     </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/profilePager"
+        android:layout_below="@id/topContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
