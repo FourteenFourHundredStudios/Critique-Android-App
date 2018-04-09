@@ -195,7 +195,8 @@ public class API {
 
 
             JSONObject params = Util.makeJson(
-                    new Object[]{"apiKey", Data.apiKey}
+                    new Object[]{"apiKey", Data.apiKey},
+                    new Object[]{"page", 1}
             );
 
 

@@ -128,7 +128,7 @@ public class QueueManagerService {
         });
     }
 
-    public void castVotes() {
+    public void castVotes(final boolean loadingQue) {
         if(votes.length()==0 || isVoting)return;
         Log.e("votes","casting votes!");
         try {
@@ -142,14 +142,19 @@ public class QueueManagerService {
                     try {
                         if (!response.getString("status").equals("error")) {
 
-                            loadPostsIntoQue(new Util.Callback() {
-                                @Override
-                                public void onFinished() {
-                                    queueFragment.setVoteLock(false);
-                                    isVoting = false;
-                                    saveVotes();
-                                }
-                            });
+                            if(loadingQue) {
+                                loadPostsIntoQue(new Util.Callback() {
+                                    @Override
+                                    public void onFinished() {
+                                        queueFragment.setVoteLock(false);
+                                        isVoting = false;
+                                        saveVotes();
+                                    }
+                                });
+                            }else{
+                                queueFragment.setVoteLock(false);
+                                isVoting = false;
+                            }
 
                         } else {
                             Util.showDialog(activity, "error voting: " + response.getString("message"));
@@ -176,7 +181,7 @@ public class QueueManagerService {
             if ((queue.size()==3)) {
 
 
-                castVotes();
+                castVotes(true);
             }
             saveVotes();
         }catch (Exception e){
