@@ -99,7 +99,8 @@ public class QueueManagerService {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                API.getQue(activity, new Util.Callback() {
+
+                new ApiRequest.GetQueRequest(api).execute(new Util.Callback(){
                     public void onResponse(JSONObject response) {
                         try {
                             if (response.getString("status").equals("ok")) {
@@ -137,7 +138,7 @@ public class QueueManagerService {
             saveVotes();
             votes = new JSONArray();
 
-            API.castVotes(activity, v, new Util.Callback() {
+            new ApiRequest.CastVotesRequest(api,v).execute(new Util.Callback(){
                 public void onResponse(JSONObject response) {
                     try {
                         if (!response.getString("status").equals("error")) {
@@ -266,7 +267,7 @@ public class QueueManagerService {
                 if(votes.length()>0) {
                     JSONArray v = new JSONArray(votes.toString());
                     votes = new JSONArray();
-                    API.castVotes(activity, v, new Util.Callback() {
+                    new ApiRequest.CastVotesRequest(api,v).execute(new Util.Callback(){
                         public void onResponse(JSONObject response) {
                             try {
                                 if (!response.getString("status").equals("error")) {
