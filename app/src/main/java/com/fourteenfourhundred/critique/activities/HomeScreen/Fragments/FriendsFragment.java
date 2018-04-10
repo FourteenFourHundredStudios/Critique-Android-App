@@ -122,31 +122,42 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position,long id) {
                 if(!isEmpty){
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which){
-                                case DialogInterface.BUTTON_POSITIVE:
-                                   // follow(adapter.getItem(position));
-                                    break;
+                    try {
+                        final JSONObject user = new JSONObject(adapter.getItem(position).toString());
+                        final String username=user.getString("username");
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+                                        follow(username);
+                                        break;
 
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    break;
+                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        break;
+                                }
                             }
-                        }
-                    };
+                        };
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setMessage("Do you want to follow "+adapter.getItem(position)+"?").setPositiveButton("Yes", dialogClickListener)
-                            .setNegativeButton("No", dialogClickListener).show();
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setMessage("Do you want to follow "+username+"?").setPositiveButton("Yes", dialogClickListener)
+                                .setNegativeButton("No", dialogClickListener).show();
+                    }catch (Exception e){
+
+                    }
 
                 }
             }
         });
     }
 
-    public void follow(String username){
-        
+    public void follow(final String username){
+        new ApiRequest.FollowRequest(api,username).execute(new Util.Callback(){
+            public void onResponse(JSONObject obj){
+                Util.showDialog(getActivity(),"You followed "+username+"!");
+            }
+        });
     }
 
     public void updateList(JSONArray mutualNames){

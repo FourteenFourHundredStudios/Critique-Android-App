@@ -26,7 +26,7 @@ public class ApiRequest{
         public String content;
         public String title;
 
-        public SendPostRequest(API api,JSONArray to,String type,String content, String title) {
+        public SendPostRequest(API api,JSONArray to,String type,String title,String content ) {
             super(api);
 
             this.to=to;
@@ -151,6 +151,31 @@ public class ApiRequest{
         }
 
     }
+
+    public static class FollowRequest extends GenericRequest{
+
+        public String username;
+
+        public FollowRequest(API api,String username) {
+            super(api);
+            this.username=username;
+        }
+
+        @Override
+        public JSONObject getParams() throws JSONException {
+            JSONObject params=new JSONObject();
+            params.put("user",username);
+            params.put("apiKey", Data.apiKey);
+            return params;
+        }
+
+        @Override
+        public String getURL() {
+            return "follow";
+        }
+
+    }
+
 
 
     public static class GetPatchRequest extends GenericRequest{

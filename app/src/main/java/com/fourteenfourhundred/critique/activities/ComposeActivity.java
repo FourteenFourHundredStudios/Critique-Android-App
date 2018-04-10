@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.activities.SelectMutualsActivity;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.util.Util;
@@ -23,12 +24,13 @@ public class ComposeActivity extends AppCompatActivity {
     String title;
     String content;
     //rename to activity
+    public API api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
-
+        api=new API(this);
         /*
         SearchView s = findViewById(R.id.postTitle);
         s.setQueryHint("Post title");*/
@@ -59,7 +61,7 @@ public class ComposeActivity extends AppCompatActivity {
         if(resultCode== Activity.RESULT_OK){
 
             try {
-                API.createPost(this, new JSONArray(data.getStringExtra("selected")), "text", title, content, new Response.Listener<JSONObject>() {
+                new ApiRequest.SendPostRequest(api,new JSONArray(data.getStringExtra("selected")), "text", title, content).execute( new Util.Callback() {
                     public void onResponse(JSONObject response) {
                         try {
 
