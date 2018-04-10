@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
@@ -29,9 +30,6 @@ import java.util.Map;
 
 public class API {
 
-    /*
-    CONVERT ALL OF THESE API CALLS TO USE CALLBACK CLASS
-     */
 
     Activity activity;
     RequestQueue queue;
@@ -41,50 +39,6 @@ public class API {
         queue=Volley.newRequestQueue(activity);
     }
 
-    public static void createPost(final Activity me,JSONArray recipients,String type,String title,String content, Response.Listener<JSONObject> callback){
-        JSONObject params = Util.makeJson(
-                new Object[]{"apiKey", Data.apiKey},
-                new Object[]{"to",recipients},
-                new Object[]{"type",type},
-                new Object[]{"content",content},
-                new Object[]{"title",title}
-        );
-        //Util.showDialog(me,loginInfo.toString());
-        Util.postRequest(me,Data.url+"sendPost", params, callback,
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        Util.showDialog(me, "Connectivity error probably!");
-                    }
-                }
-        );
-
-    }
-
-
-    public void getPatch(final Activity me, String username,final Util.Callback callback){
-
-
-       // Log.e("IMAGE PATH",Data.url+"getPatch/"+Data.apiKey+"/"+username);
-
-        ImageRequest request = new ImageRequest(Data.url+"getPatch/"+Data.apiKey+"/"+username,
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap bitmap) {
-
-
-                        callback.onResponse(bitmap);
-                    }
-                }, 0, 0, null,
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-
-                });
-        queue.add(request);
-    }
 
 
 
@@ -109,18 +63,11 @@ public class API {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
 
                 }) {
 
-            /*
-            * If you want to add more parameters with the image
-            * you can do it here
-            * here we have only one parameter with the image
-            * which is tags
-            * */
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -128,9 +75,7 @@ public class API {
                 return params;
             }
 
-            /*
-            * Here we are passing image by renaming it with a unique name
-            * */
+
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
@@ -152,155 +97,13 @@ public class API {
     }
 
 
-    public static void castVotes(final Activity me, JSONArray votes, final Util.Callback callback){
-
-        try {
 
 
 
 
-            JSONObject params = Util.makeJson(
-                    new Object[]{"apiKey", Data.apiKey},
-                    new Object[]{"votes", votes}
-            );
-
-
-            //Util.showDialog(me,loginInfo.toString());
-            Util.postRequest(me, Data.url + "castVotes", params, new Response.Listener<JSONObject>(){
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            callback.onResponse(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                            Util.showDialog(me, "Connectivity error probably!");
-                        }
-                    }
-            );
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public static void getArchive(final Activity me, int page,final Util.Callback callback){
-
-        try {
 
 
 
-
-            JSONObject params = Util.makeJson(
-                    new Object[]{"apiKey", Data.apiKey},
-                    new Object[]{"page", page}
-            );
-
-
-            //Util.showDialog(me,loginInfo.toString());
-            Util.postRequest(me, Data.url + "getArchive", params, new Response.Listener<JSONObject>(){
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            callback.onResponse(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                            Util.showDialog(me, "Connectivity error probably!");
-                        }
-                    }
-            );
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void getQue(final Activity me, final Util.Callback callback){
-
-        try {
-
-            /*
-            JSONArray votes = new JSONArray();
-
-            if (Data.lastPost.length() > 0) {
-                for (int i = 0; i < Data.lastPost.length(); i++) {
-
-                    votes.put(Util.makeJson(
-                            new Object[]{"id", Data.lastPost.get(i).toString()},
-                            new Object[]{"vote", Data.lastVote}
-                    ));
-                }
-            }*/
-
-            JSONObject params = Util.makeJson(
-                    new Object[]{"apiKey", Data.apiKey}
-            );
-            //Util.showDialog(me,loginInfo.toString());
-                    Util.postRequest(me, Data.url + "getPosts", params, new Response.Listener<JSONObject>(){
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            callback.onResponse(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                            Util.showDialog(me, "Connectivity error probably!");
-                        }
-                    }
-            );
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void doSearch(final Activity me, String search,final Util.Callback callback){
-
-        try {
-
-            Util.postRequest(me, Data.url + "search/"+search, new JSONObject(), new Response.Listener<JSONObject>(){
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            callback.onResponse(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                            Util.showDialog(me, "Connectivity error probably!");
-                        }
-                    }
-            );
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void getMutuals(final Activity me, Response.Listener<JSONObject> callback){
-        JSONObject params = Util.makeJson(
-                new Object[]{"apiKey",Data.apiKey}
-        );
-        //Util.showDialog(me,loginInfo.toString());
-        Util.postRequest(me,Data.url+"getMutuals", params, callback,
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        Util.showDialog(me, "Connectivity error probably!");
-                    }
-                }
-        );
-
-    }
 
 
 }

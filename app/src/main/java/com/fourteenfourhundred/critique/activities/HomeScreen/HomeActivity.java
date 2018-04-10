@@ -45,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
     Animation loadAnimation;
 
 
+    public int page=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

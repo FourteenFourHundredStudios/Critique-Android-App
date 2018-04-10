@@ -9,9 +9,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.util.Util;
@@ -26,8 +29,10 @@ public class AllProfileFragment extends Fragment {
     View rootView;
     LinearLayout content;
     API api;
-    JSONArray archive;
+    public JSONArray archive;
     SwipeRefreshLayout swipeRefreshLayout;
+    public int page=0;
+
 
 
     public AllProfileFragment(){
@@ -56,13 +61,14 @@ public class AllProfileFragment extends Fragment {
                     @Override
                     public void onRefresh() {
 
-                        API.getArchive(getActivity(),0,new Util.Callback(){
+
+                        ApiRequest.GetArchiveRequest request = new ApiRequest.GetArchiveRequest(api,0);
+
+                        request.execute(new Util.Callback(){
                             @Override
                             public void onResponse(final JSONObject response) {
                                 try {
 
-
-                                    ((HomeActivity)getActivity()).archive = response.getJSONArray("archive");
                                     archive = response.getJSONArray("archive");
                                     content.removeAllViews();
                                     render();
@@ -81,9 +87,42 @@ public class AllProfileFragment extends Fragment {
                 }
         );
 
+        final ScrollView scrollView = rootView.findViewById(R.id.allScrollview);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if(scrollView.getChildAt(0).getBottom() <=(scrollView.getHeight()+scrollView.getScrollY())){
+                    loadNewContent();
+                }
+            }
+        });
 
 
         return rootView;
+    }
+
+    public void loadNewContent(){
+        page++;
+        ApiRequest.GetArchiveRequest request = new ApiRequest.GetArchiveRequest(api,page);
+        request.execute(new Util.Callback(){
+            @Override
+            public void onResponse(final JSONObject response) {
+                try {
+
+                    JSONArray newContent = response.getJSONArray("archive");
+
+                    for(int i=0;i<newContent.length();i++){
+                        PostItemView item = new PostItemView(getContext(), api, newContent.getJSONObject(i).toString());
+                        content.addView(item.getSelf());
+                    }
+
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 

@@ -66,6 +66,10 @@ public class Util {
 
         }
 
+        public void onError(String error){
+
+        }
+
     }
 
     public static void postRequest(Activity activity,String url,JSONObject data,Response.Listener rl,Response.ErrorListener re){
