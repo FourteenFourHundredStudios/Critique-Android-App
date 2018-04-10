@@ -187,7 +187,7 @@ public class API {
     }
 
 
-    public static void getArchive(final Activity me, final Util.Callback callback){
+    public static void getArchive(final Activity me, int page,final Util.Callback callback){
 
         try {
 
@@ -196,7 +196,7 @@ public class API {
 
             JSONObject params = Util.makeJson(
                     new Object[]{"apiKey", Data.apiKey},
-                    new Object[]{"page", 1}
+                    new Object[]{"page", page}
             );
 
 

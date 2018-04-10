@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,8 +21,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
+import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.util.Util.Callback;
 import com.fourteenfourhundred.critique.critique.R;
+import com.fourteenfourhundred.critique.views.PostItemView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class ProfileFragment extends Fragment {
@@ -49,15 +56,41 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        ViewPager viewPager = rootView.findViewById(R.id.profilePager);
-        TabLayout tablayout = rootView.findViewById(R.id.tab_layout);
+        final ViewPager viewPager = rootView.findViewById(R.id.profilePager);
+        final TabLayout tablayout = rootView.findViewById(R.id.tab_layout);
 
-        viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
-        tablayout.setupWithViewPager(viewPager);
+
+
+
+
+
+        API.getArchive(getActivity(),0,new Util.Callback(){
+            @Override
+            public void onResponse(final JSONObject response) {
+                try {
+
+
+                    ((HomeActivity)getActivity()).archive = response.getJSONArray("archive");
+
+                    viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
+                    tablayout.setupWithViewPager(viewPager);
+
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
 
 
         return rootView;
     }
+
+
 
     public class SectionPagerAdapter extends FragmentPagerAdapter {
 
@@ -71,11 +104,11 @@ public class ProfileFragment extends Fragment {
                 case 0:
                     return new AllProfileFragment();
                 case 1:
-                    return new AllProfileFragment();
+                    return new BestProfileFragment();
                 case 2:
-                    return new AllProfileFragment();
+                    return new MeProfileFragment();
                 default:
-                    return new AllProfileFragment();
+                    return null;
 
             }
         }
@@ -118,7 +151,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("here","fffff");
 
     }
 }

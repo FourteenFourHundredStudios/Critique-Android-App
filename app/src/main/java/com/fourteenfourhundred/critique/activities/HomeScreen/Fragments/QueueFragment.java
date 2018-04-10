@@ -60,7 +60,11 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
         voteGood = (ImageButton) rootView.findViewById(R.id.voteGood);
         voteGood.setOnClickListener(this);
 
+        queue=new QueueManagerService(this);
 
+       // Util.showDialog(getActivity(),String.valueOf(queue==null));
+
+        ((HomeActivity)getActivity()).addViewpagerListener();
 
         return rootView;
     }
@@ -68,7 +72,7 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         getActivity().invalidateOptionsMenu();
-        queue=new QueueManagerService(this);
+
     }
 
 
@@ -90,9 +94,14 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     public void onPause(){
 
         super.onPause();
+        saveState();
+
+    }
+
+    public void saveState(){
+        if(queue==null)return;
         queue.castVotes(false);
         queue.saveAll();
-
     }
 
     public void vote(int vote){
@@ -110,8 +119,7 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (hidden) {
-            Log.e("hidden","hidden!");
-            //queue.castVotes();
+
         } else {
 
         }

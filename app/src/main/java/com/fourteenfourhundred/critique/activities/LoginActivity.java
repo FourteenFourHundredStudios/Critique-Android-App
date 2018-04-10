@@ -20,7 +20,8 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
 
-    public void login(String username,String password){
+
+    public void login(final String username, String password){
 
         JSONObject loginInfo = Util.makeJson(
                 new Object[]{"username",username},
@@ -36,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (response.get("status").equals("error")) {
                                 Util.showDialog(LoginActivity.this, response.getString("message"));
                             }else{
+                                Data.username=username;
                                 startApp(response.getString("apiKey"));
                             }
                         }catch (Exception e){
@@ -81,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordBox = findViewById(R.id.passwordBox);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 login(usernameBox.getText().toString(),passwordBox.getText().toString());
 
 

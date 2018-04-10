@@ -28,6 +28,7 @@ import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueueFra
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -35,11 +36,14 @@ import java.io.IOException;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public JSONArray archive;
+    public QueueFragment queue;
 
-    ViewPager viewPager;
+    public ViewPager viewPager;
     ImageView syncIcon;
     Menu menu;
     Animation loadAnimation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,24 +61,28 @@ public class HomeActivity extends AppCompatActivity {
         HomePageAdapter adapter = new HomePageAdapter(this, getSupportFragmentManager());
 
         loadAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate);
-        /*
-        viewPager.setFocusableInTouchMode(true);
-        viewPager.setFocusable(true);
-        viewPager.setEnabled(true);
-        viewPager.setClickable(true);
-        viewPager.setFocusableInTouchMode(true);*/
 
-       // getWindow().setFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-
-        // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
 
 
-        //tabLayout.setSelectedTabIndicatorHeight(0);
-
-        //setProgressBarIndeterminateVisibility(Boolean.TRUE);
 
 
+
+    }
+
+
+
+    public void addViewpagerListener(){
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            public void onPageSelected(int position) {
+                if(position!=0){
+                    queue.saveState();
+                }
+            }
+        });
     }
 
 
@@ -107,19 +115,6 @@ public class HomeActivity extends AppCompatActivity {
         syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
         syncIcon.setImageResource(R.drawable.loading_symbol);
 
-        //startLoadAnimation();
-
-        //LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        /*
-        syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
-        syncIcon.setImageResource(R.drawable.loading_symbol);
-        syncIcon.setVisibility(View.VISIBLE);
-
-
-        Animation f = AnimationUtils.loadAnimation(this, R.anim.rotate);
-        f.setRepeatCount(Animation.INFINITE);
-        syncIcon.startAnimation(f);*/
         return true;
 
     }
@@ -128,7 +123,6 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.openCompose:
 
-                Log.e("ok","fff");
                 Intent intent = new Intent(getApplicationContext(), ComposeActivity.class);
                 startActivity(intent);
                 //viewPager.setCurrentItem(1, true);
@@ -204,13 +198,15 @@ public class HomeActivity extends AppCompatActivity {
             mContext = context;
         }
 
+
+
         @Override
         public Fragment getItem(int position) {
             //  ProfileFragment tab1 = new ProfileFragment();
-
+            queue=new QueueFragment();
             switch (position) {
                 case 0:
-                    return new QueueFragment();
+                    return queue;
                 case 1:
                     return new FriendsFragment();
                 case 2:
