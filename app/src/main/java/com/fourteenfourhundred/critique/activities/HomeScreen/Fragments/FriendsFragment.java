@@ -53,7 +53,7 @@ public class FriendsFragment extends Fragment {
 
         api=new API(getActivity());
 
-        API.getMutuals(getActivity(),new Response.Listener<JSONObject>(){
+        new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
             public void onResponse(JSONObject response) {
                 try {
                     if(response.get("status").equals("ok")){

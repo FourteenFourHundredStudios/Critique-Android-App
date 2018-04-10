@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.util.Util.Callback;
@@ -35,7 +36,7 @@ public class ProfileFragment extends Fragment {
 
     View rootView;
     API api;
-
+    public int page=0;
 
 
     public ProfileFragment(){
@@ -50,7 +51,7 @@ public class ProfileFragment extends Fragment {
 
         api = new API(getActivity());
 
-        api.getPatch(getActivity(),"self",new Callback(){
+        new ApiRequest.GetPatchRequest(api,"self").execute(new Util.Callback() {
             public void onResponse(Bitmap img){
                 ImageView userPatch = (ImageView)rootView.findViewById(R.id.userPatch);
                 userPatch.setImageBitmap(img);
@@ -64,8 +65,7 @@ public class ProfileFragment extends Fragment {
 
 
 
-
-        API.getArchive(getActivity(),0,new Util.Callback(){
+        new ApiRequest.GetArchiveRequest(api,0).execute(new Util.Callback() {
             @Override
             public void onResponse(final JSONObject response) {
                 try {

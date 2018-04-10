@@ -62,9 +62,8 @@ public class AllProfileFragment extends Fragment {
                     public void onRefresh() {
 
 
-                        ApiRequest.GetArchiveRequest request = new ApiRequest.GetArchiveRequest(api,0);
 
-                        request.execute(new Util.Callback(){
+                        new ApiRequest.GetArchiveRequest(api,0).execute(new Util.Callback(){
                             @Override
                             public void onResponse(final JSONObject response) {
                                 try {
@@ -103,8 +102,8 @@ public class AllProfileFragment extends Fragment {
 
     public void loadNewContent(){
         page++;
-        ApiRequest.GetArchiveRequest request = new ApiRequest.GetArchiveRequest(api,page);
-        request.execute(new Util.Callback(){
+
+        new ApiRequest.GetArchiveRequest(api,page).execute(new Util.Callback(){
             @Override
             public void onResponse(final JSONObject response) {
                 try {
