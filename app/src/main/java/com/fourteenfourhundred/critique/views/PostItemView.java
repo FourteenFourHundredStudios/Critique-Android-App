@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.util.Util.Callback;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -55,7 +57,7 @@ public class PostItemView extends PostView{
                 @Override
                 public void run() {
                     try {
-                        api.getPatch((Activity) getContext(), post.getString("username"), new Callback() {
+                        new ApiRequest.GetPatchRequest(api,post.getString("username")).execute(new Util.Callback(){
                             public void onResponse(final Bitmap img) {
                                 ((ImageView) rootView.findViewById(R.id.userPatch)).setImageBitmap(img);
 

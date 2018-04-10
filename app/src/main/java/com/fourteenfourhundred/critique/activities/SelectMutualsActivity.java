@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import com.android.volley.Response;
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -32,13 +33,17 @@ public class SelectMutualsActivity extends AppCompatActivity {
 
     final Activity me = this;
 
+    public API api;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_mutuals);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Mutuals");
 
+        api= new API(this);
 
         populateMutualsList();
 
@@ -93,7 +98,7 @@ public class SelectMutualsActivity extends AppCompatActivity {
     public void populateMutualsList(){
 
 
-        API.getMutuals(this,new Response.Listener<JSONObject>(){
+        new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
             public void onResponse(JSONObject response) {
                 try {
                     if(response.get("status").equals("ok")){

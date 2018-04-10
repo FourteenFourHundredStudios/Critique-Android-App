@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.util.Util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
@@ -40,6 +41,7 @@ public class FriendsFragment extends Fragment {
     ArrayAdapter<JSONObject> adapter;
     ListView listView;
     boolean isEmpty=true;
+    public API api;
 
     public FriendsFragment(){
 
@@ -48,6 +50,8 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(fragment_friends, container, false);
+
+        api=new API(getActivity());
 
         API.getMutuals(getActivity(),new Response.Listener<JSONObject>(){
             public void onResponse(JSONObject response) {
@@ -176,7 +180,7 @@ public class FriendsFragment extends Fragment {
                 if(s.toString().trim().length()>0) {
                     ((HomeActivity)getActivity()).startLoadAnimation();
                     isEmpty=false;
-                    API.doSearch(getActivity(), s.toString().trim(), new Callback() {
+                    new ApiRequest.DoSearchRequest(api, s.toString().trim()).execute(new Util.Callback(){
                         public void onResponse(JSONObject object) {
                             try {
                                 updateList(new JSONArray(object.getString("results")));
