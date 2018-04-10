@@ -145,6 +145,11 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         if(callback!=null)callback.onFinished();
+
+                        if(activePost instanceof EmptyView){
+                            ((EmptyView)activePost).stopLoad();
+                        }
+
                     }
 
                     @Override
@@ -157,11 +162,15 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     }
 
     public void renderNextPost(){
+        renderNextPost(true);
+    }
+
+    public void renderNextPost(boolean showAnimation){
 
         final PostView nextPost = queue.getNextPost();
 
         if(nextPost instanceof EmptyView){
-            setVoteLock(true);
+            setVoteLock(true,showAnimation);
             return;
         }
 
@@ -196,17 +205,24 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void setVoteLock(boolean locked) {
+    public void setVoteLock(boolean locked){
+        setVoteLock(locked,true);
+    }
+
+    public void setVoteLock(boolean locked,boolean showAnimation) {
         if (locked == voteLock ) return;
         voteLock = locked;
         voteGood.setEnabled(!locked);
         voteBad.setEnabled(!locked);
-        if (locked) {
-            ((HomeActivity) getActivity()).startLoadAnimation();
 
-        } else {
-            ((HomeActivity) getActivity()).stopLoadAnimation();
-        }
+
+            if (locked) {
+                if(showAnimation) ((HomeActivity) getActivity()).startLoadAnimation();
+
+            } else {
+                ((HomeActivity) getActivity()).stopLoadAnimation();
+            }
+
 
 
     }

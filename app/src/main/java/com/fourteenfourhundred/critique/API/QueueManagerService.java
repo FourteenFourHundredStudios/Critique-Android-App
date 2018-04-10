@@ -22,7 +22,7 @@ public class QueueManagerService {
     public Context context;
     public Activity activity;
 
-    public ArrayList<PostView> queue = new ArrayList<PostView>();
+    public ArrayList<PostView> queue = new ArrayList<>();
     public JSONArray votes= new JSONArray();
 
     public EmptyView emptyView;
@@ -41,7 +41,7 @@ public class QueueManagerService {
         this.activity=queueFragment.getActivity();
         this.context=activity.getApplicationContext();
 
-        emptyView = new EmptyView(context);
+        emptyView = new EmptyView(context,fragment);
 
         api=new API(activity);
 
@@ -197,7 +197,7 @@ public class QueueManagerService {
                 isVoting = false;
 
                 if(queEmpty){
-                    queueFragment.forcePostRender(new EmptyView(context));
+                    queueFragment.forcePostRender(new EmptyView(context,queueFragment));
 
                 }else{
                     PostView view = queue.remove(0);
@@ -240,7 +240,7 @@ public class QueueManagerService {
 
 
     public PostView getNextPost(){
-        PostView view=new EmptyView(context);
+        PostView view=new EmptyView(context,queueFragment);
         currentView=null;
 
         if(queue.size()==0){
