@@ -85,11 +85,13 @@ public class ApiRequest{
     public static class GetArchiveRequest extends GenericRequest{
 
         public int page;
+        public int count;
 
-        public GetArchiveRequest(API api,int page) {
+        public GetArchiveRequest(API api,int page,int count) {
             super(api);
 
             this.page=page;
+            this.count=count;
         }
 
         @Override
@@ -101,6 +103,7 @@ public class ApiRequest{
         public JSONObject getParams() throws JSONException {
             JSONObject params=new JSONObject();
             params.put("page",page);
+            params.put("count",count);
             params.put("apiKey", Data.apiKey);
             return params;
         }

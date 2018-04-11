@@ -65,24 +65,24 @@ public class ProfileFragment extends Fragment {
 
 
 
-        new ApiRequest.GetArchiveRequest(api,0).execute(new Util.Callback() {
-            @Override
-            public void onResponse(final JSONObject response) {
-                try {
+       // new ApiRequest.GetArchiveRequest(api,0).execute(new Util.Callback() {
+          //  @Override
+         //   public void onResponse(final JSONObject response) {
+           //     try {
 
 
-                    ((HomeActivity)getActivity()).archive = response.getJSONArray("archive");
+                    //((HomeActivity)getActivity()).archive = response.getJSONArray("archive");
 
                     viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
                     tablayout.setupWithViewPager(viewPager);
 
 
 
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
+//                }catch (Exception e){
+  //                  e.printStackTrace();
+   //             }
+     //       }
+      //  });
 
 
 

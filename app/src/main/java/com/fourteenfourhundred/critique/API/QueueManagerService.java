@@ -263,30 +263,48 @@ public class QueueManagerService {
         if(!(view instanceof  EmptyView)){
             currentView=view;
         }else{
-            try {
-                if(votes.length()>0) {
-                    JSONArray v = new JSONArray(votes.toString());
-                    votes = new JSONArray();
-                    new ApiRequest.CastVotesRequest(api,v).execute(new Util.Callback(){
-                        public void onResponse(JSONObject response) {
-                            try {
-                                if (!response.getString("status").equals("error")) {
-                                    checkForNewPosts();
-                                } else {
-                                    Util.showDialog(activity, "error voting: " + response.getString("message"));
-                                }
 
-                            } catch (Exception e) {
+
+
+
+
+                if(votes.length()>0) {
+
+                    //AsyncTask.execute(new Runnable() {
+                        //@Override
+                     //   public void run() {
+                            try {
+
+                                JSONArray v = new JSONArray(votes.toString());
+                                votes = new JSONArray();
+                                new ApiRequest.CastVotesRequest(api, v).execute(new Util.Callback() {
+                                    public void onResponse(JSONObject response) {
+                                        try {
+                                            if (!response.getString("status").equals("error")) {
+                                                checkForNewPosts();
+                                            } else {
+                                                Util.showDialog(activity, "error voting: " + response.getString("message"));
+                                            }
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                            }catch (Exception e){
                                 e.printStackTrace();
                             }
-                        }
-                    });
+
+                        //}
+                    //});
+
                 }else{
                     checkForNewPosts();
                 }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+
+
+
         }
 
 

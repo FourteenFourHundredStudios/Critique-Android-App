@@ -45,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
     Animation loadAnimation;
 
 
+    public API ProfileApi;
+
     public int page=0;
 
     @Override
@@ -67,7 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
 
-
+        ProfileApi=new API(this);
 
 
     }

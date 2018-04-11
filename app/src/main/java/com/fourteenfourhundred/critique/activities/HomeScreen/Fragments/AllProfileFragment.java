@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +29,12 @@ public class AllProfileFragment extends Fragment {
 
     View rootView;
     LinearLayout content;
-    API api;
+
     public JSONArray archive;
     SwipeRefreshLayout swipeRefreshLayout;
     public int page=0;
 
+    API api;
 
 
     public AllProfileFragment(){
@@ -48,11 +50,10 @@ public class AllProfileFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_all_profile, container, false);
         content = rootView.findViewById(R.id.allFragmentContent);
 
-        api=new API(getActivity());
 
-        archive = ((HomeActivity)getActivity()).archive;
 
-        render();
+
+
 
         swipeRefreshLayout=rootView.findViewById(R.id.swiperefresh);
 
@@ -60,50 +61,65 @@ public class AllProfileFragment extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-
-
-
-                        new ApiRequest.GetArchiveRequest(api,0).execute(new Util.Callback(){
-                            @Override
-                            public void onResponse(final JSONObject response) {
-                                try {
-
-                                    archive = response.getJSONArray("archive");
-                                    content.removeAllViews();
-                                    render();
-                                    swipeRefreshLayout.setRefreshing(false);
-
-
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-
-
-
+                        refresh();
                     }
                 }
         );
+
+
 
         final ScrollView scrollView = rootView.findViewById(R.id.allScrollview);
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                if(scrollView.getChildAt(0).getBottom() <=(scrollView.getHeight()+scrollView.getScrollY())){
+                View view = (View) scrollView.getChildAt(scrollView.getChildCount() - 1);
+                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
+
+                // if diff is zero, then the bottom has been reached
+
+
+
+                if (diff < 650) {
+                    //Util.showDialog(getActivity(),"YUP");
+                    Log.e("diff",diff+"");
                     loadNewContent();
                 }
             }
         });
 
 
+        api=((HomeActivity) getActivity()).ProfileApi;
+
+        refresh();
+
         return rootView;
+    }
+
+
+
+    public void refresh(){
+        new ApiRequest.GetArchiveRequest(api,0,page).execute(new Util.Callback(){
+            @Override
+            public void onResponse(final JSONObject response) {
+                try {
+
+                    archive = response.getJSONArray("archive");
+                    content.removeAllViews();
+                    render();
+                    swipeRefreshLayout.setRefreshing(false);
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void loadNewContent(){
         page++;
 
-        new ApiRequest.GetArchiveRequest(api,page).execute(new Util.Callback(){
+        new ApiRequest.GetArchiveRequest(api,page,page+1).execute(new Util.Callback(){
             @Override
             public void onResponse(final JSONObject response) {
                 try {
