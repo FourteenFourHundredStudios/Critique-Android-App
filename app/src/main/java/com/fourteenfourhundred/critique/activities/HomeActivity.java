@@ -1,4 +1,4 @@
-package com.fourteenfourhundred.critique.activities.HomeScreen;
+package com.fourteenfourhundred.critique.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.activities.ComposeActivity;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.FriendsFragment;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.ProfileFragment;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueueFragment;
@@ -43,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
     ImageView syncIcon;
     Menu menu;
     Animation loadAnimation;
+
 
 
     public API ProfileApi;
@@ -82,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             public void onPageSelected(int position) {
+
                 if(position!=0){
                     //Util.showDialog(HomeActivity.this,"OK!");
                     queue.saveState();
@@ -118,6 +117,7 @@ public class HomeActivity extends AppCompatActivity {
         this.menu=menu;
 
         syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
+        //syncIcon.setVisibility(View.INVISIBLE);
         syncIcon.setImageResource(R.drawable.loading_symbol);
 
         return true;

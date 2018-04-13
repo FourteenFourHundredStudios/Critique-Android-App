@@ -10,7 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+
         android:theme="@style/AppTheme">
+
         <activity android:name="com.fourteenfourhundred.critique.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,21 +22,17 @@
         </activity>
 
         <meta-data
+
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name="com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity" />
+        <activity android:name="com.fourteenfourhundred.critique.activities.HomeActivity" android:configChanges="orientation|screenSize" />
         <activity android:name="com.fourteenfourhundred.critique.activities.ComposeActivity" />
         <activity
             android:name="com.fourteenfourhundred.critique.activities.SelectMutualsActivity"
             android:label="@string/title_activity_mutuals"
             />
 
-        <service
-            android:enabled="true"
-            android:name="com.fourteenfourhundred.critique.util.ExitService"
-            android:exported="false"
-            android:stopWithTask="false" />
 
     </application>
 

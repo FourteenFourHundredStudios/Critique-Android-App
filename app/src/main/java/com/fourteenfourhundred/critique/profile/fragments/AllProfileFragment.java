@@ -1,12 +1,8 @@
-package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
+package com.fourteenfourhundred.critique.profile.fragments;
 
-import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +12,7 @@ import android.widget.ScrollView;
 
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
-import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
+import com.fourteenfourhundred.critique.activities.HomeActivity;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.views.PostItemView;

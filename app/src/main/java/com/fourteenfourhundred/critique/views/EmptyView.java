@@ -1,17 +1,11 @@
 package com.fourteenfourhundred.critique.views;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 
-import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueueFragment;
-import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.critique.R;
-import com.fourteenfourhundred.critique.util.Util;
-
-import org.json.JSONObject;
 
 public class EmptyView extends PostView{
 

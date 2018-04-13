@@ -4,40 +4,46 @@
     android:layout_height="match_parent"
     android:background="#0D000000"
 
-    tools:context="com.fourteenfourhundred.critique.critique.comk.fourteenfourhundred.marc.com.FriendsFragment">
+    tools:context="com.fourteenfourhundred.critique.activities.HomeActivity">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <RelativeLayout
-
-        android:id="@+id/SearchBarHolder"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/home_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent">
 
-        android:background="#ffffff"
-        android:elevation="2dp">
 
-        <EditText
-            android:id="@+id/mutualSearch"
+        <RelativeLayout
+
+            android:id="@+id/SearchBarHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="20dp"
-            android:background="#25000000"
-            android:hint="Search for mutuals here"
-            android:padding="6dp"
-            android:textColor="#FFFFFF" />
+
+            android:background="#ffffff"
+            android:elevation="2dp">
+
+            <EditText
+                android:id="@+id/mutualSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:background="#25000000"
+                android:hint="Search for mutuals here"
+                android:padding="6dp"
+                android:textColor="#FFFFFF" />
+
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/mutualsListFriends"
+            android:layout_below="@+id/SearchBarHolder"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
     </RelativeLayout>
-
-    <ListView
-        android:id="@+id/mutualsListFriends"
-        android:layout_below="@+id/SearchBarHolder"
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
 
 </RelativeLayout>

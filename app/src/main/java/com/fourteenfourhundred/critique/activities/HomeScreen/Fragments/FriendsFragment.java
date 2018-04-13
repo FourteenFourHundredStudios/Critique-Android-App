@@ -3,7 +3,6 @@ package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,13 +14,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
-import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
-import com.fourteenfourhundred.critique.util.Util.Callback;
+import com.fourteenfourhundred.critique.activities.HomeActivity;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -30,26 +29,42 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.fourteenfourhundred.critique.critique.R.layout.fragment_friends;
 
 
-public class FriendsFragment extends Fragment {
+public class FriendsFragment extends LoadOnViewFragment {
 
     JSONObject mutuals[];
-    View rootView;
     ArrayAdapter<JSONObject> adapter;
     ListView listView;
     boolean isEmpty=true;
     public API api;
 
+
+    RelativeLayout content;
+
+    ProgressBar loading;
+
     public FriendsFragment(){
 
     }
 
+
+    public int getLayout(){
+        return R.layout.fragment_friends;
+    }
+
+
+    public void onFinishedRendering(){
+        super.onFinishedRendering();
+
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(fragment_friends, container, false);
+    public void setupFragment() {
+
 
         api=new API(getActivity());
 
@@ -67,36 +82,13 @@ public class FriendsFragment extends Fragment {
                         }
 
                         listView = (ListView) rootView.findViewById(R.id.mutualsListFriends);
-                        ArrayList<JSONObject> lst = new ArrayList<JSONObject>(Arrays.asList(mutuals));
-                        adapter = new ArrayAdapter<JSONObject>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1,lst){
-                            @Override
-                            public View getView(int position, View covertView, ViewGroup parent){
-                                View v=null;
-                                try {
-                                    v = LayoutInflater.from(rootView.getContext()).inflate(android.R.layout.simple_list_item_1, null);
-                                    TextView label = (TextView) v.findViewById(android.R.id.text1);
-                                    if(isEmpty) {
 
-
-
-                                        JSONObject user = new JSONObject(mutuals[position].toString());
-                                        label.setText(user.getString("username"));
-
-                                        if (user.getString("isMutual").equals("false")) {
-                                            label.setTextColor(Color.RED);
-                                            label.setText(user.getString("username") + " (not mutual)");
-                                        }
-                                    }else{
-                                        label.setText(adapter.getItem(position).getString("username"));
-                                    }
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                                return v;
-                            }
-                        };
+                        adapter = getListAdapter(new ArrayList<JSONObject>(Arrays.asList(mutuals)));
                         listView.setAdapter(adapter);
                         listClickHandler();
+
+                        onFinishedRendering();
+
 
                     }else{
                         Util.showDialog(getActivity(),response.get("message").toString());
@@ -110,11 +102,36 @@ public class FriendsFragment extends Fragment {
 
 
         onType();
+    }
 
+    public ArrayAdapter<JSONObject> getListAdapter(ArrayList<JSONObject> lst) {
 
+        return new ArrayAdapter<JSONObject>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1, lst){
+            @Override
+            public View getView(int position, View covertView, ViewGroup parent){
+                View v=null;
+                try {
+                    v = LayoutInflater.from(rootView.getContext()).inflate(android.R.layout.simple_list_item_1, null);
+                    TextView label = (TextView) v.findViewById(android.R.id.text1);
+                    if(isEmpty) {
 
+                        JSONObject user = new JSONObject(mutuals[position].toString());
+                        label.setText(user.getString("username"));
 
-        return rootView;
+                        if (user.getString("isMutual").equals("false")) {
+                            label.setTextColor(Color.RED);
+                            label.setText(user.getString("username") + " (not mutual)");
+                        }
+                    }else{
+                        label.setText(adapter.getItem(position).getString("username"));
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return v;
+            }
+        };
+
     }
 
     public void listClickHandler(){

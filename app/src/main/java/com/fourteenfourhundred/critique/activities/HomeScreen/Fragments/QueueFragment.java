@@ -1,35 +1,23 @@
 package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.QueueManagerService;
-import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
+import com.fourteenfourhundred.critique.activities.HomeActivity;
 import com.fourteenfourhundred.critique.util.AnimationUtil;
 import com.fourteenfourhundred.critique.util.Util.Callback;
 import com.fourteenfourhundred.critique.views.EmptyView;
 import com.fourteenfourhundred.critique.views.PostView;
-import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 
 public class QueueFragment extends Fragment implements View.OnClickListener {
@@ -116,15 +104,6 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden) {
-
-        } else {
-
-        }
-    }
 
 
     public void forcePostRender(final PostView post,final Callback callback){

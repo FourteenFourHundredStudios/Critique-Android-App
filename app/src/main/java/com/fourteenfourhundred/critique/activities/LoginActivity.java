@@ -10,9 +10,7 @@ import android.widget.EditText;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.fourteenfourhundred.critique.storage.Data;
-import com.fourteenfourhundred.critique.util.ExitService;
 import com.fourteenfourhundred.critique.util.Util;
-import com.fourteenfourhundred.critique.activities.HomeScreen.HomeActivity;
 import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONObject;
