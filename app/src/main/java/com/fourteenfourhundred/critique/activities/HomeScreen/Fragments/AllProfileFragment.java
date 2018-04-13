@@ -33,7 +33,9 @@ public class AllProfileFragment extends Fragment {
     public JSONArray archive;
     SwipeRefreshLayout swipeRefreshLayout;
     public int page=0;
-
+    boolean moreContent=true;
+    boolean loadingContent=false;
+    boolean firstLoad=true;
     API api;
 
 
@@ -47,11 +49,9 @@ public class AllProfileFragment extends Fragment {
 
 
 
+
         rootView = inflater.inflate(R.layout.fragment_all_profile, container, false);
         content = rootView.findViewById(R.id.allFragmentContent);
-
-
-
 
 
 
@@ -78,10 +78,11 @@ public class AllProfileFragment extends Fragment {
                 // if diff is zero, then the bottom has been reached
 
 
-
-                if (diff < 650) {
+                //Log.e("diff",diff+"");
+                if (diff <650 && moreContent && !swipeRefreshLayout.isRefreshing() &&!loadingContent) {
                     //Util.showDialog(getActivity(),"YUP");
-                    Log.e("diff",diff+"");
+                    //Log.e("diff",diff+"");
+                    loadingContent=true;
                     loadNewContent();
                 }
             }
@@ -98,7 +99,8 @@ public class AllProfileFragment extends Fragment {
 
 
     public void refresh(){
-        new ApiRequest.GetArchiveRequest(api,0,page).execute(new Util.Callback(){
+        moreContent=true;
+        new ApiRequest.GetArchiveRequest(api,0,page+1).execute(new Util.Callback(){
             @Override
             public void onResponse(final JSONObject response) {
                 try {
@@ -116,22 +118,39 @@ public class AllProfileFragment extends Fragment {
         });
     }
 
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        //Util.showDialog(getActivity(),"fiewjifwe");
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && firstLoad){
+            //Util.showDialog(getActivity(),"FIRST SHOWING "+this.getClass().toString());
+            //Log.e("WOO",this.getClass().toString());
+        }
+        if(isVisibleToUser){
+            firstLoad=false;
+        }
+
+    }
+
     public void loadNewContent(){
+        //Util.showDialog(getActivity(),"LOADING CONTENT");
         page++;
 
-        new ApiRequest.GetArchiveRequest(api,page,page+1).execute(new Util.Callback(){
+        new ApiRequest.GetArchiveRequest(api,page,1).execute(new Util.Callback(){
             @Override
             public void onResponse(final JSONObject response) {
                 try {
 
                     JSONArray newContent = response.getJSONArray("archive");
-
+                    if(newContent.length()==0){
+                        //Util.showDialog(getActivity(),"OUT");
+                        moreContent=false;
+                    }
                     for(int i=0;i<newContent.length();i++){
                         PostItemView item = new PostItemView(getContext(), api, newContent.getJSONObject(i).toString());
                         content.addView(item.getSelf());
                     }
 
-
+                    loadingContent=false;
 
                 }catch (Exception e){
                     e.printStackTrace();

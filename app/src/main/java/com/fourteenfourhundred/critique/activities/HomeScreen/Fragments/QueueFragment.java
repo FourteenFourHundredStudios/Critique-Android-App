@@ -100,6 +100,7 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
 
     public void saveState(){
         if(queue==null)return;
+        Log.e("SAVED","SUCSESS");
         queue.castVotes(false);
         queue.saveAll();
     }

@@ -83,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
 
             public void onPageSelected(int position) {
                 if(position!=0){
+                    //Util.showDialog(HomeActivity.this,"OK!");
                     queue.saveState();
                 }
             }
