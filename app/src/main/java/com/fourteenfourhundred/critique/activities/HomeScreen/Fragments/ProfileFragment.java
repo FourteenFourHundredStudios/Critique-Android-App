@@ -30,7 +30,7 @@ public class ProfileFragment extends LoadOnViewFragment {
 
     API api;
     public int page=0;
-
+    public static int loadingStages=0;
 
 
     public void setupFragment() {
@@ -51,7 +51,9 @@ public class ProfileFragment extends LoadOnViewFragment {
                 viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
                 tablayout.setupWithViewPager(viewPager);
 
+                //ProfileFragment.updateLoadingStages();
 
+                viewPager.setOffscreenPageLimit(5);
                 onFinishedRendering();
 
             }
@@ -61,6 +63,7 @@ public class ProfileFragment extends LoadOnViewFragment {
 
 
     }
+
 
 
     public int getLayout(){

@@ -3,11 +3,13 @@ package com.fourteenfourhundred.critique.profile.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
 import com.fourteenfourhundred.critique.API.API;
@@ -32,6 +34,7 @@ public class AllProfileFragment extends Fragment {
     boolean moreContent=true;
     boolean loadingContent=false;
     boolean firstLoad=true;
+    ProgressBar more;
     API api;
 
 
@@ -48,8 +51,6 @@ public class AllProfileFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_all_profile, container, false);
         content = rootView.findViewById(R.id.allFragmentContent);
-
-
 
         swipeRefreshLayout=rootView.findViewById(R.id.swiperefresh);
 
@@ -87,6 +88,13 @@ public class AllProfileFragment extends Fragment {
 
         api=((HomeActivity) getActivity()).ProfileApi;
 
+        more = new ProgressBar(getContext());
+        content.addView(more);
+
+        //api=new API(getActivity());
+
+
+
         refresh();
 
         return rootView;
@@ -105,7 +113,7 @@ public class AllProfileFragment extends Fragment {
                     content.removeAllViews();
                     render();
                     swipeRefreshLayout.setRefreshing(false);
-
+                    if(more!=null)more.setVisibility(View.GONE);
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -140,11 +148,17 @@ public class AllProfileFragment extends Fragment {
                     if(newContent.length()==0){
                         //Util.showDialog(getActivity(),"OUT");
                         moreContent=false;
+                        if(more!=null)more.setVisibility(View.GONE);
                     }
+
                     for(int i=0;i<newContent.length();i++){
                         PostItemView item = new PostItemView(getContext(), api, newContent.getJSONObject(i).toString());
                         content.addView(item.getSelf());
                     }
+
+                    more = new ProgressBar(getContext());
+                    content.addView(more);
+
 
                     loadingContent=false;
 
