@@ -4,13 +4,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
@@ -110,8 +113,24 @@ public class AllProfileFragment extends Fragment {
                 try {
 
                     archive = response.getJSONArray("archive");
+
+
                     content.removeAllViews();
                     render();
+
+
+                    if(archive.length()==0){
+                        content.removeAllViews();
+                        TextView t = new TextView(getContext());
+                        //t.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+                        t.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                        t.setPadding(15,35,15,35);
+
+                        t.setText("Theres nothing here :(");
+                        content.addView(t);
+                    }
+
                     swipeRefreshLayout.setRefreshing(false);
                     if(more!=null)more.setVisibility(View.GONE);
 
@@ -139,6 +158,9 @@ public class AllProfileFragment extends Fragment {
         //Util.showDialog(getActivity(),"LOADING CONTENT");
         page++;
 
+        more = new ProgressBar(getContext());
+        content.addView(more);
+
         new ApiRequest.GetArchiveRequest(api,page,1).execute(new Util.Callback(){
             @Override
             public void onResponse(final JSONObject response) {
@@ -149,15 +171,23 @@ public class AllProfileFragment extends Fragment {
                         //Util.showDialog(getActivity(),"OUT");
                         moreContent=false;
                         if(more!=null)more.setVisibility(View.GONE);
-                    }
+                        TextView t = new TextView(getContext());
+                        //t.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+                       t.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                        t.setPadding(15,15,15,30);
+
+                        t.setText("Theres nothing here :(");
+                        content.addView(t);
+
+                    }
+                    more.setVisibility(View.GONE);
                     for(int i=0;i<newContent.length();i++){
                         PostItemView item = new PostItemView(getContext(), api, newContent.getJSONObject(i).toString());
                         content.addView(item.getSelf());
                     }
 
-                    more = new ProgressBar(getContext());
-                    content.addView(more);
+
 
 
                     loadingContent=false;

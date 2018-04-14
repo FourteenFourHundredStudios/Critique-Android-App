@@ -43,12 +43,16 @@ public class QueueManagerService {
 
         emptyView = new EmptyView(context,fragment);
 
-        api=new API(activity);
 
-        sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        editor = sharedPref.edit();
 
-        queueInit();
+                api=new API(activity);
+
+                sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+                editor = sharedPref.edit();
+
+                queueInit();
+
+
 
 
     }
