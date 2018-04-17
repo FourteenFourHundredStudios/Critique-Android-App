@@ -26,6 +26,7 @@ public class ApiRequest{
         public String content;
         public String title;
 
+
         public SendPostRequest(API api,JSONArray to,String type,String title,String content ) {
             super(api);
 
@@ -35,12 +36,18 @@ public class ApiRequest{
             this.title=title;
         }
 
-        @Override
+
+
+
+
         public String getURL() {
             return "sendPost";
         }
 
-        @Override
+
+
+
+
         public JSONObject getParams() throws JSONException {
             JSONObject params=new JSONObject();
             params.put("to",to);
@@ -80,6 +87,8 @@ public class ApiRequest{
         }
 
     }
+
+
 
 
     public static class GetArchiveRequest extends GenericRequest{

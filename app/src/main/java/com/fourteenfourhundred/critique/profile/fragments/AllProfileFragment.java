@@ -40,6 +40,8 @@ public class AllProfileFragment extends Fragment {
     ProgressBar more;
     API api;
 
+    TextView nothingHere ;
+
 
     public AllProfileFragment(){
 
@@ -95,7 +97,14 @@ public class AllProfileFragment extends Fragment {
         content.addView(more);
 
         //api=new API(getActivity());
+        nothingHere=new TextView(getContext());
 
+        nothingHere.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+        nothingHere.setPadding(15,35,15,35);
+
+        nothingHere.setText("Theres nothing here :(");
+        content.addView(nothingHere);
+        nothingHere.setVisibility(View.GONE);
 
 
         refresh();
@@ -115,20 +124,20 @@ public class AllProfileFragment extends Fragment {
                     archive = response.getJSONArray("archive");
 
 
-                    content.removeAllViews();
+                    //content.removeAllViews();
+                    if(content.getChildCount()!=1){
+                        content.removeViews(0,content.getChildCount()-1);
+                    }
                     render();
 
 
                     if(archive.length()==0){
-                        content.removeAllViews();
-                        TextView t = new TextView(getContext());
+
+                        nothingHere.setVisibility(View.VISIBLE);
+
                         //t.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-                        t.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-                        t.setPadding(15,35,15,35);
 
-                        t.setText("Theres nothing here :(");
-                        content.addView(t);
                     }
 
                     swipeRefreshLayout.setRefreshing(false);
@@ -174,11 +183,7 @@ public class AllProfileFragment extends Fragment {
                         TextView t = new TextView(getContext());
                         //t.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-                       t.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-                        t.setPadding(15,15,15,30);
-
-                        t.setText("Theres nothing here :(");
-                        content.addView(t);
+                        nothingHere.setVisibility(View.VISIBLE);
 
                     }
                     more.setVisibility(View.GONE);

@@ -144,6 +144,7 @@ public class SelectMutualsActivity extends AppCompatActivity {
         //Util.showDialog(this, to.toString());
 
         Intent returnIntent = new Intent();
+        //Util.showDialog(this,to.toString());
         returnIntent.putExtra("selected",to.toString());
         setResult(Activity.RESULT_OK,returnIntent);
 

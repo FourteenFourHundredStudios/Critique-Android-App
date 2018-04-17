@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -61,6 +62,9 @@ public class ComposeActivity extends AppCompatActivity {
         if(resultCode== Activity.RESULT_OK){
 
             try {
+
+                Log.e("ye",data.getStringExtra("selected"));
+
                 new ApiRequest.SendPostRequest(api,new JSONArray(data.getStringExtra("selected")), "text", title, content).execute( new Util.Callback() {
                     public void onResponse(JSONObject response) {
                         try {
@@ -68,7 +72,8 @@ public class ComposeActivity extends AppCompatActivity {
                             String status = response.getString("status");
                             if (status.equals("error")) {
                                 String msg = response.getString("message");
-                                Util.showDialog(ComposeActivity.this, msg);
+                                Log.e("ERROR",msg);
+                                //Util.showDialog(ComposeActivity.this, msg);
                             } else {
                                 //setResult(2);
                                 finish();

@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void debug(){
 
-        login("marc","nohash");
+        //login("marc","nohash");
 
         /*
         Util.postRequest(LoginActivity.this,Data.url+"reset", new JSONObject(),new Response.Listener<JSONObject>(){
