@@ -104,18 +104,21 @@ public class AllProfileFragment extends Fragment {
             public void onResponse(final JSONObject response) {
                 try {
 
+
                     archive = response.getJSONArray("archive");
-                    moreContent = (archive.length()!=0);
-                    finishedLoading();
+                    moreContent=false;
+
                     swipeRefreshLayout.setRefreshing(false);
                     for(int i=0;i<archive.length();i++){
                         JSONObject post = new JSONObject(archive.getString(i));
                         if(shouldRender(post)) {
+                            moreContent=true;
                             PostItemView item = new PostItemView(getContext(), api, post.toString());
                             content.addView(item.getSelf());
                         }
                     }
 
+                    finishedLoading();
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -157,17 +160,23 @@ public class AllProfileFragment extends Fragment {
             @Override
             public void onResponse(final JSONObject response) {
                 try {
-
+                    moreContent=false;
                     JSONArray newContent = response.getJSONArray("archive");
 
-                    moreContent = (newContent.length()!=0);
-                    finishedLoading();
+
+
 
                     for(int i=0;i<newContent.length();i++){
-                        PostItemView item = new PostItemView(getContext(), api, newContent.getJSONObject(i).toString());
-                        content.addView(item.getSelf());
+                        JSONObject post=newContent.getJSONObject(i);
+                        if(shouldRender(post)) {
+                            moreContent=true;
+                            PostItemView item = new PostItemView(getContext(), api, post.toString());
+                            content.addView(item.getSelf());
+                        }
                     }
                     isLoading=false;
+                    finishedLoading();
+
 
                 }catch (Exception e){
                     e.printStackTrace();

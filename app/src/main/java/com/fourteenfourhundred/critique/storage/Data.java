@@ -27,11 +27,11 @@ public class Data {
     //private static final long serialVersionUID = 1L;
     public static API backgroundApi;
 
+    //public static String url="http://75.102.240.231:5000/";
+    public static String url="http://10.0.0.4:5000/";
 
     public static class DataSerializer implements Serializable{
         public String apiKey="apples!";
-        //public String url="http://10.0.0.4:5000/";
-        public String url="http://75.102.240.231:5000/";
         public String username=null;
         public int score=-1;
         public SerializableJSONArray mutuals = new SerializableJSONArray();
@@ -41,7 +41,8 @@ public class Data {
     static {
         Data.dataSerializer = new Data.DataSerializer();
         if(Util.isEmulator()){
-            dataSerializer.url="http://10.0.2.2:5000/";
+            Log.e("Messsage","This is emulator");
+            url="http://10.0.2.2:5000/";
         }
     }
 
@@ -50,7 +51,7 @@ public class Data {
     }
 
     public static String getURL(){
-        return dataSerializer.url;
+        return url;
     }
 
     public static String getUsername(){

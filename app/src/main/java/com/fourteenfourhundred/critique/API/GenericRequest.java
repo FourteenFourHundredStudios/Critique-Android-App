@@ -34,13 +34,26 @@ public class GenericRequest {
     public void execute(final Util.Callback callback){
         responseListener = new Response.Listener<JSONObject>(){
             public void onResponse(JSONObject response) {
+
+                try {
+                    if (response.getString("status").equals("error")){
+                        Util.showDialog(api.activity,response.getString("message"));
+                    }
+                }catch (Exception e){
+
+                }
+
+
                 callback.onResponse(response);
             }
         };
 
         errorListener = new Response.ErrorListener(){
             public void onErrorResponse(VolleyError error) {
-                callback.onError(error.getMessage());
+                //Util.showDialog(api.activity,error.getMessage());
+                //callback.onError(error.getMessage());
+
+                error.printStackTrace();
             }
         };
 
