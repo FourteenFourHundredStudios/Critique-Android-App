@@ -19,6 +19,7 @@ import com.fourteenfourhundred.critique.critique.R;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by Marc on 3/5/18.
@@ -61,6 +62,13 @@ public class Util {
 
         }
 
+        public void onResponse(Object response){
+
+        }
+
+        public void onResponse(ArrayList<JSONObject> response){
+
+        }
 
 
         public void onError(int code){

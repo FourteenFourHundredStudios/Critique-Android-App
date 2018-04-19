@@ -3,64 +3,69 @@ package com.fourteenfourhundred.critique.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.fourteenfourhundred.critique.API.API;
+import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.storage.Storage;
+import com.fourteenfourhundred.critique.util.SerializableJSONArray;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import static com.fourteenfourhundred.critique.storage.Data.dataSerializer;
+
 public class LoginActivity extends AppCompatActivity {
 
+    API loginAPI;
 
 
     public void login(final String username, String password){
 
-        JSONObject loginInfo = Util.makeJson(
-                new Object[]{"username",username},
-                new Object[]{"password",password}
-        );
+        new ApiRequest.LoginRequest(loginAPI,username,password).execute(new Util.Callback(){
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
 
-
-
-
-        Util.postRequest(LoginActivity.this, Data.url+"login", loginInfo,new Response.Listener<JSONObject>(){
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.get("status").equals("error")) {
-                                Util.showDialog(LoginActivity.this, response.getString("message"));
-                            }else{
-                                Data.username=username;
-                                startApp(response.getString("apiKey"));
-                            }
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
+                    if (response.get("status").equals("error")) {
+                        Util.showDialog(LoginActivity.this, response.getString("message"));
+                    } else {
+                        startApp(response,username);
                     }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        Util.showDialog(LoginActivity.this, "error");
-                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-        );
+            }
+        });
+
     }
 
-    public void startApp(String apiKey){
+    public void startApp(JSONObject response,String username){
 
-        Data.apiKey=apiKey;
+        try{
+            Data.setApiKey(response.getString("apiKey"));
+            Data.setUsername(username);
+            Data.setMutuals(response.getJSONArray("mutuals"));
+            Data.setScore(response.getInt("score"));
+            Storage.saveData(getApplicationContext());
 
 
-        //startService(new Intent(this, ExitService.class));
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(intent);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-        startActivity(intent);
+
     }
 
     @Override
@@ -71,8 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        debug();
-
+         loginAPI = new API(this);
 
 
 
@@ -81,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordBox = findViewById(R.id.passwordBox);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 login(usernameBox.getText().toString(),passwordBox.getText().toString());
 
 
@@ -91,24 +96,5 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void debug(){
-
-        //login("marc","nohash");
-
-        /*
-        Util.postRequest(LoginActivity.this,Data.url+"reset", new JSONObject(),new Response.Listener<JSONObject>(){
-                    public void onResponse(JSONObject response) {
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        Util.showDialog(LoginActivity.this, "errorccc");
-                    }
-                }
-        );*/
-
-    }
 
 }

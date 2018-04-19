@@ -63,7 +63,7 @@ public class ComposeActivity extends AppCompatActivity {
 
             try {
 
-                Log.e("ye",data.getStringExtra("selected"));
+            //    Log.e("ye",data.getStringExtra("selected"));
 
                 new ApiRequest.SendPostRequest(api,new JSONArray(data.getStringExtra("selected")), "text", title, content).execute( new Util.Callback() {
                     public void onResponse(JSONObject response) {

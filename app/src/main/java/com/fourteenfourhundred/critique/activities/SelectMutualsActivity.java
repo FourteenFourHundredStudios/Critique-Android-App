@@ -18,6 +18,7 @@ import android.widget.ListView;
 import com.android.volley.Response;
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -98,6 +99,7 @@ public class SelectMutualsActivity extends AppCompatActivity {
     public void populateMutualsList(){
 
 
+        /*
         new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
             public void onResponse(JSONObject response) {
                 try {
@@ -122,7 +124,23 @@ public class SelectMutualsActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
+
+        try {
+            mutuals = new User[Data.getMutuals().length()];
+
+            for (int i = 0; i < Data.getMutuals().length(); i++) {
+                //Log.e("f",mutualNames.get(i).toString());
+                mutuals[i] = new User(Data.getMutuals().get(i).toString());
+            }
+
+            mutualsList = (ListView) findViewById(R.id.mutualsList);
+            CustomAdapter customAdapter = new CustomAdapter(me.getApplicationContext(), mutuals);
+            mutualsList.setAdapter(customAdapter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 

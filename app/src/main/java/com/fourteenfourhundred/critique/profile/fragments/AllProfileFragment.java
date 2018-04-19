@@ -19,6 +19,7 @@ import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.activities.HomeActivity;
 import com.fourteenfourhundred.critique.critique.R;
+import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.views.PostItemView;
 
@@ -35,8 +36,7 @@ public class AllProfileFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     public int page=0;
     boolean moreContent=true;
-    boolean loadingContent=false;
-    boolean firstLoad=true;
+    boolean isLoading=false;
     ProgressBar more;
     API api;
 
@@ -77,35 +77,16 @@ public class AllProfileFragment extends Fragment {
                 View view = (View) scrollView.getChildAt(scrollView.getChildCount() - 1);
                 int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 
-                // if diff is zero, then the bottom has been reached
-
-
-                //Log.e("diff",diff+"");
-                if (diff <650 && moreContent && !swipeRefreshLayout.isRefreshing() &&!loadingContent) {
-                    //Util.showDialog(getActivity(),"YUP");
-                    //Log.e("diff",diff+"");
-                    loadingContent=true;
+                if (diff <650 && moreContent && !swipeRefreshLayout.isRefreshing() && !isLoading) {
+                    isLoading=true;
                     loadNewContent();
                 }
             }
         });
 
 
-        api=((HomeActivity) getActivity()).ProfileApi;
-
+        api= Data.backgroundApi;
         more = new ProgressBar(getContext());
-        content.addView(more);
-
-        //api=new API(getActivity());
-        nothingHere=new TextView(getContext());
-
-        nothingHere.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-        nothingHere.setPadding(15,35,15,35);
-
-        nothingHere.setText("Theres nothing here :(");
-        content.addView(nothingHere);
-        nothingHere.setVisibility(View.GONE);
-
 
         refresh();
 
@@ -115,33 +96,26 @@ public class AllProfileFragment extends Fragment {
 
 
     public void refresh(){
-        moreContent=true;
+
+        content.removeAllViews();
+        archive=new JSONArray();
         new ApiRequest.GetArchiveRequest(api,0,page+1).execute(new Util.Callback(){
             @Override
             public void onResponse(final JSONObject response) {
                 try {
 
                     archive = response.getJSONArray("archive");
-
-
-                    //content.removeAllViews();
-                    if(content.getChildCount()!=1){
-                        content.removeViews(0,content.getChildCount()-1);
-                    }
-                    render();
-
-
-                    if(archive.length()==0){
-
-                        nothingHere.setVisibility(View.VISIBLE);
-
-                        //t.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-
-                    }
-
+                    moreContent = (archive.length()!=0);
+                    finishedLoading();
                     swipeRefreshLayout.setRefreshing(false);
-                    if(more!=null)more.setVisibility(View.GONE);
+                    for(int i=0;i<archive.length();i++){
+                        JSONObject post = new JSONObject(archive.getString(i));
+                        if(shouldRender(post)) {
+                            PostItemView item = new PostItemView(getContext(), api, post.toString());
+                            content.addView(item.getSelf());
+                        }
+                    }
+
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -150,25 +124,34 @@ public class AllProfileFragment extends Fragment {
         });
     }
 
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        //Util.showDialog(getActivity(),"fiewjifwe");
-        super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser && firstLoad){
-            //Util.showDialog(getActivity(),"FIRST SHOWING "+this.getClass().toString());
-            //Log.e("WOO",this.getClass().toString());
-        }
-        if(isVisibleToUser){
-            firstLoad=false;
-        }
 
+    public void startLoading(){
+
+        if(content.indexOfChild(more)==-1)content.addView(more);
     }
 
-    public void loadNewContent(){
-        //Util.showDialog(getActivity(),"LOADING CONTENT");
-        page++;
+    public void finishedLoading(){
+        if(more!=null && content.getChildCount()>0){
+            int moreIndex=(content.indexOfChild(more));
+            if(moreIndex!=-1)content.removeViewAt(moreIndex);
+        }
+        if(!moreContent && content.indexOfChild(nothingHere)==-1){
+            nothingHere=new TextView(getContext());
 
-        more = new ProgressBar(getContext());
-        content.addView(more);
+            nothingHere.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+            nothingHere.setPadding(15,35,15,35);
+
+            nothingHere.setText("There's nothing here :(");
+            content.addView(nothingHere);
+        }
+    }
+
+
+    public void loadNewContent(){
+
+        startLoading();
+
+        page++;
 
         new ApiRequest.GetArchiveRequest(api,page,1).execute(new Util.Callback(){
             @Override
@@ -176,26 +159,15 @@ public class AllProfileFragment extends Fragment {
                 try {
 
                     JSONArray newContent = response.getJSONArray("archive");
-                    if(newContent.length()==0){
-                        //Util.showDialog(getActivity(),"OUT");
-                        moreContent=false;
-                        if(more!=null)more.setVisibility(View.GONE);
-                        TextView t = new TextView(getContext());
-                        //t.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-                        nothingHere.setVisibility(View.VISIBLE);
+                    moreContent = (newContent.length()!=0);
+                    finishedLoading();
 
-                    }
-                    more.setVisibility(View.GONE);
                     for(int i=0;i<newContent.length();i++){
                         PostItemView item = new PostItemView(getContext(), api, newContent.getJSONObject(i).toString());
                         content.addView(item.getSelf());
                     }
-
-
-
-
-                    loadingContent=false;
+                    isLoading=false;
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -210,25 +182,5 @@ public class AllProfileFragment extends Fragment {
     }
 
 
-
-    public void render(){
-        try {
-
-
-                for(int i=0;i<archive.length();i++){
-
-                    JSONObject post = new JSONObject(archive.getString(i));
-
-                    if(shouldRender(post)) {
-                        PostItemView item = new PostItemView(getContext(), api, post.toString());
-                        content.addView(item.getSelf());
-                    }
-
-                }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
 }

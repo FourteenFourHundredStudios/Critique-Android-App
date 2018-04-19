@@ -17,7 +17,7 @@ public class BestProfileFragment extends AllProfileFragment {
 
     public boolean shouldRender(JSONObject post) throws JSONException {
 
-        return post.getJSONObject("votes").getInt(Data.username)==1;
+        return post.getJSONObject("votes").getInt(Data.getUsername())==1;
     }
 
 }

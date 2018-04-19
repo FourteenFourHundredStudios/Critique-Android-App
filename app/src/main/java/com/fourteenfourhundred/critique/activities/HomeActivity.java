@@ -22,6 +22,7 @@ import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.FriendsFragment;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.ProfileFragment;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueueFragment;
+import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -40,10 +41,12 @@ public class HomeActivity extends AppCompatActivity {
     ImageView syncIcon;
     Menu menu;
     Animation loadAnimation;
-
+/*
 
 
     public API ProfileApi;
+
+    public API backgroundApi;*/
 
     public int page=0;
 
@@ -52,14 +55,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Find the view pager that will allow the user to swipe between fragments
         viewPager = (ViewPager) findViewById(R.id.pager);
 
 
         viewPager.setOffscreenPageLimit(5);
 
 
-        // Create an adapter that knows which fragment should be shown on each page
         HomePageAdapter adapter = new HomePageAdapter(this, getSupportFragmentManager());
 
         loadAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -67,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
 
-        ProfileApi=new API(this);
+        Data.backgroundApi=new API(this);
 
 
     }

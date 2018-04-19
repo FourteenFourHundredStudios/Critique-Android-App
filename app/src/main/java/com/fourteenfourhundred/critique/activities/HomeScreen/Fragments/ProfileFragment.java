@@ -15,13 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.profile.fragments.BestProfileFragment;
 import com.fourteenfourhundred.critique.profile.fragments.MeProfileFragment;
 import com.fourteenfourhundred.critique.profile.fragments.AllProfileFragment;
+import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -38,6 +41,11 @@ public class ProfileFragment extends LoadOnViewFragment {
 
         api = new API(getActivity());
 
+
+        ((TextView)rootView.findViewById(R.id.profileUsername)).setText(Data.getUsername());
+
+        ((TextView)rootView.findViewById(R.id.scoreText)).setText("Score of "+Data.getScore());
+
         new ApiRequest.GetPatchRequest(api,"self").execute(new Util.Callback() {
             public void onResponse(Bitmap img){
                 ImageView userPatch = (ImageView)rootView.findViewById(R.id.userPatch);
@@ -51,7 +59,6 @@ public class ProfileFragment extends LoadOnViewFragment {
                 viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
                 tablayout.setupWithViewPager(viewPager);
 
-                //ProfileFragment.updateLoadingStages();
 
                 viewPager.setOffscreenPageLimit(5);
                 onFinishedRendering();

@@ -16,7 +16,7 @@ public class MeProfileFragment extends AllProfileFragment {
 
     public boolean shouldRender(JSONObject post) throws JSONException {
 
-        return post.getString("username").equals(Data.username);
+        return post.getString("username").equals(Data.getUsername());
     }
 
 }

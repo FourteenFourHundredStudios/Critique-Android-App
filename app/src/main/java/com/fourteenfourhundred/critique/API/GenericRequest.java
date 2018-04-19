@@ -22,13 +22,14 @@ public class GenericRequest {
 
     public JSONObject getParams() throws JSONException {
         JSONObject params=new JSONObject();
-        params.put("apiKey", Data.apiKey);
+        params.put("apiKey", Data.getApiKey());
         return params;
     }
 
     public String getURL(){
         return null;
     }
+
 
     public void execute(final Util.Callback callback){
         responseListener = new Response.Listener<JSONObject>(){
@@ -39,12 +40,12 @@ public class GenericRequest {
 
         errorListener = new Response.ErrorListener(){
             public void onErrorResponse(VolleyError error) {
-                callback.onError(error.networkResponse.toString());
+                callback.onError(error.getMessage());
             }
         };
 
         try {
-            api.queue.add(new JsonObjectRequest(Request.Method.POST, Data.url+getURL(), getParams(),responseListener,errorListener));
+            api.queue.add(new JsonObjectRequest(Request.Method.POST, Data.getURL()+getURL(), getParams(),responseListener,errorListener));
         }catch (Exception e){
             e.printStackTrace();
         }

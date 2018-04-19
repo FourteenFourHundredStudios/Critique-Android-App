@@ -31,8 +31,8 @@ import java.util.Map;
 public class API {
 
 
-    Activity activity;
-    RequestQueue queue;
+    public Activity activity;
+    public RequestQueue queue;
 
     public API(Activity activity){
         this.activity=activity;
@@ -45,7 +45,7 @@ public class API {
 
 
     public static void changePatch(final Activity me, final Bitmap img, final Util.Callback callback) {
-        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, Data.url + "setPatch",
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, Data.getURL() + "setPatch",
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
@@ -71,7 +71,7 @@ public class API {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("apiKey", Data.apiKey);
+                params.put("apiKey", Data.getApiKey());
                 return params;
             }
 

@@ -1,6 +1,7 @@
 package com.fourteenfourhundred.critique.API;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.Request;
@@ -15,8 +16,50 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ApiRequest{
 
+
+    public static void jsonRequestchain(Util.Callback cb,GenericRequest... requests){
+        jsonRequestchainRecursive(requests,new ArrayList<JSONObject>(),cb);
+    }
+
+
+    public static void jsonRequestchainRecursive(GenericRequest[] requests, final ArrayList<JSONObject> values, final Util.Callback cb){
+
+        final ArrayList<GenericRequest> requestsList = new ArrayList<GenericRequest>(Arrays.asList(requests));
+
+        GenericRequest r = requestsList.remove(0);
+
+        if(requestsList.size()>0) {
+            Log.e("here","not size");
+            r.execute(new Util.Callback() {
+                public void onResponse(final JSONObject obj) {
+
+                    GenericRequest[] requestArray = new GenericRequest[requestsList.size()];
+
+                    values.add(obj);
+
+                    GenericRequest[] p = (GenericRequest[]) requestsList.toArray();
+
+                    ApiRequest.jsonRequestchainRecursive(p,values,cb);
+                }
+            });
+        }else{
+            Log.e("here","size");
+            r.execute(new Util.Callback() {
+                public void onResponse(JSONObject obj) {
+
+                   cb.onResponse(values);
+                }
+            });
+        }
+
+
+    }
 
 
     public static class SendPostRequest  extends GenericRequest{
@@ -54,7 +97,7 @@ public class ApiRequest{
             params.put("type",type);
             params.put("content",content);
             params.put("title",title);
-            params.put("apiKey", Data.apiKey);
+            params.put("apiKey", Data.getApiKey());
             return params;
         }
 
@@ -82,7 +125,7 @@ public class ApiRequest{
         public JSONObject getParams() throws JSONException {
             JSONObject params=new JSONObject();
             params.put("votes",votes);
-            params.put("apiKey", Data.apiKey);
+            params.put("apiKey", Data.getApiKey());
             return params;
         }
 
@@ -113,7 +156,7 @@ public class ApiRequest{
             JSONObject params=new JSONObject();
             params.put("page",page);
             params.put("count",count);
-            params.put("apiKey", Data.apiKey);
+            params.put("apiKey", Data.getApiKey());
             return params;
         }
 
@@ -177,13 +220,39 @@ public class ApiRequest{
         public JSONObject getParams() throws JSONException {
             JSONObject params=new JSONObject();
             params.put("user",username);
-            params.put("apiKey", Data.apiKey);
+            params.put("apiKey", Data.getApiKey());
             return params;
         }
 
         @Override
         public String getURL() {
             return "follow";
+        }
+
+    }
+
+    public static class LoginRequest extends GenericRequest{
+
+        public String username;
+        public String password;
+
+        public LoginRequest(API api,String username,String password) {
+            super(api);
+            this.username=username;
+            this.password=password;
+        }
+
+        @Override
+        public JSONObject getParams() throws JSONException {
+            JSONObject params=new JSONObject();
+            params.put("username",username);
+            params.put("password",password);
+            return params;
+        }
+
+        @Override
+        public String getURL() {
+            return "login";
         }
 
     }
@@ -201,7 +270,7 @@ public class ApiRequest{
 
         @Override
         public String getURL() {
-            return "getPatch/"+Data.apiKey+"/"+username;
+            return "getPatch/"+Data.getApiKey()+"/"+username;
         }
 
         public void execute(final Util.Callback callback){
@@ -213,12 +282,14 @@ public class ApiRequest{
 
             errorListener = new Response.ErrorListener(){
                 public void onErrorResponse(VolleyError error) {
-                    callback.onError(error.networkResponse.toString());
+                    callback.onError(error.getMessage());
+
+                    if(Data.isDebugMode())Util.showDialog(api.activity,error.getMessage());
                 }
             };
 
             try {
-                api.queue.add(new ImageRequest( Data.url+getURL(),responseListener, 0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,errorListener));
+                api.queue.add(new ImageRequest( Data.getURL()+getURL(),responseListener, 0, 0, ImageView.ScaleType.CENTER_CROP, Bitmap.Config.RGB_565,errorListener));
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -227,6 +298,8 @@ public class ApiRequest{
 
 
     }
+
+
 
 
 

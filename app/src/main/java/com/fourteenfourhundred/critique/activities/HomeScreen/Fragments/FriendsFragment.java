@@ -1,8 +1,10 @@
 package com.fourteenfourhundred.critique.activities.HomeScreen.Fragments;
 
+
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.activities.HomeActivity;
+import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -34,7 +37,7 @@ import java.util.List;
 import static com.fourteenfourhundred.critique.critique.R.layout.fragment_friends;
 
 
-public class FriendsFragment extends LoadOnViewFragment {
+public class FriendsFragment extends Fragment {
 
     JSONObject mutuals[];
     ArrayAdapter<JSONObject> adapter;
@@ -42,6 +45,7 @@ public class FriendsFragment extends LoadOnViewFragment {
     boolean isEmpty=true;
     public API api;
 
+    public View rootView;
 
     RelativeLayout content;
 
@@ -57,47 +61,46 @@ public class FriendsFragment extends LoadOnViewFragment {
     }
 
 
-    public void onFinishedRendering(){
-        super.onFinishedRendering();
-
-    }
 
     @Override
-    public void setupFragment() {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        api=new API(getActivity());
+        rootView = inflater.inflate(getLayout(), container, false);
 
-        new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
-            public void onResponse(JSONObject response) {
-                try {
-                    if(response.get("status").equals("ok")){
-                        final JSONArray mutualNames = new JSONArray(response.get("mutuals").toString());
+        content = rootView.findViewById(R.id.home_fragment_container);
 
-                        mutuals= new JSONObject[mutualNames.length()];
+        setupListview();
 
 
-                        for(int i=0;i<mutualNames.length();i++){
-                            mutuals[i]=new JSONObject(mutualNames.get(i).toString());
-                        }
-
-                        listView = (ListView) rootView.findViewById(R.id.mutualsListFriends);
-
-                        adapter = getListAdapter(new ArrayList<JSONObject>(Arrays.asList(mutuals)));
-                        listView.setAdapter(adapter);
-                        listClickHandler();
-
-                        onFinishedRendering();
+        return rootView;
+    }
 
 
-                    }else{
-                        Util.showDialog(getActivity(),response.get("message").toString());
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+    public void setupListview() {
+
+
+        api=Data.backgroundApi;
+
+        try {
+
+            mutuals = new JSONObject[Data.getMutuals().length()];
+
+
+            for (int i = 0; i < Data.getMutuals().length(); i++) {
+                mutuals[i] = new JSONObject(Data.getMutuals().get(i).toString());
             }
-        });
+
+            listView = (ListView) rootView.findViewById(R.id.mutualsListFriends);
+
+            adapter = getListAdapter(new ArrayList<JSONObject>(Arrays.asList(mutuals)));
+            listView.setAdapter(adapter);
+            listClickHandler();
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
 
