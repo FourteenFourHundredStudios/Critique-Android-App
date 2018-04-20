@@ -26,15 +26,14 @@ public class ComposeActivity extends AppCompatActivity {
     String content;
     //rename to activity
     public API api;
+    public String type="text";
+    public String linkURL="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
         api=new API(this);
-        /*
-        SearchView s = findViewById(R.id.postTitle);
-        s.setQueryHint("Post title");*/
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_TITLE);
 
@@ -63,19 +62,23 @@ public class ComposeActivity extends AppCompatActivity {
 
             try {
 
-            //    Log.e("ye",data.getStringExtra("selected"));
 
-                new ApiRequest.SendPostRequest(api,new JSONArray(data.getStringExtra("selected")), "text", title, content).execute( new Util.Callback() {
+                title= ((EditText)findViewById(R.id.postTitle)).getText().toString();
+
+                if(type.equals("text")){
+                    content= ((EditText)findViewById(R.id.postContent)).getText().toString();
+                }else if(type.equals("link")){
+                    content=linkURL;
+                }
+
+                new ApiRequest.SendPostRequest(api,new JSONArray(data.getStringExtra("selected")), type, title, content).execute( new Util.Callback() {
                     public void onResponse(JSONObject response) {
                         try {
 
                             String status = response.getString("status");
                             if (status.equals("error")) {
                                 String msg = response.getString("message");
-                                Log.e("ERROR",msg);
-                                //Util.showDialog(ComposeActivity.this, msg);
                             } else {
-                                //setResult(2);
                                 finish();
                             }
 
@@ -95,27 +98,37 @@ public class ComposeActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
 
-        //Util.showDialog(this,"here?");
 
         finish();
 
         return false;
     }
 
-    public void createPost(){
-
+    public void selectMutuals(){
         Intent intent = new Intent(getApplicationContext(), SelectMutualsActivity.class);
-        //intent.putExtra("title", title);
-        //intent.putExtra("content", content);
-        content= ((EditText)findViewById(R.id.postContent)).getText().toString();
-        title= ((EditText)findViewById(R.id.postTitle)).getText().toString();
+
         startActivityForResult(intent,0);
     }
+
+    public void selectLink(){
+        Util.showInputDialog(this,"Website URL",new Util.Callback(){
+            public void onResponse(String s){
+                type="link";
+                linkURL=s;
+                selectMutuals();
+            }
+        });
+    }
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sendButton:
-                createPost();
+                selectMutuals();
+                break;
+            case R.id.sendLinkButton:
+                selectLink();
+
                 break;
             case android.R.id.home:
                 onBackPressed();

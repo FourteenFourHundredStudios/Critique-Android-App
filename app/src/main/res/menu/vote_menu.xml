@@ -19,8 +19,14 @@
     -->
 
     <item
+        android:id="@+id/sendLinkButton"
+        android:icon="@drawable/send_link"
+        android:title="send"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/sendButton"
-        android:icon="@drawable/send_icon"
+        android:icon="@drawable/send_icon_v2"
         android:title="send"
         app:showAsAction="always" />
 

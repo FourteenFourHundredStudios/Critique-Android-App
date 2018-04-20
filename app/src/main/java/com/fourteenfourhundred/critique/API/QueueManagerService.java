@@ -9,6 +9,7 @@ import android.util.Log;
 import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.views.EmptyView;
+import com.fourteenfourhundred.critique.views.LinkPostView;
 import com.fourteenfourhundred.critique.views.PostView;
 
 import org.json.JSONArray;
@@ -32,6 +33,8 @@ public class QueueManagerService {
 
     public boolean isVoting=false;
 
+    int t=1;
+
     public API api;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -45,17 +48,41 @@ public class QueueManagerService {
 
 
 
-                api=new API(activity);
+        api=new API(activity);
 
-                sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-                editor = sharedPref.edit();
+        sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
 
-                queueInit();
+        queueInit();
 
 
 
 
     }
+
+    public void addToQueue(String postData){
+
+        try {
+            JSONObject postJson = new JSONObject(postData);
+            PostView post=null;
+
+            switch (postJson.getString("type")){
+                case "text":
+                    post = new PostView(activity,api,postJson.toString());
+                    break;
+
+                case "link":
+                    post = new LinkPostView(activity,api,postJson.toString());
+                    break;
+            }
+
+
+            queue.add(post);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public void queueInit(){
 
@@ -78,9 +105,10 @@ public class QueueManagerService {
 
                 votes=new JSONArray(sharedPref.getString("votes", "[]"));
                 for(int i=0;i<j.length();i++){
-                    final PostView post = new PostView(activity,api,j.get(i).toString());
+                    //final PostView post = new PostView(activity,api,j.get(i).toString());
 
-                    queue.add(post);
+                    //queue.add(post);
+                    addToQueue(j.get(i).toString());
 
                 }
                 queueFragment.forcePostRender(currentView,new Util.Callback(){
@@ -99,7 +127,9 @@ public class QueueManagerService {
 
 
     public void loadPostsIntoQue(final Util.Callback callback){
-
+        //System.out.println((t/t));
+        //t--;
+        Log.e("from here","from here");
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -112,10 +142,10 @@ public class QueueManagerService {
                                 queEmpty = (posts.length() == 0);
                                 for (int i = 0; i < posts.length(); i++) {
                                     String postData = posts.get(i).toString();
-                                    final PostView post = new PostView(activity, api,postData);
+                                    //final PostView post = new PostView(activity, api,postData);
                                     //queueFragment..add(post.getSelf());
-                                    queue.add(post);
-
+                                    //queue.add(post);
+                                    addToQueue(postData);
                                 }
                                 saveQue();
                                 if (callback != null) callback.onFinished();
@@ -148,6 +178,7 @@ public class QueueManagerService {
                         if (!response.getString("status").equals("error")) {
 
                             if(loadingQue) {
+                                //Log.e("HERE","HERE");
                                 loadPostsIntoQue(new Util.Callback() {
                                     @Override
                                     public void onFinished() {
@@ -195,23 +226,23 @@ public class QueueManagerService {
     }
 
     public void checkForNewPosts(){
-        loadPostsIntoQue(new Util.Callback() {
-            @Override
-            public void onFinished() {
-                queueFragment.setVoteLock(false);
-                isVoting = false;
+            loadPostsIntoQue(new Util.Callback() {
+                @Override
+                public void onFinished() {
+                    queueFragment.setVoteLock(false);
+                    isVoting = false;
 
-                if(queEmpty){
-                    queueFragment.forcePostRender(new EmptyView(context,queueFragment));
+                    if (queEmpty) {
+                        queueFragment.forcePostRender(new EmptyView(context, queueFragment));
 
-                }else{
-                    PostView view = queue.remove(0);
-                    currentView=view;
-                    queueFragment.forcePostRender(view);
+                    } else {
+                        PostView view = queue.remove(0);
+                        currentView = view;
+                        queueFragment.forcePostRender(view);
+                    }
+
                 }
-
-            }
-        });
+            });
 
     }
 

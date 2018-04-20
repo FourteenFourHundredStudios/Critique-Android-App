@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -59,6 +61,10 @@ public class Util {
         }
 
         public void onResponse(Bitmap image){
+
+        }
+
+        public void onResponse(String response){
 
         }
 
@@ -120,6 +126,33 @@ public class Util {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+    public static void showInputDialog(Activity activity, String msg, final Callback callback){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(msg);
+
+        final EditText input = new EditText(activity);
+        //input.setInputType(InputType.TYPE_CLASS_TEXT );
+        builder.setView(input);
+
+        
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callback.onResponse(input.getText().toString());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
 
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
