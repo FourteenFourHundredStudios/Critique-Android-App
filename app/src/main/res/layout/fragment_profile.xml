@@ -5,7 +5,7 @@
     android:background="#0D000000"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    tools:context="com.fourteenfourhundred.critique.activities.HomeActivity">
+    tools:context="com.fourteenfourhundred.critique.UI.Activities.HomeActivity">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

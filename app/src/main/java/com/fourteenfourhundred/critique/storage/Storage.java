@@ -38,7 +38,7 @@ public class Storage {
 
     public static boolean isUserData(Context context){
         File file = context.getFileStreamPath("userdata");
-        Log.e("ff",file.exists()+"");
+       // file.delete();
         return file.exists();
     }
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#0D000000"
 
-    tools:context="com.fourteenfourhundred.critique.activities.HomeActivity">
+    tools:context="com.fourteenfourhundred.critique.UI.Activities.HomeActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/home_fragment_container"

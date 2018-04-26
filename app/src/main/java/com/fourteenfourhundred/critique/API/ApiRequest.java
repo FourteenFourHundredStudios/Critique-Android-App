@@ -163,7 +163,6 @@ public class ApiRequest{
     }
 
 
-
     public static class GetQueRequest extends GenericRequest{
 
         public GetQueRequest(API api) {
@@ -173,6 +172,20 @@ public class ApiRequest{
         @Override
         public String getURL() {
             return "getPosts";
+        }
+
+    }
+
+
+    public static class ResetRequest extends GenericRequest{
+
+        public ResetRequest(API api) {
+            super(api);
+        }
+
+        @Override
+        public String getURL() {
+            return "reset";
         }
 
     }

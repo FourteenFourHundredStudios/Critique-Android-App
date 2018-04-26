@@ -1,13 +1,9 @@
 package com.fourteenfourhundred.critique.storage;
 
 import android.util.Log;
-import android.widget.ListView;
 
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
-import com.fourteenfourhundred.critique.activities.HomeActivity;
-import com.fourteenfourhundred.critique.activities.SelectMutualsActivity;
-import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.util.SerializableJSONArray;
 import com.fourteenfourhundred.critique.util.Util;
 

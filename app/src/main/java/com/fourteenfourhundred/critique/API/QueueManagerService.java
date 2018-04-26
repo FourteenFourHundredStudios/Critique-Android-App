@@ -6,11 +6,11 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.fourteenfourhundred.critique.activities.HomeScreen.Fragments.QueueFragment;
+import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.util.Util;
-import com.fourteenfourhundred.critique.views.EmptyView;
-import com.fourteenfourhundred.critique.views.LinkPostView;
-import com.fourteenfourhundred.critique.views.PostView;
+import com.fourteenfourhundred.critique.UI.Views.EmptyView;
+import com.fourteenfourhundred.critique.UI.Views.LinkPostView;
+import com.fourteenfourhundred.critique.UI.Views.PostView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
