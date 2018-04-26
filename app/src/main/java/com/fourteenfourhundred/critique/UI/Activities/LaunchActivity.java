@@ -37,20 +37,7 @@ public class LaunchActivity extends AppCompatActivity {
 
 
         if(nuke){
-            Log.e("nuke","nuking...");
-            new ApiRequest.ResetRequest(new API(this)).execute(new Util.Callback() {
-                @Override
-                public void onResponse(JSONObject e){
-                    Log.e("nuke","server reset...");
-                    File file = getApplication().getFileStreamPath("userdata");
-                    if(file.exists())file.delete();
-                    SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-                    sharedPref.edit().clear();
-                    Log.e("nuke","files deleted...");
-                    System.exit(0);
-
-                }
-            });
+            Data.nuke(this);
         }
 
 

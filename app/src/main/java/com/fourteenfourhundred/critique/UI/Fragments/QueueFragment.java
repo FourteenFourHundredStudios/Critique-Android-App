@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.fourteenfourhundred.critique.API.QueueManagerService;
 import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
@@ -24,14 +25,15 @@ import com.fourteenfourhundred.critique.UI.Views.PostView;
 import com.fourteenfourhundred.critique.critique.R;
 
 
-public class QueueFragment extends Fragment implements View.OnClickListener {
+public class QueueFragment extends Fragment{
 
     public View rootView;
     public ImageButton voteGood, voteBad;
     public ImageView syncIcon;
-    public OneFluidMotionView frame;
+    public FrameLayout frame;
     public PostView activePost;
     public boolean voteLock=false;
+    public OneFluidMotionView motionView;
 
     public QueueManagerService queue;
 
@@ -47,9 +49,11 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.queue_fragment, container, false);
 
-        frame = (OneFluidMotionView) rootView.findViewById(R.id.post_container);
+        frame = (FrameLayout) rootView.findViewById(R.id.post_container);
 
-        frame.setFluidMotionSelectionListener(new FluidMotionOptions.FluidMotionSelctionListener(){
+        motionView = ((OneFluidMotionView) rootView.findViewById(R.id.motion_view));
+
+        motionView.setFluidMotionSelectionListener(new FluidMotionOptions.FluidMotionSelctionListener(){
             public void onSelection(int selection){
                 switch (selection){
                     case 2:
@@ -81,19 +85,7 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.voteGood:
 
-                //vote(1);
-                return;
-
-            case R.id.voteBad:
-                //vote(0);
-                return;
-        }
-    }
 
 
     public void onPause(){
@@ -188,7 +180,7 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-
+                        //activePost=nextPost;
                     }
 
                     @Override
@@ -202,6 +194,13 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser && motionView!=null)motionView.reset();
+
+    }
+
+
     public void setVoteLock(boolean locked){
         setVoteLock(locked,true);
     }
@@ -209,16 +208,14 @@ public class QueueFragment extends Fragment implements View.OnClickListener {
     public void setVoteLock(boolean locked,boolean showAnimation) {
         if (locked == voteLock ) return;
         voteLock = locked;
-//        voteGood.setEnabled(!locked);
- //       voteBad.setEnabled(!locked);
 
-
-            if (locked) {
-                if(showAnimation) ((HomeActivity) getActivity()).startLoadAnimation();
-
-            } else {
-                ((HomeActivity) getActivity()).stopLoadAnimation();
-            }
+        if (locked) {
+            motionView.setLocked(true);
+            if(showAnimation) ((HomeActivity) getActivity()).startLoadAnimation();
+        } else {
+            ((HomeActivity) getActivity()).stopLoadAnimation();
+            motionView.setLocked(false);
+        }
 
 
 

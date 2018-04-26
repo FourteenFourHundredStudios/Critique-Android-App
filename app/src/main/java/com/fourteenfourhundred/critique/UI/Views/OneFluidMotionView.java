@@ -13,8 +13,10 @@ public class OneFluidMotionView extends FrameLayout {
     int mLastY;
     int lastX;
 
-    public int motionCount=0;
+    //public int motionCount=0;
     boolean canChangeSlection=false;
+
+    boolean locked=false;
 
     public OneFluidMotionView(Context context) {
         super(context);
@@ -33,7 +35,7 @@ public class OneFluidMotionView extends FrameLayout {
             @Override
             public void run() {
                 getChildAt(0).setZ(-10);
-
+                getSubChild().setVisibility(INVISIBLE);
               //  getSubChild().setFluidMotionSelctionListener(onSelction());
 
             }
@@ -56,6 +58,11 @@ public class OneFluidMotionView extends FrameLayout {
     }
 
 
+    public void setLocked(boolean state){
+        //canChangeSlection=state;
+        locked=state;
+    }
+
 
 
 
@@ -71,11 +78,16 @@ public class OneFluidMotionView extends FrameLayout {
     @Override
     public boolean onTouchEvent( MotionEvent event) {
 
+        if(locked)return true;
 
         getSubChild().changeButtonSelection();
 
         int y = (int) event.getY();
+        getSubChild().setVisibility(VISIBLE);
         switch (event.getAction()) {
+
+
+
             // the gesture is released
             case MotionEvent.ACTION_UP:
                 //lastX=(int)event.getX();
@@ -155,9 +167,6 @@ public class OneFluidMotionView extends FrameLayout {
         canChangeSlection=false;
 
 
-        getSubChild().castVote();
-
-
         ValueAnimator animator = ValueAnimator.ofInt(getMainChild().getTop(), 0);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -170,6 +179,15 @@ public class OneFluidMotionView extends FrameLayout {
         });
         animator.setDuration(100);
         animator.start();
+
+
+        getSubChild().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getSubChild().setVisibility(INVISIBLE);
+                getSubChild().castVote();
+            }
+        },110);
 
 
 

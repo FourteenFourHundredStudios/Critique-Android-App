@@ -26,7 +26,10 @@ public class LinkPostView extends PostView {
         try {
 
 
+            //TODO FIX LATER
 
+
+            /*
             LayoutInflater inflater = LayoutInflater.from(context);
             rootView = inflater.inflate(R.layout.old_fragment_que_link, null, false);
 
@@ -37,8 +40,8 @@ public class LinkPostView extends PostView {
             ((WebView) rootView.findViewById(R.id.linkView)).setWebViewClient(new WebViewClient());
             ((WebView) rootView.findViewById(R.id.linkView)).loadUrl(post.getString("content"));
             ((TextView) rootView.findViewById(R.id.postSender)).setText(post.getString("username"));
-          //  ((TextView) rootView.findViewById(R.id.postVoteCount)).setText(post.getString("votes") + " votes");
 
+*/
 
 
             AsyncTask.execute(new Runnable() {

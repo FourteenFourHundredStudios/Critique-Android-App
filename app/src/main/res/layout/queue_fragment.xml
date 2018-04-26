@@ -9,13 +9,18 @@
     <com.fourteenfourhundred.critique.UI.Views.OneFluidMotionView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/post_container"
+        android:id="@+id/motion_view"
         android:layout_alignParentTop="true">
 
 
         <include layout="@layout/vote_options_selector"/>
 
-
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/post_container">
+        </FrameLayout>
 
 
     </com.fourteenfourhundred.critique.UI.Views.OneFluidMotionView>
