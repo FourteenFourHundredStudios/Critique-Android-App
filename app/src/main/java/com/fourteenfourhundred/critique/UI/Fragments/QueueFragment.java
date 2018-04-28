@@ -3,6 +3,7 @@ package com.fourteenfourhundred.critique.UI.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.QueueManagerService;
 import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
 import com.fourteenfourhundred.critique.UI.Views.FluidMotionOptions;
 import com.fourteenfourhundred.critique.UI.Views.OneFluidMotionView;
 import com.fourteenfourhundred.critique.util.AnimationUtil;
+import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.util.Util.Callback;
 import com.fourteenfourhundred.critique.UI.Views.EmptyView;
 import com.fourteenfourhundred.critique.UI.Views.PostView;
@@ -129,6 +132,7 @@ public class QueueFragment extends Fragment{
                             AnimationUtil.fadeOut(activePost.getSelf(),null);
                         }
                         activePost=post;
+                        ((TextView)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title)).setText(activePost.getPostAttribute("title"));
                     }
 
                     @Override
@@ -162,35 +166,7 @@ public class QueueFragment extends Fragment{
             setVoteLock(true,showAnimation);
             return;
         }
-
-        nextPost.getSelf().setVisibility(View.INVISIBLE);
-        frame.addView(nextPost.getSelf());
-
-        nextPost.getSelf().post(new Runnable() {
-            @Override
-            public void run() {
-                AnimationUtil.slideUp(nextPost.getSelf(), new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                        if(activePost!=null){
-                            AnimationUtil.fadeOut(activePost.getSelf(),null);
-                        }
-                        activePost=nextPost;
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        //activePost=nextPost;
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
-            }
-        });
-
+        forcePostRender(nextPost);
 
     }
 

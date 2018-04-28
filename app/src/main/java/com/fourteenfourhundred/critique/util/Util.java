@@ -1,6 +1,7 @@
 package com.fourteenfourhundred.critique.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -114,7 +115,7 @@ public class Util {
     }
 
 
-    public static void showDialog(Activity activity,String msg){
+    public static void showDialog(Context activity, String msg){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(msg)
                 .setCancelable(false)

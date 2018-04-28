@@ -78,9 +78,9 @@ public class FluidMotionOptions extends LinearLayout {
 
         for(int i=0;i<getChildCount();i++){
             if(i==selected){
-                getChildAt(i).setBackgroundColor(manipulateColor(getResources().getColor(R.color.colorAccent), 0.7f));
+                getChildAt(i).setBackgroundColor(manipulateColor(getResources().getColor(R.color.colorPrimaryDark), 0.7f));
             }else{
-                getChildAt(i).setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                getChildAt(i).setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             }
         }
 

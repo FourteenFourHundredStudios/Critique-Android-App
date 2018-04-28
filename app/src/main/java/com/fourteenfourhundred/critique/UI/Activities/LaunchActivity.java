@@ -22,7 +22,7 @@ import java.io.File;
 
 public class LaunchActivity extends AppCompatActivity {
 
-    boolean nuke=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +36,6 @@ public class LaunchActivity extends AppCompatActivity {
     public void initApp(){
 
 
-        if(nuke){
-            Data.nuke(this);
-        }
 
 
         Class launch=HomeActivity.class;
@@ -53,8 +50,10 @@ public class LaunchActivity extends AppCompatActivity {
         }else{
             launch=LoginActivity.class;
         }
+
         Intent intent = new Intent(getApplicationContext(), launch);
         startActivity(intent);
+        finish();
     }
 
 }

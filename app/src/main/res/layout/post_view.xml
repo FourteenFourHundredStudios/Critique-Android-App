@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:padding="10dp"
 
-    android:background="@color/colorPrimary"
+    android:background="@color/colorSecondary"
     android:layout_height="match_parent">
 
 
@@ -53,20 +53,19 @@
 
             <TextView
                 android:id="@+id/username"
-                android:text="Marc"
+                android:layout_width="match_parent"
 
-                android:textStyle="bold|italic"
+                android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
 
 
-                android:textColor="@color/colorAccent"
+                android:layout_weight="40"
 
-                android:letterSpacing=".05"
+
                 android:autoSizeTextType="uniform"
 
-                android:layout_weight="40"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:text="Marc"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <TextView
                 android:text="Sent on 07/07/99 at 5:56"
@@ -85,7 +84,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/colorAccent"
+         />
 
 
     <TextView
@@ -103,11 +103,13 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/colorAccent"
+       />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:weightSum="4"
+
         android:layout_height="wrap_content">
 
         <TextView
@@ -115,8 +117,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
+            android:textColor="@color/colorPrimary"
             android:text="Show More"
-            android:textColor="@color/colorAccent" />
+             />
 
         <TextView
             android:layout_width="0dp"
@@ -124,7 +127,8 @@
             android:layout_marginLeft="10dp"
             android:text="Reshare"
             android:layout_weight="1"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorPrimary"
+            />
 
         <Space
             android:layout_width="0dp"
@@ -138,7 +142,8 @@
             android:layout_marginLeft="10dp"
             android:text="0 Votes"
             android:layout_weight="1"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorPrimary"
+            />
 
 
     </LinearLayout>

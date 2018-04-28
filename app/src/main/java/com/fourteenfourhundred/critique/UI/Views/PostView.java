@@ -65,6 +65,19 @@ public class PostView extends View{
     }
 
 
+    public String getPostAttribute(String attr){
+
+        try {
+            return post.getString(attr);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
     public View getSelf(){
         return rootView;
     }

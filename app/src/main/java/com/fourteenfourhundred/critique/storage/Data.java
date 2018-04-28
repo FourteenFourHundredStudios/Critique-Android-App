@@ -27,8 +27,10 @@ public class Data {
     //private static final long serialVersionUID = 1L;
     public static API backgroundApi;
 
-    public static String url="http://75.102.236.188:5000/";
-    //public static String url="http://10.0.0.4:5000/";
+    //public static String url="http://75.102.236.188:5000/";
+    public static String url="http://10.0.0.4:5000/";
+
+    public static boolean debug=true;
 
     public static class DataSerializer implements Serializable{
         public String apiKey="apples!";
@@ -87,20 +89,22 @@ public class Data {
     }
 
     public static void nuke(final Activity me){
-        Log.e("nuke","nuking...");
-        new ApiRequest.ResetRequest(new API(me)).execute(new Util.Callback() {
-            @Override
-            public void onResponse(JSONObject e){
-                Log.e("nuke","server reset...");
-                File file = me.getApplication().getFileStreamPath("userdata");
-                if(file.exists())file.delete();
-                SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
-                sharedPref.edit().clear();
-                Log.e("nuke","files deleted...");
-                System.exit(0);
+        if(debug) {
+            Log.e("nuke", "nuking...");
+            new ApiRequest.ResetRequest(new API(me)).execute(new Util.Callback() {
+                @Override
+                public void onResponse(JSONObject e) {
+                    Log.e("nuke", "server reset...");
+                    File file = me.getApplication().getFileStreamPath("userdata");
+                    if (file.exists()) file.delete();
+                    SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
+                    sharedPref.edit().clear();
+                    Log.e("nuke", "files deleted...");
+                    //System.exit(0);
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public static void loadBackgroundData(final API api){

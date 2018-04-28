@@ -9,19 +9,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.UI.Fragments.FriendsFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.ProfileFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
+import com.fourteenfourhundred.critique.UI.Views.ActionBarView;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
@@ -41,18 +45,17 @@ public class HomeActivity extends AppCompatActivity {
     ImageView syncIcon;
     Menu menu;
     Animation loadAnimation;
-/*
 
-
-    public API ProfileApi;
-
-    public API backgroundApi;*/
+    ActionBarView actionBar;
 
     public int page=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_home);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -71,6 +74,46 @@ public class HomeActivity extends AppCompatActivity {
         Data.backgroundApi=new API(this);
 
 
+
+
+
+
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        actionBar=new ActionBarView(getApplicationContext());
+
+
+
+        actionBar.getView(0).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+
+                //Util.showDialog(HomeActivity.this,"NUKING!");
+
+                if(Data.debug) {
+                    Data.nuke(HomeActivity.this);
+
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+
+                    finish();
+                }
+
+                return false;
+            }
+        });
+
+       changeActionBar(0);
+
+
+
+    }
+
+
+    public void changeActionBar(int position){
+        getSupportActionBar().setCustomView(actionBar.getView(position));
     }
 
 
@@ -82,10 +125,11 @@ public class HomeActivity extends AppCompatActivity {
 
             public void onPageSelected(int position) {
 
-                if(position!=0){
-                    //Util.showDialog(HomeActivity.this,"OK!");
-                    queue.saveState();
-                }
+                if(position!=0)queue.saveState();
+
+
+                changeActionBar(position);
+
             }
         });
     }
@@ -93,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void stopLoadAnimation() {
         if(syncIcon==null)return;
-        syncIcon.setVisibility(View.INVISIBLE);
+        syncIcon.setVisibility(View.GONE);
         loadAnimation.cancel();
 
 
@@ -103,6 +147,7 @@ public class HomeActivity extends AppCompatActivity {
         if(menu!=null || syncIcon!=null) {
 
             syncIcon.setVisibility(View.VISIBLE);
+
 
 
             loadAnimation.setRepeatCount(Animation.INFINITE);
@@ -118,7 +163,7 @@ public class HomeActivity extends AppCompatActivity {
         this.menu=menu;
 
         syncIcon = (ImageView) menu.findItem(R.id.action_syncing).getActionView();
-        //syncIcon.setVisibility(View.INVISIBLE);
+        syncIcon.setVisibility(View.INVISIBLE);
         syncIcon.setImageResource(R.drawable.loading_symbol);
 
         return true;
@@ -230,8 +275,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
 }

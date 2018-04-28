@@ -12,7 +12,7 @@ public class EmptyView extends PostView {
     SwipeRefreshLayout swipeRefreshLayout;
     QueueFragment queue;
     public EmptyView(Context context, QueueFragment queue) {
-        super(context,null ,"{}");
+        super(context,null ,"{\"title\":\"oh no! There\'s nothing here :(\"}");
         this.queue=queue;
     }
 
