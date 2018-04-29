@@ -15,14 +15,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.UI.Fragments.FriendsFragment;
+import com.fourteenfourhundred.critique.UI.Fragments.MutualsFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.ProfileFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.UI.Views.ActionBarView;
@@ -259,7 +257,7 @@ public class HomeActivity extends AppCompatActivity {
                 case 0:
                     return queue;
                 case 1:
-                    return new FriendsFragment();
+                    return new MutualsFragment();
                 case 2:
                     return new ProfileFragment();
                 default:

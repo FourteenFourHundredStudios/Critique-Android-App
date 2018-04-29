@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class FriendsFragment extends Fragment {
+public class MutualsFragment extends Fragment {
 
     JSONObject mutuals[];
     ArrayAdapter<JSONObject> adapter;
@@ -48,7 +48,7 @@ public class FriendsFragment extends Fragment {
 
     ProgressBar loading;
 
-    public FriendsFragment(){
+    public MutualsFragment(){
 
     }
 
