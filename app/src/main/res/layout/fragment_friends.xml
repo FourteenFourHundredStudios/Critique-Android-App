@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
 
+        <!--
         <RelativeLayout
 
             android:id="@+id/SearchBarHolder"
@@ -34,8 +35,10 @@
                 android:padding="6dp"
                 android:textColor="#FFFFFF" />
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
+
+        <!--
         <ListView
             android:id="@+id/mutualsListFriends"
             android:layout_below="@+id/SearchBarHolder"
@@ -43,6 +46,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+        -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mutualsList"
+
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
 
     </RelativeLayout>
 

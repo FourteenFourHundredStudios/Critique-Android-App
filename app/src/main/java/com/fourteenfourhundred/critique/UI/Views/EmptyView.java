@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.critique.R;
 
+import org.json.JSONObject;
+
 public class EmptyView extends PostView {
 
     SwipeRefreshLayout swipeRefreshLayout;
@@ -14,6 +16,11 @@ public class EmptyView extends PostView {
     public EmptyView(Context context, QueueFragment queue) {
         super(context,null ,"{\"title\":\"oh no! There\'s nothing here :(\"}");
         this.queue=queue;
+    }
+
+    @Override
+    public JSONObject getPost() {
+        return new JSONObject();
     }
 
     public void stopLoad(){

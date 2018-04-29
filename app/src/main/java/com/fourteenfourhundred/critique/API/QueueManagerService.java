@@ -33,6 +33,8 @@ public class QueueManagerService {
 
     public boolean isVoting=false;
 
+    public PostView activePost=null;
+
     int t=1;
 
     public API api;
@@ -92,7 +94,8 @@ public class QueueManagerService {
         queueFragment.setVoteLock(true);
         try{
             JSONArray j=new JSONArray(q);
-            if(j.length()==0){
+            if(j.length()==0 && c==null){
+            //    Util.showDialog(activity,"THIS");
                 loadPostsIntoQue(new Util.Callback(){
                     @Override
                     public void onFinished() {
@@ -129,7 +132,7 @@ public class QueueManagerService {
     public void loadPostsIntoQue(final Util.Callback callback){
         //System.out.println((t/t));
         //t--;
-        Log.e("from here","from here");
+       // Log.e("from here","from here");
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -258,6 +261,9 @@ public class QueueManagerService {
         for (PostView post: queue){
             save.put(post.getPost());
         }
+
+        //
+        // if(currentView!=null)save.put(currentView.getPost());
 
         editor.putString("que", save.toString());
         if(currentView!=null){

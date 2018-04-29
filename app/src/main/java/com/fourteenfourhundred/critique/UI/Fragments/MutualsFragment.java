@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
+import com.fourteenfourhundred.critique.UI.Views.RecycleViewManager;
+import com.fourteenfourhundred.critique.UI.Views.UserAdapter;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
@@ -39,6 +42,9 @@ public class MutualsFragment extends Fragment {
     JSONObject mutuals[];
     ArrayAdapter<JSONObject> adapter;
     ListView listView;
+
+    RecyclerView mutualsList;
+
     boolean isEmpty=true;
     public API api;
 
@@ -67,17 +73,38 @@ public class MutualsFragment extends Fragment {
 
         content = rootView.findViewById(R.id.home_fragment_container);
 
-        setupListview();
+        api=Data.backgroundApi;
+
+        //setupListview();
+        setupRecyclerView();
+
+
 
 
         return rootView;
+    }
+
+    public void setupRecyclerView(){
+
+        try {
+
+
+            mutualsList=(RecyclerView)rootView.findViewById(R.id.mutualsList);
+
+            RecycleViewManager view = new RecycleViewManager(mutualsList, this.getActivity(),new UserAdapter(Data.getMutuals()));
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 
     public void setupListview() {
 
 
-        api=Data.backgroundApi;
+
 
         try {
 
@@ -88,7 +115,7 @@ public class MutualsFragment extends Fragment {
                 mutuals[i] = new JSONObject(Data.getMutuals().get(i).toString());
             }
 
-            listView = (ListView) rootView.findViewById(R.id.mutualsListFriends);
+            listView = (ListView) rootView.findViewById(R.id.mutualsList);
 
             adapter = getListAdapter(new ArrayList<JSONObject>(Arrays.asList(mutuals)));
             listView.setAdapter(adapter);
@@ -101,7 +128,7 @@ public class MutualsFragment extends Fragment {
 
 
 
-        onType();
+       // onType();
     }
 
     public ArrayAdapter<JSONObject> getListAdapter(ArrayList<JSONObject> lst) {
@@ -198,6 +225,8 @@ public class MutualsFragment extends Fragment {
         }
     }
 
+
+    /*
     public void onType(){
         EditText yourtext = (EditText)rootView.findViewById(R.id.mutualSearch);
         yourtext.addTextChangedListener(new TextWatcher() {
@@ -247,6 +276,6 @@ public class MutualsFragment extends Fragment {
 
         });
     }
-
+*/
 
 }

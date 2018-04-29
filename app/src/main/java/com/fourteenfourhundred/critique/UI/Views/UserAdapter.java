@@ -47,7 +47,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         try {
             holder.username.setText(users.getJSONObject(position).getString("username"));
-            holder.points.setText(users.getJSONObject(position).getString("points"));
+            holder.points.setText(users.getJSONObject(position).getString("score"));
         } catch (Exception e) {
             e.printStackTrace();
         }
