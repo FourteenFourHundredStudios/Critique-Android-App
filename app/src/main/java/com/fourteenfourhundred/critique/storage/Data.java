@@ -29,6 +29,8 @@ public class Data {
 
     //public static String url="http://75.102.236.188:5000/";
     public static String url="http://10.0.0.4:5000/";
+    //public static String url="http://75.102.237.215:5000/";
+
 
     public static boolean debug=true;
 

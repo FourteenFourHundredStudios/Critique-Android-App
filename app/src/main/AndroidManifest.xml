@@ -30,7 +30,8 @@
         <activity
             android:name="com.fourteenfourhundred.critique.UI.Activities.SelectMutualsActivity"
             android:label="@string/title_activity_mutuals" />
-        <activity android:name="com.fourteenfourhundred.critique.UI.Activities.LoginActivity"></activity>
+        <activity android:name="com.fourteenfourhundred.critique.UI.Activities.LoginActivity" />
+        <activity android:name="com.fourteenfourhundred.critique.UI.Activities.MutualFinderActivity"></activity>
     </application>
 
 </manifest>

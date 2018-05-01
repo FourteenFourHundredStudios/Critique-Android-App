@@ -59,7 +59,8 @@ public class GenericRequest {
 
         try {
             api.queue.add(new JsonObjectRequest(Request.Method.POST, Data.getURL()+getURL(), getParams(),responseListener,errorListener));
-        }catch (Exception e){
+        }
+        catch (Exception e){
             e.printStackTrace();
         }
 

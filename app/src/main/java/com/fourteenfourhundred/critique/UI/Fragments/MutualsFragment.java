@@ -1,7 +1,9 @@
 package com.fourteenfourhundred.critique.UI.Fragments;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,18 +15,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
 import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
+import com.fourteenfourhundred.critique.UI.Activities.MutualFinderActivity;
+import com.fourteenfourhundred.critique.UI.Views.ActionBarView;
 import com.fourteenfourhundred.critique.UI.Views.RecycleViewManager;
+import com.fourteenfourhundred.critique.UI.Views.User;
 import com.fourteenfourhundred.critique.UI.Views.UserAdapter;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
@@ -77,7 +84,7 @@ public class MutualsFragment extends Fragment {
 
         //setupListview();
         setupRecyclerView();
-
+        setupViews();
 
 
 
@@ -91,12 +98,31 @@ public class MutualsFragment extends Fragment {
 
             mutualsList=(RecyclerView)rootView.findViewById(R.id.mutualsList);
 
-            RecycleViewManager view = new RecycleViewManager(mutualsList, this.getActivity(),new UserAdapter(Data.getMutuals()));
+            RecycleViewManager view = new RecycleViewManager(mutualsList, this.getActivity(),new UserAdapter(User.jsonToUserList(Data.getMutuals())));
 
 
         }catch (Exception e){
             e.printStackTrace();
         }
+
+    }
+
+    public void setupViews(){
+
+        final HomeActivity home=(HomeActivity)getActivity();
+
+        final View actionBarView= (home.actionBar.getView(1));
+
+        actionBarView.findViewById(R.id.search_action_bar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getActivity().getApplicationContext(), MutualFinderActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
 
     }
 

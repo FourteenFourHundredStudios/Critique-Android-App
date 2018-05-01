@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     Menu menu;
     Animation loadAnimation;
 
-    ActionBarView actionBar;
+    public ActionBarView actionBar;
 
     public int page=0;
 

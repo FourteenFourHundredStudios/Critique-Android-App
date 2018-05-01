@@ -19,6 +19,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fourteenfourhundred.critique.critique.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -113,7 +114,6 @@ public class Util {
 
         return temp;
     }
-
 
     public static void showDialog(Context activity, String msg){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);

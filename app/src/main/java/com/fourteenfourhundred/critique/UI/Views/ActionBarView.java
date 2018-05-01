@@ -39,6 +39,7 @@ public class ActionBarView extends View {
                     break;
             }
             rootView[position] = inflater.inflate(viewId, null, false);
+
         }
 
 

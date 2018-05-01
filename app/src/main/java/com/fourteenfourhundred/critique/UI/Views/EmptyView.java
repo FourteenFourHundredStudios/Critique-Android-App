@@ -14,7 +14,7 @@ public class EmptyView extends PostView {
     SwipeRefreshLayout swipeRefreshLayout;
     QueueFragment queue;
     public EmptyView(Context context, QueueFragment queue) {
-        super(context,null ,"{\"title\":\"oh no! There\'s nothing here :(\"}");
+        super(context,null ,"{\"title\":\"Whoops!\"}");
         this.queue=queue;
     }
 
