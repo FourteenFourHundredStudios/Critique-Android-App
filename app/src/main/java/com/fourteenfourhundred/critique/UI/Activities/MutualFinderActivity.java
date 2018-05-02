@@ -65,7 +65,7 @@ public class MutualFinderActivity extends AppCompatActivity {
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         queryTyped(newText);
-                        return false;
+                        return true;
                     }
 
                 });

@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-        actionBar=new ActionBarView(getApplicationContext());
+        actionBar=new ActionBarView(getApplicationContext(),this);
 
 
 

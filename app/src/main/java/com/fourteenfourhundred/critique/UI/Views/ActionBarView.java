@@ -1,10 +1,17 @@
 package com.fourteenfourhundred.critique.UI.Views;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionBarContainer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.fourteenfourhundred.critique.UI.Activities.MutualFinderActivity;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.util.Util;
 
@@ -12,13 +19,20 @@ public class ActionBarView extends View {
 
     View[] rootView=new View[3];
     LayoutInflater inflater;
+    AppCompatActivity activity;
+
+    public static final int HOME=0;
+    public static final int SEARCH=1;
+    public static final int PROFILE=2;
 
 
-    public ActionBarView(Context context) {
+
+    public ActionBarView(Context context,AppCompatActivity activity) {
         super(context);
+        this.activity=activity;
 
         inflater = LayoutInflater.from(context);
-        rootView[0] = inflater.inflate(R.layout.action_bar_post, null, false);
+        rootView[HOME] = inflater.inflate(R.layout.action_bar_post, null, false);
 
     }
 
@@ -31,14 +45,16 @@ public class ActionBarView extends View {
             //there's no case for rootView[0] because rootView[0] is inflated when the class is created
             int viewId=0;
             switch (position){
-                case 1:
+                case SEARCH:
                     viewId=R.layout.action_bar_search;
                     break;
-                case 2:
+                case PROFILE:
                     viewId=R.layout.action_bar_search;
                     break;
             }
             rootView[position] = inflater.inflate(viewId, null, false);
+            initBar(position);
+
 
         }
 
@@ -48,6 +64,26 @@ public class ActionBarView extends View {
     }
 
 
+    public void initBar(final int position){
+
+        rootView[position].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                switch (position) {
+                    case SEARCH:
+                        Intent intent = new Intent(getContext().getApplicationContext(), MutualFinderActivity.class);
+                        getContext().startActivity(intent);
+                        break;
+                }
+
+
+
+
+            }
+        });
+
+    }
 
 
     public boolean onTouchEvent(MotionEvent e){

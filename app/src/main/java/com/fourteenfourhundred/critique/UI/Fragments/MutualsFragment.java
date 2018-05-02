@@ -111,9 +111,10 @@ public class MutualsFragment extends Fragment {
 
         final HomeActivity home=(HomeActivity)getActivity();
 
-        final View actionBarView= (home.actionBar.getView(1));
+        //final View actionBarView= (home.actionBar.getView(1));
 
-        actionBarView.findViewById(R.id.search_action_bar).setOnClickListener(new View.OnClickListener() {
+        /*
+        actionBarView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -122,7 +123,7 @@ public class MutualsFragment extends Fragment {
 
 
             }
-        });
+        });*/
 
     }
 

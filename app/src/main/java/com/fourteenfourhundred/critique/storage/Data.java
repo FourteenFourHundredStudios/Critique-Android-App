@@ -27,9 +27,9 @@ public class Data {
     //private static final long serialVersionUID = 1L;
     public static API backgroundApi;
 
-    public static String url="http://75.102.199.218:5000/";
+    //public static String url="http://75.102.199.218:5000/";
     //public static String url="http://10.0.0.4:5000/";
-    //public static String url="http://75.102.237.215:5000/";
+    public static String url="http://75.102.242.206:5000/";
 
 
     public static boolean debug=true;
@@ -76,6 +76,17 @@ public class Data {
 
     public static void setUsername(String username){
         dataSerializer.username=username;
+    }
+
+    public static boolean isFollowing(String username){
+        try {
+            for (int i = 0; i < dataSerializer.mutuals.length(); i++) {
+                if (dataSerializer.mutuals.getJSONObject(i).getString("username").equals(username)) return true;
+            }
+        }catch (Exception e){
+
+        }
+        return false;
     }
 
     public static void setMutuals(JSONArray mutuals){

@@ -1,6 +1,7 @@
 package com.fourteenfourhundred.critique.UI.Views;
 
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
@@ -20,11 +23,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     private List<User> users;
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    public static class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
 
         public View view;
         public TextView username;
@@ -32,7 +37,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         public ImageView profPic;
 
         public Button mutualButton;
-        public Button notMutualButton;
+        public Button pendingButton;
+        public Button followButton;
+        public ProgressBar buttonProgress;
+
+        public String usernameVal="";
 
         public ViewHolder(View view) {
             super(view);
@@ -41,12 +50,53 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             this.points = view.findViewById(R.id.points);
             this.profPic = view.findViewById(R.id.profPic);
             this.mutualButton=view.findViewById(R.id.mutualButton);
-            this.notMutualButton=view.findViewById(R.id.notMutualButton);
+            this.pendingButton=view.findViewById(R.id.pendingButton);
+            this.followButton=view.findViewById(R.id.followButton);
+            this.buttonProgress=view.findViewById(R.id.buttonProgress);
+
+
+            mutualButton.setOnClickListener(this);
+            pendingButton.setOnClickListener(this);
+            followButton.setOnClickListener(this);
 
 
 
         }
+
+        public void setUsername(String user){
+            usernameVal=user;
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            switch (view.getId()){
+                case R.id.followButton:
+                    startButtonLoad((Button) view);
+
+                    new ApiRequest.FollowRequest(Data.backgroundApi,usernameVal).execute(new Util.Callback(){
+                        public void onResponse(JSONObject obj){
+                            pendingButton.setVisibility(View.VISIBLE);
+                            mutualButton.setVisibility(View.GONE);
+                            followButton.setVisibility(View.GONE);
+                            buttonProgress.setVisibility(View.GONE);
+                        }
+                    });
+
+                    break;
+            }
+        }
+
+
+
+        public void startButtonLoad(Button me){
+            buttonProgress.getIndeterminateDrawable().setColorFilter(me.getCurrentTextColor(), PorterDuff.Mode.SRC_IN);
+            me.setText("");
+            buttonProgress.setVisibility(View.VISIBLE);
+        }
+
     }
+
 
 
     public UserAdapter(List<User> users) {
@@ -74,12 +124,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             view.username.setText(user.getName());
             view.points.setText(user.getScore()+" points");
 
+            view.setUsername(user.getName());
+
             if(user.isMutual()){
                 view.mutualButton.setVisibility(View.VISIBLE);
-                view.notMutualButton.setVisibility(View.GONE);
+                view.pendingButton.setVisibility(View.GONE);
+                view.followButton.setVisibility(View.GONE);
+
+            }else if(!Data.isFollowing(user.getName())) {
+                view.mutualButton.setVisibility(View.GONE);
+                view.pendingButton.setVisibility(View.GONE);
+                view.followButton.setVisibility(View.VISIBLE);
             }else{
                 view.mutualButton.setVisibility(View.GONE);
-                view.notMutualButton.setVisibility(View.VISIBLE);
+                view.pendingButton.setVisibility(View.VISIBLE);
+                view.followButton.setVisibility(View.GONE);
 
             }
 
@@ -89,6 +148,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 }
             });
 
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,9 +158,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     }
 
+
     @Override
     public int getItemCount() {
         return users.size();
     }
+
+
 
 }
