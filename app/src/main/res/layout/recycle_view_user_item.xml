@@ -36,7 +36,7 @@
         android:layout_marginLeft="10dp"
         android:weightSum="100"
 
-        android:layout_weight="70">
+        android:layout_weight="60">
 
         <TextView
             android:id="@+id/username"
@@ -64,5 +64,32 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/mutualButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="25"
+        android:layout_margin="10dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/round_button_good"
+        android:stateListAnimator="@null"
+        android:text="mutual"
+
+        />
+
+    <Button
+        android:id="@+id/notMutualButton"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="25"
+        android:layout_margin="10dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/round_button_bad"
+        android:stateListAnimator="@null"
+
+        android:text="unmutual"
+        />
 
 </LinearLayout>

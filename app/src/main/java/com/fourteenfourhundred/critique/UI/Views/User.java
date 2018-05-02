@@ -2,6 +2,8 @@ package com.fourteenfourhundred.critique.UI.Views;
 
 import android.util.Log;
 
+import com.fourteenfourhundred.critique.storage.Data;
+
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -12,12 +14,33 @@ public class User {
 
     private String name;
     private int score;
+    private boolean isMutual=false;
 
     public User(String name,int score){
         this.name=name;
         this.score=score;
     }
 
+
+
+
+    public boolean isMutual(){
+
+        try {
+            JSONArray mutuals = Data.getMutuals();
+
+            for (int i = 0; i < mutuals.length(); i++) {
+                if (mutuals.getJSONObject(i).getString("username").equals(name)){
+                    return mutuals.getJSONObject(i).getBoolean("isMutual");
+                }
+            }
+
+        }catch (Exception e){
+
+        }
+
+        return false;
+    }
 
     public String getName() {
         return name;

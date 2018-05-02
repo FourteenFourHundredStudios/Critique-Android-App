@@ -124,6 +124,7 @@ public class MutualFinderActivity extends AppCompatActivity {
                         searchAdapter.notifyItemRangeRemoved(0, size);
                         searchResults.addAll(newResults);
                         searchAdapter.notifyItemRangeInserted(0, newResults.size());
+                        searchAdapter.notifyItemRangeChanged(0,newResults.size());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

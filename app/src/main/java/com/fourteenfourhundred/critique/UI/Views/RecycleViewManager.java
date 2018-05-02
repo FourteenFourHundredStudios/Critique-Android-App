@@ -1,6 +1,7 @@
 package com.fourteenfourhundred.critique.UI.Views;
 
 import android.content.Context;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -21,6 +22,9 @@ public class RecycleViewManager {
         view.setLayoutManager(layoutManager);
         this.adapter=adapter;
         view.setAdapter(adapter);
+
+
+        view.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
     }
 
 
