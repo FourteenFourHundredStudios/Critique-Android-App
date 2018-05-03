@@ -28,8 +28,8 @@ public class Data {
     public static API backgroundApi;
 
     //public static String url="http://75.102.199.218:5000/";
-    //public static String url="http://10.0.0.4:5000/";
-    public static String url="http://75.102.242.206:5000/";
+    public static String url="http://10.0.0.4:5000/";
+    //public static String url="http://75.102.242.206:5000/";
 
 
     public static boolean debug=true;

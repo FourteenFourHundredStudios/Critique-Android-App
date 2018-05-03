@@ -53,6 +53,8 @@ public class MutualsFragment extends Fragment {
     ArrayAdapter<JSONObject> adapter;
     ListView listView;
 
+    HomeActivity home;
+
     RecyclerView mutualsList;
 
     boolean isEmpty=true;
@@ -65,6 +67,9 @@ public class MutualsFragment extends Fragment {
     SwipeRefreshLayout swipe;
 
     RecycleViewManager view;
+
+
+    public SwipeRefreshLayout.OnRefreshListener swipeListener;
 
     public MutualsFragment(){
 
@@ -101,6 +106,36 @@ public class MutualsFragment extends Fragment {
         return rootView;
     }
 
+    public void onResume(){
+        super.onResume();
+
+        updateData();
+
+    }
+
+
+    public void updateData(){
+        new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
+            public void onResponse(JSONObject response) {
+                try {
+                    Data.setMutuals(response.getJSONArray("mutuals"));
+
+                    //Util.showDialog(getActivity(),Data.getMutuals().toString());
+
+                    Storage.saveData(home.getApplicationContext());
+
+
+                    view.update((ArrayList) User.jsonToUserList(Data.getMutuals()));
+
+                    swipe.setRefreshing(false);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public void setupRecyclerView(){
 
         try {
@@ -121,49 +156,18 @@ public class MutualsFragment extends Fragment {
 
     public void setupViews(){
 
-        final HomeActivity home=(HomeActivity)getActivity();
+        home=(HomeActivity)getActivity();
 
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        swipeListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 //view.update();
-                new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Data.setMutuals(response.getJSONArray("mutuals"));
-
-                            //Util.showDialog(getActivity(),Data.getMutuals().toString());
-
-                            Storage.saveData(home.getApplicationContext());
-
-
-                            view.update((ArrayList) User.jsonToUserList(Data.getMutuals()));
-
-                            swipe.setRefreshing(false);
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-
+                updateData();
             }
-        });
+        };
 
-        //final View actionBarView= (home.actionBar.getView(1));
-
-        /*
-        actionBarView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getActivity().getApplicationContext(), MutualFinderActivity.class);
-                startActivity(intent);
-
-
-            }
-        });*/
+        swipe.setOnRefreshListener(swipeListener);
 
     }
 

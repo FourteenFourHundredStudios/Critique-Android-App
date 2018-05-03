@@ -36,6 +36,8 @@ public class MutualFinderActivity extends AppCompatActivity {
 
     RecycleViewManager view;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class MutualFinderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mutual_finder);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar_mutual_finder);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final View actionbar=getSupportActionBar().getCustomView();
 
@@ -82,6 +85,17 @@ public class MutualFinderActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public boolean onSupportNavigateUp() {
+
+
+        finish();
+        overridePendingTransition(0,0);
+
+
+        return false;
+    }
 
     public void submit(String text){
 

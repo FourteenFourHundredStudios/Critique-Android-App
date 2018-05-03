@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public JSONArray archive;
     public QueueFragment queue;
+    public MutualsFragment mutuals;
 
     public ViewPager viewPager;
     ImageView syncIcon;
@@ -113,7 +116,6 @@ public class HomeActivity extends AppCompatActivity {
     public void changeActionBar(int position){
         getSupportActionBar().setCustomView(actionBar.getView(position));
     }
-
 
 
     public void addViewpagerListener(){
@@ -194,7 +196,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if (resultCode != RESULT_OK) return;
 
+
+
         switch (requestCode) {
+
 
             case 1:
                 if (data != null) {
@@ -253,11 +258,12 @@ public class HomeActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             //  ProfileFragment tab1 = new ProfileFragment();
             queue=new QueueFragment();
+            mutuals=new MutualsFragment();
             switch (position) {
                 case 0:
                     return queue;
                 case 1:
-                    return new MutualsFragment();
+                    return mutuals;
                 case 2:
                     return new ProfileFragment();
                 default:
