@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class MutualsFragment extends Fragment {
@@ -59,7 +61,7 @@ public class MutualsFragment extends Fragment {
 
     RelativeLayout content;
 
-    ProgressBar loading;
+    SwipeRefreshLayout swipe;
 
     public MutualsFragment(){
 
@@ -80,7 +82,10 @@ public class MutualsFragment extends Fragment {
 
         content = rootView.findViewById(R.id.home_fragment_container);
 
+        swipe=rootView.findViewById(R.id.swiperefresh);
+
         api=Data.backgroundApi;
+
 
         //setupListview();
         setupRecyclerView();
@@ -98,7 +103,9 @@ public class MutualsFragment extends Fragment {
 
             mutualsList=(RecyclerView)rootView.findViewById(R.id.mutualsList);
 
-            RecycleViewManager view = new RecycleViewManager(mutualsList, this.getActivity(),new UserAdapter(User.jsonToUserList(Data.getMutuals())));
+            List<User> m=User.jsonToUserList(Data.getMutuals());
+
+            RecycleViewManager view = new RecycleViewManager(mutualsList, this.getActivity(),new UserAdapter(m),m);
 
 
         }catch (Exception e){
@@ -223,8 +230,9 @@ public class MutualsFragment extends Fragment {
         });
     }
 
+
     public void follow(final String username){
-        new ApiRequest.FollowRequest(api,username).execute(new Util.Callback(){
+        new ApiRequest.FollowRequest(api,username,true).execute(new Util.Callback(){
             public void onResponse(JSONObject obj){
                 Util.showDialog(getActivity(),"You followed "+username+"!");
             }
@@ -237,9 +245,9 @@ public class MutualsFragment extends Fragment {
             adapter.clear();
 
             for(int i=0;i<mutualNames.length();i++){
-                //mutuals[i]=new JSONObject(mutualNames.get(i).toString());
+
                 adapter.add(new JSONObject(mutualNames.get(i).toString()).put("isMutual","true"));
-                Log.e("hh",mutualNames.get(i).toString());
+
             }
 
             adapter.notifyDataSetChanged();

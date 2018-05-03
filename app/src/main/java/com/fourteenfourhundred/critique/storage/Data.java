@@ -111,7 +111,8 @@ public class Data {
                     File file = me.getApplication().getFileStreamPath("userdata");
                     if (file.exists()) file.delete();
                     SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
-                    sharedPref.edit().clear();
+                    sharedPref.edit().clear().commit();
+
                     Log.e("nuke", "files deleted...");
                     //System.exit(0);
 

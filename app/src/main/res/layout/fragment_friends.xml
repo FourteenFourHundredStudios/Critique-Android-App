@@ -6,57 +6,31 @@
 
     tools:context="com.fourteenfourhundred.critique.UI.Activities.HomeActivity">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/home_fragment_container"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <!--
-        <RelativeLayout
-
-            android:id="@+id/SearchBarHolder"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/home_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent">
 
-            android:background="#ffffff"
-            android:elevation="2dp">
 
-            <EditText
-                android:id="@+id/mutualSearch"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/mutualsList"
+
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="20dp"
-                android:background="#25000000"
-                android:hint="Search for mutuals here"
-                android:padding="6dp"
-                android:textColor="#FFFFFF" />
-
-        </RelativeLayout>-->
-
-
-        <!--
-        <ListView
-            android:id="@+id/mutualsListFriends"
-            android:layout_below="@+id/SearchBarHolder"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        -->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/mutualsList"
-
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+                />
 
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
 </RelativeLayout>

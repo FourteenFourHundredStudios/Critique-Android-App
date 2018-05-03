@@ -155,6 +155,32 @@ public class Util {
     }
 
 
+    public static void showYesNoDialog(Context context, String text, final Callback callback){
+
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        callback.onFinished(true);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        callback.onFinished(false);
+                        break;
+                }
+            }
+        };
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(text).setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+
+
+}
+
+
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")

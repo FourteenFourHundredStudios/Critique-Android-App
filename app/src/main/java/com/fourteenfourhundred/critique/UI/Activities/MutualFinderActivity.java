@@ -31,10 +31,10 @@ public class MutualFinderActivity extends AppCompatActivity {
 
     public String currentText="";
     public RecyclerView mutualsList;
-    UserAdapter searchAdapter;
+    public UserAdapter searchAdapter;
     public API searchApi;
-    List<User> searchResults;
-    boolean searchLock=false;
+
+    RecycleViewManager view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +73,12 @@ public class MutualFinderActivity extends AppCompatActivity {
         });
 
         mutualsList=(RecyclerView)findViewById(R.id.mutualsList);
-        searchResults = User.jsonToUserList(Data.getMutuals());
-        searchAdapter = new UserAdapter(searchResults);
-        RecycleViewManager view = new RecycleViewManager(mutualsList, this,searchAdapter);
+
+
+        List<User> mutuals=User.jsonToUserList(Data.getMutuals());
+        searchAdapter = new UserAdapter(mutuals);
+        view = new RecycleViewManager(mutualsList, this,searchAdapter,mutuals);
+
     }
 
 
@@ -91,24 +94,12 @@ public class MutualFinderActivity extends AppCompatActivity {
 
 
         if (text.isEmpty()) {
-            //Util.showDialog(this,Data.getMutuals().toString());
-            //Log.e("EMPTY","EMPTY");
-
-            final int size = searchResults.size();
-            searchResults.clear();
-            searchAdapter.notifyItemRangeRemoved(0, size);
-
-
             ArrayList<User> mutuals= (ArrayList<User>) User.jsonToUserList(Data.getMutuals());
 
-            //Log.e("mutuals",mutuals.size()+"");
+            view.update(mutuals);
 
-            searchResults.addAll(mutuals);
-            searchAdapter.notifyItemRangeInserted(0, mutuals.size());
-            searchAdapter.notifyItemRangeChanged(0,mutuals.size());
         } else {
-            //searchApi.queue.start();
-            final int size = searchResults.size();
+
             final ApiRequest.DoSearchRequest request = new ApiRequest.DoSearchRequest(searchApi, text);
             request.execute(new Util.Callback() {
                 @Override
@@ -120,11 +111,9 @@ public class MutualFinderActivity extends AppCompatActivity {
 
                         ArrayList<User> newResults = (ArrayList<User>) User.jsonToUserList(response.getJSONArray("results"));
 
-                        searchResults.clear();
-                        searchAdapter.notifyItemRangeRemoved(0, size);
-                        searchResults.addAll(newResults);
-                        searchAdapter.notifyItemRangeInserted(0, newResults.size());
-                        searchAdapter.notifyItemRangeChanged(0,newResults.size());
+                        view.update(newResults);
+
+                        //searchResults=newResults;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

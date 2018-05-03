@@ -223,10 +223,12 @@ public class ApiRequest{
     public static class FollowRequest extends GenericRequest{
 
         public String username;
+        public boolean following;
 
-        public FollowRequest(API api,String username) {
+        public FollowRequest(API api,String username,boolean following) {
             super(api);
             this.username=username;
+            this.following=following;
         }
 
         @Override
@@ -234,6 +236,7 @@ public class ApiRequest{
             JSONObject params=new JSONObject();
             params.put("user",username);
             params.put("apiKey", Data.getApiKey());
+            params.put("following", following);
             return params;
         }
 

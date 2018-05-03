@@ -68,13 +68,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(final View view) {
 
             switch (view.getId()){
                 case R.id.followButton:
                     startButtonLoad((Button) view);
 
-                    new ApiRequest.FollowRequest(Data.backgroundApi,usernameVal).execute(new Util.Callback(){
+                    new ApiRequest.FollowRequest(Data.backgroundApi,usernameVal,true).execute(new Util.Callback(){
                         public void onResponse(JSONObject obj){
                             pendingButton.setVisibility(View.VISIBLE);
                             mutualButton.setVisibility(View.GONE);
@@ -82,6 +82,33 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                             buttonProgress.setVisibility(View.GONE);
                         }
                     });
+
+                    break;
+
+                case R.id.mutualButton:
+                    Util.showYesNoDialog(view.getContext(),"Are you sure you want to unfollow "+usernameVal+"?",new Util.Callback(){
+                        public void onFinished(boolean unfollow){
+                            if(unfollow){
+
+                                startButtonLoad((Button) view);
+
+                                new ApiRequest.FollowRequest(Data.backgroundApi,usernameVal,false).execute(new Util.Callback(){
+                                    public void onResponse(JSONObject obj){
+
+
+                                        pendingButton.setVisibility(View.GONE);
+                                        mutualButton.setVisibility(View.GONE);
+                                        followButton.setVisibility(View.VISIBLE);
+                                        buttonProgress.setVisibility(View.GONE);
+
+
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+
 
                     break;
             }
