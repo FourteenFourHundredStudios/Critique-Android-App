@@ -35,6 +35,7 @@ import com.fourteenfourhundred.critique.UI.Views.RecycleViewManager;
 import com.fourteenfourhundred.critique.UI.Views.User;
 import com.fourteenfourhundred.critique.UI.Views.UserAdapter;
 import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.storage.Storage;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -63,6 +64,8 @@ public class MutualsFragment extends Fragment {
 
     SwipeRefreshLayout swipe;
 
+    RecycleViewManager view;
+
     public MutualsFragment(){
 
     }
@@ -87,8 +90,10 @@ public class MutualsFragment extends Fragment {
         api=Data.backgroundApi;
 
 
-        //setupListview();
         setupRecyclerView();
+
+
+
         setupViews();
 
 
@@ -105,7 +110,7 @@ public class MutualsFragment extends Fragment {
 
             List<User> m=User.jsonToUserList(Data.getMutuals());
 
-            RecycleViewManager view = new RecycleViewManager(mutualsList, this.getActivity(),new UserAdapter(m),m);
+            view = new RecycleViewManager(mutualsList, this.getActivity(),new UserAdapter(m),m);
 
 
         }catch (Exception e){
@@ -117,6 +122,34 @@ public class MutualsFragment extends Fragment {
     public void setupViews(){
 
         final HomeActivity home=(HomeActivity)getActivity();
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //view.update();
+                new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Data.setMutuals(response.getJSONArray("mutuals"));
+
+                            //Util.showDialog(getActivity(),Data.getMutuals().toString());
+
+                            Storage.saveData(home.getApplicationContext());
+
+
+                            view.update((ArrayList) User.jsonToUserList(Data.getMutuals()));
+
+                            swipe.setRefreshing(false);
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
+            }
+        });
 
         //final View actionBarView= (home.actionBar.getView(1));
 

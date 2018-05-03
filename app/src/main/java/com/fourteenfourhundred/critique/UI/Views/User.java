@@ -20,19 +20,14 @@ public class User {
     public User(String name,int score){
         this.name=name;
         this.score=score;
-    }
-
-
-
-
-    public boolean isMutual(){
 
         try {
             JSONArray mutuals = Data.getMutuals();
 
+
             for (int i = 0; i < mutuals.length(); i++) {
                 if (mutuals.getJSONObject(i).getString("username").equals(name)){
-                    return mutuals.getJSONObject(i).getBoolean("isMutual");
+                    isMutual= mutuals.getJSONObject(i).getBoolean("isMutual");
                 }
             }
 
@@ -40,7 +35,16 @@ public class User {
 
         }
 
-        return false;
+    }
+
+
+
+
+    public boolean isMutual(){
+
+
+
+        return isMutual;
     }
 
     public String getName() {
@@ -97,14 +101,14 @@ public class User {
 
             final User oldUser = oldUserList.get(oldItemPosition);
             final User newUser = newUserList.get(newItemPosition);
-            return oldUser.getName().equals(newUser.getName());
+            return (oldUser.getName().equals(newUser.getName())) && (oldUser.isMutual()==newUser.isMutual());
         }
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
             final User oldUser = oldUserList.get(oldItemPosition);
             final User newUser = newUserList.get(newItemPosition);
-            return oldUser.getName().equals(newUser.getName());
+            return (oldUser.getName().equals(newUser.getName())) && (oldUser.isMutual()==newUser.isMutual());
         }
 
 
