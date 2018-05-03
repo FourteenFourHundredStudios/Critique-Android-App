@@ -65,6 +65,7 @@ public class MutualFinderActivity extends AppCompatActivity {
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         queryTyped(newText);
+
                         return true;
                     }
 
@@ -95,7 +96,7 @@ public class MutualFinderActivity extends AppCompatActivity {
 
         if (text.isEmpty()) {
             ArrayList<User> mutuals= (ArrayList<User>) User.jsonToUserList(Data.getMutuals());
-
+            Log.e("EMPTY",mutuals.size()+"");
             view.update(mutuals);
 
         } else {
