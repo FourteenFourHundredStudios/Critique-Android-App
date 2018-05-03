@@ -76,6 +76,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
                     new ApiRequest.FollowRequest(Data.backgroundApi,usernameVal,true).execute(new Util.Callback(){
                         public void onResponse(JSONObject obj){
+                            pendingButton.setText("pending");
                             pendingButton.setVisibility(View.VISIBLE);
                             mutualButton.setVisibility(View.GONE);
                             followButton.setVisibility(View.GONE);
@@ -94,14 +95,36 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
                                 new ApiRequest.FollowRequest(Data.backgroundApi,usernameVal,false).execute(new Util.Callback(){
                                     public void onResponse(JSONObject obj){
-
-
                                         pendingButton.setVisibility(View.GONE);
                                         mutualButton.setVisibility(View.GONE);
+                                        followButton.setText("follow");
                                         followButton.setVisibility(View.VISIBLE);
                                         buttonProgress.setVisibility(View.GONE);
+                                    }
+                                });
+
+                            }
+                        }
+                    });
 
 
+                    break;
+
+
+                case R.id.pendingButton:
+                    Util.showYesNoDialog(view.getContext(),"Are you sure you want to unfollow "+usernameVal+"?",new Util.Callback(){
+                        public void onFinished(boolean unfollow){
+                            if(unfollow){
+
+                                startButtonLoad((Button) view);
+
+                                new ApiRequest.FollowRequest(Data.backgroundApi,usernameVal,false).execute(new Util.Callback(){
+                                    public void onResponse(JSONObject obj){
+                                        pendingButton.setVisibility(View.GONE);
+                                        mutualButton.setVisibility(View.GONE);
+                                        followButton.setText("follow");
+                                        followButton.setVisibility(View.VISIBLE);
+                                        buttonProgress.setVisibility(View.GONE);
                                     }
                                 });
 
@@ -154,6 +177,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             view.setUsername(user.getName());
 
             if(user.isMutual()){
+                view.mutualButton.setText("mutual");
                 view.mutualButton.setVisibility(View.VISIBLE);
                 view.pendingButton.setVisibility(View.GONE);
                 view.followButton.setVisibility(View.GONE);
@@ -161,9 +185,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             }else if(!Data.isFollowing(user.getName())) {
                 view.mutualButton.setVisibility(View.GONE);
                 view.pendingButton.setVisibility(View.GONE);
+                view.followButton.setText("follow");
                 view.followButton.setVisibility(View.VISIBLE);
             }else{
                 view.mutualButton.setVisibility(View.GONE);
+                view.pendingButton.setText("pending");
                 view.pendingButton.setVisibility(View.VISIBLE);
                 view.followButton.setVisibility(View.GONE);
 
