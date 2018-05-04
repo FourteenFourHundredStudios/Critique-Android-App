@@ -1,116 +1,140 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#0D000000"
+
+
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    tools:context="com.fourteenfourhundred.critique.UI.Activities.HomeActivity">
 
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/home_fragment_container"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary">
+
 
             <RelativeLayout
-        android:id="@+id/topContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="#ffffff"
-        android:elevation="2dp">
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
 
-        <LinearLayout
-            android:id="@+id/profileBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="#FFFFFF"
-
-            android:gravity="fill"
-            android:orientation="vertical">
-
-
-            <android.support.v7.widget.CardView
-
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:padding="0dp"
-                android:scaleType="centerCrop"
-                android:onClick="selectPatch"
-                app:cardCornerRadius="10dp">
-
-                <ImageView
-                    android:id="@+id/userPatch"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/picHolder"
+                    android:layout_centerInParent="true"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:background="#ffffff"
+                    android:padding="0dp"
                     android:scaleType="centerCrop"
-                     />
+                    android:onClick="selectPatch"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/userPatch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        />
 
 
-            </android.support.v7.widget.CardView>
 
 
-            <TextView
-                android:id="@+id/profileUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:text="CHANGE THIS"
-                android:textColor="#BF000000"
-                android:textSize="25sp" />
-        </LinearLayout>
+                </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/scoreText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_below="@id/profileBar"
-            android:layout_centerHorizontal="true"
-            android:text="score of CHANGE THIS"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="10dp"
-            android:textSize="15sp" />
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:layout_below="@id/scoreText"
-            app:tabMode="fixed" >
 
-            <android.support.design.widget.TabItem
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="All"/>
+                <TextView
+                    android:id="@+id/scoreText"
+                    android:layout_below="@id/picHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
 
-            <android.support.design.widget.TabItem
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Best"/>
 
-            <android.support.design.widget.TabItem
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Me"/>
+                    android:text="score of 39"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="15sp" />
 
-        </android.support.design.widget.TabLayout>
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
 
-    </RelativeLayout>
+                    app:tabMode="fixed" >
 
-            <android.support.v4.view.ViewPager
-        android:id="@+id/profilePager"
-        android:layout_below="@id/topContainer"
+                    <android.support.design.widget.TabItem
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="All"/>
+
+                    <android.support.design.widget.TabItem
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="Best"/>
+
+                    <android.support.design.widget.TabItem
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="Me"/>
+
+                </android.support.design.widget.TabLayout>
+
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/critique_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" >
+
+
+
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+
+
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:id="@+id/scroll"
+
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    </RelativeLayout>
+        <android.support.v4.view.ViewPager
 
-</RelativeLayout>
+            android:id="@+id/profilePager"
+            android:layout_width="match_parent"
+            android:nestedScrollingEnabled="true"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

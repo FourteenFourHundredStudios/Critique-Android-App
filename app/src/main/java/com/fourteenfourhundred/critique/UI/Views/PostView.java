@@ -74,7 +74,7 @@ public class PostView extends View{
             e.printStackTrace();
         }
 
-        return null;
+        return "JSON PARSING ERROR";
     }
 
 

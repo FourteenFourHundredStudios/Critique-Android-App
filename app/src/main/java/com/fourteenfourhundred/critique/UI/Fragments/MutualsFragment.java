@@ -111,7 +111,7 @@ public class MutualsFragment extends HomeFragment {
         super.onResume();
 
         updateData();
-
+        Log.e("FIRST","FIRSTTT");
     }
 
 

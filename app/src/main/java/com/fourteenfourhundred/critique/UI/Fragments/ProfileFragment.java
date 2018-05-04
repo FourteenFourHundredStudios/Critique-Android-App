@@ -3,11 +3,17 @@ package com.fourteenfourhundred.critique.UI.Fragments;
 
 import android.graphics.Bitmap;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
+import android.support.v4.widget.NestedScrollView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,22 +28,30 @@ import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
 
-public class ProfileFragment extends LoadOnViewFragment {
+public class ProfileFragment extends HomeFragment {
 
     API api;
     public int page=0;
     public static int loadingStages=0;
 
 
-    public void setupFragment() {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        super.onCreateView(inflater,container,savedInstanceState);
 
 
         api = new API(getActivity());
 
 
-        ((TextView)rootView.findViewById(R.id.profileUsername)).setText(Data.getUsername());
+
+
+        ((TextView)getCritiqueBar().findViewById(R.id.username)).setText(Data.getUsername());
 
         ((TextView)rootView.findViewById(R.id.scoreText)).setText("Score of "+Data.getScore());
+
+       // ((NestedScrollView)rootView.findViewById(R.id.scroll)).setFillViewport(true);
 
         new ApiRequest.GetPatchRequest(api,"self").execute(new Util.Callback() {
             public void onResponse(Bitmap img){
@@ -49,25 +63,26 @@ public class ProfileFragment extends LoadOnViewFragment {
                 final ViewPager viewPager = rootView.findViewById(R.id.profilePager);
                 final TabLayout tablayout = rootView.findViewById(R.id.tab_layout);
 
-                viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
-                tablayout.setupWithViewPager(viewPager);
+                //viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
+               // tablayout.setupWithViewPager(viewPager);
+
 
 
                 viewPager.setOffscreenPageLimit(5);
-                onFinishedRendering();
+                //onFinishedRendering();
 
             }
         });
 
 
-
+        return rootView;
 
     }
 
 
 
-    public int getLayout(){
-        return R.layout.fragment_profile;
+    public int getToolbar(){
+        return R.layout.action_bar_profile;
     }
 
 

@@ -15,6 +15,7 @@ Critique Android App Fixes:
         redesign post title:
             Maybe make date username, and username title?
             Maybe make the actionbar just say "Queue"?
+        Bring back loading sign
 
 
     framework:
