@@ -1,0 +1,47 @@
+Critique Android App Fixes:
+
+    optimisations:
+        do not load mutuals on first onResume()
+        figure out optimal time to inflate views in Queue
+
+    aesthetics: 
+        redesign profile page:
+            create cool coordinator layout for profile page info
+            redesign the way post previews look
+        redesign mutual selection activity
+            add cooler blue checkbox next to user selection
+        posts should have real date and time
+        posts should show real number of votes
+        redesign post title:
+            Maybe make date username, and username title?
+            Maybe make the actionbar just say "Queue"?
+
+
+    framework:
+        userAdapter should also handle selections (for mutual selection activity)
+        create adapter for post previews
+        Lazy scrolling loading for RecyclerView adapters
+
+    code cleanup:
+        make post views no longer views, instead, make them a part of the framework
+        make variables private, with corresponding getters and setters 
+        figure out how to organise layouts into seperate files
+        standardise view IDs 
+        create Framework package
+        better modularisation
+        
+Critique Android App TODO:
+    Expanded post activity that includes:
+        voting ratio
+        comments system
+
+    New PostViews:
+        Website PostView
+        Picture postView
+            create system for uploading images
+
+    Create entire notification system  
+        background notification service
+        notification HomeFragment child class
+            create accompanying notification adapter
+        
