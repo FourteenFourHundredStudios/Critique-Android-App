@@ -20,12 +20,12 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toolbar;
 
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.UI.Fragments.MutualsFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.ProfileFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
-import com.fourteenfourhundred.critique.UI.Views.ActionBarView;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
@@ -47,7 +47,6 @@ public class HomeActivity extends AppCompatActivity {
     Menu menu;
     Animation loadAnimation;
 
-    public ActionBarView actionBar;
 
     public int page=0;
 
@@ -76,46 +75,13 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
-        actionBar=new ActionBarView(getApplicationContext(),this);
-
-
-
-        actionBar.getView(0).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-
-
-                //Util.showDialog(HomeActivity.this,"NUKING!");
-
-                if(Data.debug) {
-                    Data.nuke(HomeActivity.this);
-
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-
-                    finish();
-                }
-
-                return false;
-            }
-        });
-
-       changeActionBar(0);
+        getSupportActionBar().hide();
 
 
 
     }
 
 
-    public void changeActionBar(int position){
-        getSupportActionBar().setCustomView(actionBar.getView(position));
-    }
 
 
     public void addViewpagerListener(){
@@ -128,7 +94,6 @@ public class HomeActivity extends AppCompatActivity {
                 if(position!=0)queue.saveState();
 
 
-                changeActionBar(position);
 
             }
         });
@@ -154,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
             syncIcon.startAnimation(loadAnimation);
         }
     }
+
 
 
     @Override

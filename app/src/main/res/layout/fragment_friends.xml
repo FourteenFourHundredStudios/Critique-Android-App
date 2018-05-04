@@ -2,11 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#ffffff"
 
     tools:context="com.fourteenfourhundred.critique.UI.Activities.HomeActivity">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/critique_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:layout_below="@id/critique_bar"
+        app:layout_collapseMode="pin" >
+    </android.support.v7.widget.Toolbar>
+
+
     <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_below="@id/critique_bar"
         android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

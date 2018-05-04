@@ -28,9 +28,9 @@ import com.fourteenfourhundred.critique.UI.Views.PostView;
 import com.fourteenfourhundred.critique.critique.R;
 
 
-public class QueueFragment extends Fragment{
+public class QueueFragment extends HomeFragment{
 
-    public View rootView;
+
     public ImageButton voteGood, voteBad;
     public ImageView syncIcon;
     public FrameLayout frame;
@@ -50,6 +50,8 @@ public class QueueFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         rootView = inflater.inflate(R.layout.queue_fragment, container, false);
 
         frame = (FrameLayout) rootView.findViewById(R.id.post_container);
@@ -78,7 +80,7 @@ public class QueueFragment extends Fragment{
 
         ((HomeActivity)getActivity()).addViewpagerListener();
 
-        return rootView;
+        return super.onCreateView(inflater,container,savedInstanceState);
     }
 
     @Override
@@ -89,7 +91,9 @@ public class QueueFragment extends Fragment{
 
 
 
-
+    public int getToolbar(){
+        return R.layout.action_bar_post;
+    }
 
     public void onPause(){
 
@@ -132,8 +136,10 @@ public class QueueFragment extends Fragment{
                             AnimationUtil.fadeOut(activePost.getSelf(),null);
                         }
                         activePost=post;
-                        ((TextView)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title)).setText(activePost.getPostAttribute("title"));
-                        ((TextView)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.action_bar_caption)).setText(" post by "+activePost.getPostAttribute("username"));
+                        //((TextView)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title)).setText(activePost.getPostAttribute("title"));
+                        //((TextView)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.action_bar_caption)).setText(" post by "+activePost.getPostAttribute("username"));
+                        ((TextView)getCritiqueBar().findViewById(R.id.action_bar_title)).setText(activePost.getPostAttribute("title"));
+                        ((TextView)getCritiqueBar().findViewById(R.id.action_bar_caption)).setText(" post by "+activePost.getPostAttribute("username"));
                     }
 
                     @Override

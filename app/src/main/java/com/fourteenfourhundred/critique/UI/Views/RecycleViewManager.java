@@ -44,7 +44,10 @@ public class RecycleViewManager {
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         data.clear();
+
         data.addAll(newData);
+
+
         diffResult.dispatchUpdatesTo(adapter);
 
     }
