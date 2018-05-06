@@ -8,7 +8,9 @@
     <color name="colorAccentLight">#F2F2F2</color>
     <color name="colorAccent">#99FF4081</color>-->
 
-    <color name="colorAccent">#E6E6E6</color>
+    <color name="colorDarkSecondary">#E6E6E6</color>
+
+    <color name="colorAccent">#42a5f5</color>
 
     <color name="colorButtonAccent">#80000000</color>
 

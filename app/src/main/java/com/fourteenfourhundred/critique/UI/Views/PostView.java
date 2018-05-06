@@ -104,11 +104,10 @@ public class PostView extends View{
 
 
 
-           // ((TextView) rootView.findViewById(R.id.postTitle)).setText(post.getString("title"));
+            ((TextView) rootView.findViewById(R.id.title)).setText(post.getString("title"));
             ((TextView) rootView.findViewById(R.id.content)).setText(post.getString("content"));
             ((TextView) rootView.findViewById(R.id.username)).setText(post.getString("username"));
-            ((TextView) rootView
-                    .findViewById(R.id.vote_count)).setText(post.getString("votes") + " votes");
+            ((TextView) rootView.findViewById(R.id.vote_count)).setText(post.getString("votes") + " votes");
 
 
 

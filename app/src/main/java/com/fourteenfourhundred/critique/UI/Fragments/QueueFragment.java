@@ -136,10 +136,8 @@ public class QueueFragment extends HomeFragment{
                             AnimationUtil.fadeOut(activePost.getSelf(),null);
                         }
                         activePost=post;
-                        //((TextView)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.action_bar_title)).setText(activePost.getPostAttribute("title"));
-                        //((TextView)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.action_bar_caption)).setText(" post by "+activePost.getPostAttribute("username"));
-                        ((TextView)getCritiqueBar().findViewById(R.id.action_bar_title)).setText(activePost.getPostAttribute("title"));
-                        ((TextView)getCritiqueBar().findViewById(R.id.action_bar_caption)).setText(" post by "+activePost.getPostAttribute("username"));
+
+
                     }
 
                     @Override

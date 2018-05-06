@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/search_action_bar"
+
     android:layout_height="match_parent">
+
 
     <LinearLayout
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        >
 
         <ImageView
+
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/more_icon"
@@ -17,37 +24,48 @@
             />
 
 
-        <LinearLayout
+
+
+        <TextView
+            android:id="@+id/action_bar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:layout_centerVertical="true"
+            android:text="Queue"
+            android:textColor="@color/colorSecondary"
 
-            <TextView
-                android:id="@+id/action_bar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Post title"
-                android:textColor="@color/colorSecondary"
-                android:textStyle="bold"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_marginBottom="0dp"
+            />
 
-            <TextView
-                android:id="@+id/action_bar_caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Username"
-                android:textColor="@color/colorSecondary"
 
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-        </LinearLayout>
+
+
+
+
+        <!--
+        <SearchView
+            android:id="@+id/action_bar_search"
+            android:queryHint="ddd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Mutual Search"
+            android:padding="6dp"
+            android:background="#00000000"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#FFFFFF" >
+</SearchView>
+-->
+
+
+
 
 
     </LinearLayout>
-
 
 
 
