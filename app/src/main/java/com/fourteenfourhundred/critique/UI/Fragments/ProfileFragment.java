@@ -1,6 +1,7 @@
 package com.fourteenfourhundred.critique.UI.Fragments;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import android.os.Bundle;
@@ -12,9 +13,12 @@ import android.support.v4.view.ViewPager;
 
 import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.API;
@@ -35,37 +39,52 @@ public class ProfileFragment extends HomeFragment {
     public static int loadingStages=0;
 
 
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
+
 
 
         api = new API(getActivity());
 
 
+        final ViewPager viewPager = rootView.findViewById(R.id.profilePager);
+        final TabLayout tablayout = rootView.findViewById(R.id.tab_layout);
+
+        SectionPagerAdapter adapter = new SectionPagerAdapter(getFragmentManager());
 
 
-        ((TextView)getCritiqueBar().findViewById(R.id.username)).setText(Data.getUsername());
+        viewPager.setAdapter(adapter);
+        tablayout.setupWithViewPager(viewPager);
+        // tablayout.setupWithViewPager(viewPager);
 
-        ((TextView)rootView.findViewById(R.id.scoreText)).setText("Score of "+Data.getScore());
+//        adapter.addFragment(new FragmentOne(), "FRAG1");
+        //      adapter.addFragment(new FragmentTwo(), "FRAG2");
+        //     adapter.addFragment(new FragmentThree(), "FRAG3");
+        // viewPager.setAdapter(adapter);
 
-       // ((NestedScrollView)rootView.findViewById(R.id.scroll)).setFillViewport(true);
 
-        new ApiRequest.GetPatchRequest(api,"self").execute(new Util.Callback() {
-            public void onResponse(Bitmap img){
-                ImageView userPatch = (ImageView)rootView.findViewById(R.id.userPatch);
+        //viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
+        // tablayout.setupWithViewPager(viewPager);
+
+        ((TextView) getCritiqueBar().findViewById(R.id.username)).setText(Data.getUsername());
+
+        //    ((TextView)rootView.findViewById(R.id.scoreText)).setText("Score of "+Data.getScore());
+
+        // ((NestedScrollView)rootView.findViewById(R.id.scroll)).setFillViewport(true);
+
+        new ApiRequest.GetPatchRequest(api, "self").execute(new Util.Callback() {
+            public void onResponse(Bitmap img) {
+                ImageView userPatch = (ImageView) getCritiqueBar().findViewById(R.id.userPatch);
                 userPatch.setImageBitmap(img);
 
 
-
-                final ViewPager viewPager = rootView.findViewById(R.id.profilePager);
-                final TabLayout tablayout = rootView.findViewById(R.id.tab_layout);
-
                 //viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
-               // tablayout.setupWithViewPager(viewPager);
-
+                // tablayout.setupWithViewPager(viewPager);
 
 
                 viewPager.setOffscreenPageLimit(5);
@@ -74,10 +93,25 @@ public class ProfileFragment extends HomeFragment {
             }
         });
 
-
+        viewPager.setOnTouchListener((View v, MotionEvent event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN && v instanceof ViewGroup) {
+                ((ViewGroup) v).requestDisallowInterceptTouchEvent(true);
+            }
+            return false;
+        });
         return rootView;
-
     }
+
+/*
+        View.OnTouchListener mSuppressInterceptListener = new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch
+
+
+
+
+    }*/
 
 
 

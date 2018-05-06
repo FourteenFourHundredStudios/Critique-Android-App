@@ -107,13 +107,12 @@ public class PostView extends View{
            // ((TextView) rootView.findViewById(R.id.postTitle)).setText(post.getString("title"));
             ((TextView) rootView.findViewById(R.id.content)).setText(post.getString("content"));
             ((TextView) rootView.findViewById(R.id.username)).setText(post.getString("username"));
-            ((TextView) rootView.findViewById(R.id.vote_count)).setText(post.getString("votes") + " votes");
+            ((TextView) rootView
+                    .findViewById(R.id.vote_count)).setText(post.getString("votes") + " votes");
 
 
 
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
+            AsyncTask.execute(()->{
                     try {
                         new ApiRequest.GetPatchRequest(api,post.getString("username")).execute(new Util.Callback(){
                         public void onResponse(final Bitmap img) {
@@ -134,8 +133,6 @@ public class PostView extends View{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                }
             });
         }catch (Exception e){
             e.printStackTrace();

@@ -2,6 +2,7 @@ package com.fourteenfourhundred.critique.UI.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.API.API;
 import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.UI.Views.LockedScrollView;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
@@ -67,7 +69,8 @@ public class AllProfileFragment extends Fragment {
 
 
 
-        final ScrollView scrollView = rootView.findViewById(R.id.allScrollview);
+        final NestedScrollView scrollView = rootView.findViewById(R.id.allScrollview);
+        //scrollView.canScrollHorizontally(50);
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
