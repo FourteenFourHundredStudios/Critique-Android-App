@@ -17,6 +17,8 @@ import com.fourteenfourhundred.critique.util.Util;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.function.Function;
+
 public class ComposeActivity extends AppCompatActivity {
 
     String title;

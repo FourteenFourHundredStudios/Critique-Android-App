@@ -71,7 +71,7 @@ public class ProfileFragment extends HomeFragment {
         //viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
         // tablayout.setupWithViewPager(viewPager);
 
-        ((TextView) getCritiqueBar().findViewById(R.id.username)).setText(Data.getUsername());
+        ((TextView) getCritiqueBar().findViewById(R.id.username)).setText(Data.getUsername()+"'s profile");
 
         //    ((TextView)rootView.findViewById(R.id.scoreText)).setText("Score of "+Data.getScore());
 
@@ -79,12 +79,12 @@ public class ProfileFragment extends HomeFragment {
 
         new ApiRequest.GetPatchRequest(api, "self").execute(new Util.Callback() {
             public void onResponse(Bitmap img) {
-                ImageView userPatch = (ImageView) getCritiqueBar().findViewById(R.id.userPatch);
+                ImageView userPatch = (ImageView) rootView.findViewById(R.id.userPatch);
                 userPatch.setImageBitmap(img);
 
 
-                //viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
-                // tablayout.setupWithViewPager(viewPager);
+                viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
+                 tablayout.setupWithViewPager(viewPager);
 
 
                 viewPager.setOffscreenPageLimit(5);

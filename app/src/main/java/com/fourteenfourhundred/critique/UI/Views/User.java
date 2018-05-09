@@ -73,52 +73,7 @@ public class User {
 
 
 
-    public static class UserDiffCallback extends DiffUtil.Callback {
 
-        private final ArrayList<User> oldUserList;
-        private final ArrayList<User> newUserList;
-
-        public UserDiffCallback(ArrayList<User> oldUserList, ArrayList<User>  newUserList) {
-            this.oldUserList = oldUserList;
-            this.newUserList = newUserList;
-
-        }
-
-        @Override
-        public int getOldListSize() {
-            return oldUserList.size();
-        }
-
-        @Override
-        public int getNewListSize() {
-            return newUserList.size();
-        }
-
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-
-//            oldUserList.get(0).getName();
-
-            final User oldUser = oldUserList.get(oldItemPosition);
-            final User newUser = newUserList.get(newItemPosition);
-            return (oldUser.getName().equals(newUser.getName())) && (oldUser.isMutual()==newUser.isMutual());
-        }
-
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            final User oldUser = oldUserList.get(oldItemPosition);
-            final User newUser = newUserList.get(newItemPosition);
-            return (oldUser.getName().equals(newUser.getName())) && (oldUser.isMutual()==newUser.isMutual());
-        }
-
-
-        @Override
-        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-            // Implement method if you're going to use ItemAnimator
-            return super.getChangePayload(oldItemPosition, newItemPosition);
-        }
-
-    }
 
 
 }

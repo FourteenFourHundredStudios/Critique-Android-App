@@ -36,7 +36,7 @@ public class PostItemView extends PostView {
 
 
             LayoutInflater inflater = LayoutInflater.from(context);
-            rootView = inflater.inflate(R.layout.post_item_view, null, false);
+            rootView = inflater.inflate(R.layout.recycle_view_post_item, null, false);
 
 
 

@@ -29,7 +29,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public View view;
         public TextView username;
