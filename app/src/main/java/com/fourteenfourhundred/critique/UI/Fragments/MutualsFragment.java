@@ -126,7 +126,7 @@ public class MutualsFragment extends HomeFragment {
                     Storage.saveData(home.getApplicationContext());
 
 
-                    view.update((ArrayList) User.jsonToUserList(Data.getMutuals()));
+                    view.update((ArrayList) User.jsonToUserList(Data.getMutuals()),0);
 
                     swipe.setRefreshing(false);
 

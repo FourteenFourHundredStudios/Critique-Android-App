@@ -167,6 +167,8 @@ public class QueueManagerService {
     }
 
     public void castVotes(final boolean loadingQue) {
+        
+
         if(votes.length()==0 || isVoting)return;
         Log.e("votes","casting votes!");
         try {

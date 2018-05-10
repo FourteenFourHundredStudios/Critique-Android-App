@@ -87,7 +87,7 @@ public class AllProfileFragment extends Fragment {
                         JSONObject post = new JSONObject(archive.getString(i));
                        // Log.e("dwd",post.toString());
                         if(shouldRender(post)) {
-                            posts.add(new Post(post.getString("username"),post.getString("content"),0));
+                            posts.add(new Post(post));
 
                         }
                     }
@@ -99,8 +99,6 @@ public class AllProfileFragment extends Fragment {
         });
 
 
-        /*
-        content = rootView.findViewById(R.id.allFragmentContent);
 
         swipeRefreshLayout=rootView.findViewById(R.id.swiperefresh);
 
@@ -111,7 +109,7 @@ public class AllProfileFragment extends Fragment {
                         refresh();
                     }
                 }
-        );*/
+        );
 
 
 /*
@@ -128,8 +126,8 @@ public class AllProfileFragment extends Fragment {
                     loadNewContent();
                 }
             }
-        });
-*/
+        });*/
+
 
 /*
         api= Data.backgroundApi;
@@ -144,7 +142,7 @@ public class AllProfileFragment extends Fragment {
 
     public void refresh(){
 
-        content.removeAllViews();
+
         archive=new JSONArray();
         new ApiRequest.GetArchiveRequest(api,0,page+1).execute(new Util.Callback(){
             @Override
@@ -155,15 +153,18 @@ public class AllProfileFragment extends Fragment {
                     archive = response.getJSONArray("archive");
                     moreContent=false;
 
-                    swipeRefreshLayout.setRefreshing(false);
+
+                    ArrayList<Post> posts = new ArrayList<Post>();
                     for(int i=0;i<archive.length();i++){
                         JSONObject post = new JSONObject(archive.getString(i));
                         if(shouldRender(post)) {
                             moreContent=true;
-                            PostItemView item = new PostItemView(getContext(), api, post.toString());
-                            content.addView(item.getSelf());
+                           // Log.e("post",new Post(post).getId());
+                            posts.add(new Post(post));
                         }
                     }
+                    listManager.update(posts,1);
+                    swipeRefreshLayout.setRefreshing(false);
 
                     finishedLoading();
 
@@ -181,19 +182,7 @@ public class AllProfileFragment extends Fragment {
     }
 
     public void finishedLoading(){
-        if(more!=null && content.getChildCount()>0){
-            int moreIndex=(content.indexOfChild(more));
-            if(moreIndex!=-1)content.removeViewAt(moreIndex);
-        }
-        if(!moreContent && content.indexOfChild(nothingHere)==-1){
-            nothingHere=new TextView(getContext());
 
-            nothingHere.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            nothingHere.setPadding(15,35,15,35);
-
-            nothingHere.setText("There's nothing here :(");
-            content.addView(nothingHere);
-        }
     }
 
 

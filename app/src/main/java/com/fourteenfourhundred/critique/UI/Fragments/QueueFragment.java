@@ -104,9 +104,14 @@ public class QueueFragment extends HomeFragment{
 
     public void saveState(){
         if(queue==null)return;
-        Log.e("SAVED","SUCSESS");
+
+
+
+
         queue.castVotes(false);
         queue.saveAll();
+
+        Log.e("QUEUE","Votes casted");
     }
 
     public void vote(int vote){

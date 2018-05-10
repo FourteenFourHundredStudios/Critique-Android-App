@@ -111,7 +111,7 @@ public class MutualFinderActivity extends AppCompatActivity {
         if (text.isEmpty()) {
             ArrayList<User> mutuals= (ArrayList<User>) User.jsonToUserList(Data.getMutuals());
             Log.e("EMPTY",mutuals.size()+"");
-            view.update(mutuals);
+            view.update(mutuals,0);
 
         } else {
 
@@ -126,7 +126,7 @@ public class MutualFinderActivity extends AppCompatActivity {
 
                         ArrayList<User> newResults = (ArrayList<User>) User.jsonToUserList(response.getJSONArray("results"));
 
-                        view.update(newResults);
+                        view.update(newResults,0);
 
                         //searchResults=newResults;
                     } catch (Exception e) {

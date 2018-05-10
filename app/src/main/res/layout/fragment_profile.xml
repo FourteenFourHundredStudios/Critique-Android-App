@@ -61,12 +61,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_collapseMode="pin"
+            app:tabSelectedTextColor="@color/colorPrimaryDark"
+            app:tabTextColor="#FFFFFF"
+
             android:background="@color/colorPrimary">
 
             <android.support.design.widget.TabItem
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 app:tabTextColor="#FFFFFF"
+
                 android:text="All"/>
 
             <android.support.design.widget.TabItem

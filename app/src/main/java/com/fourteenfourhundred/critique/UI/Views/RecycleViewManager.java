@@ -46,9 +46,26 @@ public class RecycleViewManager {
     }
 
 
-    public void update(final ArrayList newData){
+    public void update(final ArrayList newData,int type){
 
-        final UserDiffCallback diffCallback = new UserDiffCallback((ArrayList) data, newData);
+        final DiffUtil.Callback  diffCallback;
+
+        switch (type){
+            case 0:
+                diffCallback=new UserDiffCallback((ArrayList) data, newData);
+                break;
+            case 1:
+                diffCallback=new PostDiffCallback((ArrayList) data, newData);
+                break;
+            default:
+                diffCallback=null;
+                break;
+
+        }
+
+
+
+
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         data.clear();
@@ -59,6 +76,7 @@ public class RecycleViewManager {
         diffResult.dispatchUpdatesTo(adapter);
 
     }
+
 
 
     public static class UserDiffCallback extends DiffUtil.Callback {
@@ -96,6 +114,54 @@ public class RecycleViewManager {
             final User oldUser = oldUserList.get(oldItemPosition);
             final User newUser = newUserList.get(newItemPosition);
             return (oldUser.getName().equals(newUser.getName())) && (oldUser.isMutual()==newUser.isMutual());
+        }
+
+
+        @Override
+        public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+            // Implement method if you're going to use ItemAnimator
+            return super.getChangePayload(oldItemPosition, newItemPosition);
+        }
+
+    }
+
+
+
+    public static class PostDiffCallback extends DiffUtil.Callback {
+
+        private final ArrayList<Post> oldPostList;
+        private final ArrayList<Post> newPostList;
+
+        public PostDiffCallback(ArrayList<Post> oldPostList, ArrayList<Post>  newPostList) {
+            this.oldPostList = oldPostList;
+            this.newPostList = newPostList;
+
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldPostList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newPostList.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+
+
+            final Post oldPost = oldPostList.get(oldItemPosition);
+            final Post newPost = newPostList.get(newItemPosition);
+            return oldPost.getId().equals(newPost.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            final Post oldPost = oldPostList.get(oldItemPosition);
+            final Post newPost = newPostList.get(newItemPosition);
+            return oldPost.getId().equals(newPost.getId());
         }
 
 

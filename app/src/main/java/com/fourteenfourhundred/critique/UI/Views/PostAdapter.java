@@ -33,8 +33,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         public View view;
         public TextView username;
-        public TextView points;
-        public TextView content;
+        public TextView votes;
+        public TextView title;
         public ImageView profPic;
 
 
@@ -45,7 +45,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             super(view);
             this.view = view;
             this.username = view.findViewById(R.id.username);
-            this.content = view.findViewById(R.id.title);
+            this.title = view.findViewById(R.id.title);
+            this.votes = view.findViewById(R.id.votes);
             this.profPic = view.findViewById(R.id.userPatch);
 
         }
@@ -83,7 +84,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         try {
             Post post=posts.get(position);
 
-
+            view.title.setText(post.getTitle());
+            view.username.setText("posted by "+post.getUsername());
             new ApiRequest.GetPatchRequest(Data.backgroundApi,post.getUsername()).execute(new Util.Callback(){
                 public void onResponse(final Bitmap img) {
                     view.profPic.setImageBitmap(img);

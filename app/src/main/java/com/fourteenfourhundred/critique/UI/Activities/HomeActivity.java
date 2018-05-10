@@ -77,7 +77,10 @@ public class HomeActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        addViewpagerListener();
 
+        queue=new QueueFragment();
+        mutuals=new MutualsFragment();
 
     }
 
@@ -90,8 +93,11 @@ public class HomeActivity extends AppCompatActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             public void onPageSelected(int position) {
-
-                if(position!=0)queue.saveState();
+                //Log.e("CHANGED","CHANGED");
+                if(position!=0){
+                    //Log.e("ok","ok...");
+                    queue.saveState();
+                }
 
 
 
@@ -223,8 +229,7 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             //  ProfileFragment tab1 = new ProfileFragment();
-            queue=new QueueFragment();
-            mutuals=new MutualsFragment();
+
             switch (position) {
                 case 0:
                     return queue;

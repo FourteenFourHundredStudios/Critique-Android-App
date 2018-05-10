@@ -12,9 +12,9 @@ Critique Android App Fixes:
             add cooler blue checkbox next to user selection
         posts should have real date and time
         posts should show real number of votes
-        redesign post title:
-            Maybe make date username, and username title?
-            Maybe make the actionbar just say "Queue"?
+        [DONE] redesign post title:
+            [DONE] Maybe make date username, and username title?
+            [DONE] Maybe make the actionbar just say "Queue"?
         Bring back loading sign
 
 
@@ -23,8 +23,10 @@ Critique Android App Fixes:
         create adapter for post previews
         Lazy scrolling loading for RecyclerView adapters
 
+
     code cleanup:
         make post views no longer views, instead, make them a part of the framework
+        reusable, standardized components like username bar, and information bar
         make variables private, with corresponding getters and setters 
         figure out how to organise layouts into seperate files
         standardise view IDs 
@@ -45,4 +47,6 @@ Critique Android App TODO:
         background notification service
         notification HomeFragment child class
             create accompanying notification adapter
+
+    Delete posts
         
