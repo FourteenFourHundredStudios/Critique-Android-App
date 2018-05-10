@@ -53,7 +53,7 @@ public class AllProfileFragment extends Fragment {
     ProgressBar more;
     API api;
 
-    TextView nothingHere ;
+
 
 
     public AllProfileFragment(){
@@ -69,11 +69,15 @@ public class AllProfileFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_all_profile, container, false);
 
-        ArrayList<Post> emptyPosts = new ArrayList<Post>();
+        ArrayList<Post> emptyPosts = new ArrayList<>();
+
+
         RecyclerView view = rootView.findViewById(R.id.allFragmentContent);
         PostAdapter postAdapter = new PostAdapter(emptyPosts);
 
-        listManager=new RecycleViewManager(view, this.getContext(),postAdapter,emptyPosts);
+        listManager=new RecycleViewManager(view, this.getActivity(),postAdapter,emptyPosts);
+
+
 
 
         new ApiRequest.GetArchiveRequest(api,0,1).execute(new Util.Callback(){
@@ -85,13 +89,15 @@ public class AllProfileFragment extends Fragment {
                     ArrayList<Post> posts = new ArrayList<Post>();
                     for(int i=0;i<archive.length();i++){
                         JSONObject post = new JSONObject(archive.getString(i));
-                       // Log.e("dwd",post.toString());
+
                         if(shouldRender(post)) {
+
                             posts.add(new Post(post));
 
                         }
                     }
                     listManager.append(posts);
+                    addScrollView();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -102,8 +108,7 @@ public class AllProfileFragment extends Fragment {
 
         swipeRefreshLayout=rootView.findViewById(R.id.swiperefresh);
 
-        swipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
                         refresh();
@@ -112,9 +117,16 @@ public class AllProfileFragment extends Fragment {
         );
 
 
-/*
+
+
+
+        return rootView;
+    }
+
+
+    public void addScrollView(){
         final NestedScrollView scrollView = rootView.findViewById(R.id.allScrollview);
-        //scrollView.canScrollHorizontally(50);
+
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
@@ -126,18 +138,9 @@ public class AllProfileFragment extends Fragment {
                     loadNewContent();
                 }
             }
-        });*/
+        });
 
-
-/*
-        api= Data.backgroundApi;
-        more = new ProgressBar(getContext());
-
-        refresh();*/
-
-        return rootView;
     }
-
 
 
     public void refresh(){
@@ -178,7 +181,7 @@ public class AllProfileFragment extends Fragment {
 
     public void startLoading(){
 
-        if(content.indexOfChild(more)==-1)content.addView(more);
+//        if(content.indexOfChild(more)==-1)content.addView(more);
     }
 
     public void finishedLoading(){
@@ -201,17 +204,16 @@ public class AllProfileFragment extends Fragment {
 
 
 
-
+                    ArrayList<Post> posts = new ArrayList<Post>();
                     for(int i=0;i<newContent.length();i++){
                         JSONObject post=newContent.getJSONObject(i);
                         if(shouldRender(post)) {
                             moreContent=true;
-                            PostItemView item = new PostItemView(getContext(), api, post.toString());
-                            content.addView(item.getSelf());
+                            posts.add(new Post(post));
                         }
                     }
+                    listManager.append(posts);
                     isLoading=false;
-                    finishedLoading();
 
 
                 }catch (Exception e){

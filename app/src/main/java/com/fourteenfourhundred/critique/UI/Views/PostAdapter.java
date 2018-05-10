@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,6 +84,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         try {
             Post post=posts.get(position);
+
+           // Log.e("here","yeah");
 
             view.title.setText(post.getTitle());
             view.username.setText("posted by "+post.getUsername());

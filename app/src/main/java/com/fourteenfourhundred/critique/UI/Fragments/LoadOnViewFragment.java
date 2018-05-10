@@ -33,7 +33,7 @@ public class LoadOnViewFragment extends Fragment {
 
         rootView = inflater.inflate(getLayout(), container, false);
 
-        content = rootView.findViewById(R.id.home_fragment_container);
+        content = rootView.findViewById(R.id.allScrollview);
         content.setVisibility(View.GONE);
 
         loading = new ProgressBar(getContext());

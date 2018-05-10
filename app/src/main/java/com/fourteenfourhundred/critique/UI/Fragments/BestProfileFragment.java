@@ -1,6 +1,7 @@
 package com.fourteenfourhundred.critique.UI.Fragments;
 
 import com.fourteenfourhundred.critique.UI.Fragments.AllProfileFragment;
+import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
 
 import org.json.JSONException;
@@ -19,5 +20,7 @@ public class BestProfileFragment extends AllProfileFragment {
 
         return post.getJSONObject("votes").getInt(Data.getUsername())==1;
     }
+
+
 
 }

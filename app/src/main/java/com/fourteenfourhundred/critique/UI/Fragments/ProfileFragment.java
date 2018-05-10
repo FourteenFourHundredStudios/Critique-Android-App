@@ -58,8 +58,8 @@ public class ProfileFragment extends HomeFragment {
         SectionPagerAdapter adapter = new SectionPagerAdapter(getFragmentManager());
 
 
-        viewPager.setAdapter(adapter);
-        tablayout.setupWithViewPager(viewPager);
+        //viewPager.setAdapter(adapter);
+        //tablayout.setupWithViewPager(viewPager);
         // tablayout.setupWithViewPager(viewPager);
 
 //        adapter.addFragment(new FragmentOne(), "FRAG1");
@@ -77,14 +77,16 @@ public class ProfileFragment extends HomeFragment {
 
         // ((NestedScrollView)rootView.findViewById(R.id.scroll)).setFillViewport(true);
 
+
+        viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
+        tablayout.setupWithViewPager(viewPager);
+
         new ApiRequest.GetPatchRequest(api, "self").execute(new Util.Callback() {
             public void onResponse(Bitmap img) {
                 ImageView userPatch = (ImageView) rootView.findViewById(R.id.userPatch);
                 userPatch.setImageBitmap(img);
 
 
-                viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
-                 tablayout.setupWithViewPager(viewPager);
 
 
                 viewPager.setOffscreenPageLimit(5);
@@ -93,12 +95,7 @@ public class ProfileFragment extends HomeFragment {
             }
         });
 
-        viewPager.setOnTouchListener((View v, MotionEvent event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN && v instanceof ViewGroup) {
-                ((ViewGroup) v).requestDisallowInterceptTouchEvent(true);
-            }
-            return false;
-        });
+
         return rootView;
     }
 

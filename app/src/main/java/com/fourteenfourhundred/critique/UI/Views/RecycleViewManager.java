@@ -25,7 +25,7 @@ public class RecycleViewManager {
         this.view = view ;
 
 
-        view.setHasFixedSize(true);
+       // view.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(context);
         view.setLayoutManager(layoutManager);
         this.adapter=adapter;
@@ -38,10 +38,19 @@ public class RecycleViewManager {
 
 
     public void append(final ArrayList newData){
+
+      //  Log.e("REBUILT???","BUEWHFUHF");
+
+        Log.e("DATA","SIZE "+newData.size());
+
         int len = data.size();
         data.addAll(newData);
-        adapter.notifyItemRangeInserted(0,len+newData.size());
-        adapter.notifyItemRangeChanged(len,len+newData.size());
+        //adapter.notifyItemRangeInserted(len,newData.size());
+
+        adapter.notifyItemRangeInserted(len,newData.size());
+       // adapter.notifyItemRangeChanged(0,len+newData.size());
+
+      //  adapter.notifyItemRangeChanged(len,len+newData.size());
 
     }
 
@@ -59,8 +68,7 @@ public class RecycleViewManager {
                 break;
             default:
                 diffCallback=null;
-                break;
-
+                    break;
         }
 
 
