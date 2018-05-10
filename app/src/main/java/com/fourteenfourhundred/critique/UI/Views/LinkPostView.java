@@ -3,15 +3,11 @@ package com.fourteenfourhundred.critique.UI.Views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.view.LayoutInflater;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.util.Util;
 

@@ -2,7 +2,6 @@ package com.fourteenfourhundred.critique.UI.Views;
 
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +11,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.fourteenfourhundred.critique.API.ApiRequest;
-import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;

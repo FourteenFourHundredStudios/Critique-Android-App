@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,11 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
-import com.android.volley.Response;
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.storage.Data;
-import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONArray;

@@ -1,4 +1,4 @@
-package com.fourteenfourhundred.critique.API;
+package com.fourteenfourhundred.critique.Framework.API;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.fourteenfourhundred.critique.Framework.Models.EmptyPost;
+import com.fourteenfourhundred.critique.Framework.Models.Post;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.UI.Views.EmptyView;
@@ -23,11 +25,11 @@ public class QueueManagerService {
     public Context context;
     public Activity activity;
 
-    public ArrayList<PostView> queue = new ArrayList<>();
+    public ArrayList<Post> queue = new ArrayList<>();
     public JSONArray votes= new JSONArray();
 
-    public EmptyView emptyView;
-    public PostView currentView;
+    public EmptyPost emptyView;
+    public Post currentView;
 
     public boolean queEmpty=false;
 
@@ -46,8 +48,8 @@ public class QueueManagerService {
         this.activity=queueFragment.getActivity();
         this.context=activity.getApplicationContext();
 
-        emptyView = new EmptyView(context,fragment);
-
+        emptyView = new EmptyPost(queueFragment);
+        emptyView.inflateView(api,context);
 
 
         api=new API(activity);
@@ -66,15 +68,17 @@ public class QueueManagerService {
 
         try {
             JSONObject postJson = new JSONObject(postData);
-            PostView post=null;
+            Post post=null;
 
             switch (postJson.getString("type")){
                 case "text":
-                    post = new PostView(activity,api,postJson.toString());
+                    post = new Post(postJson);
+                    post.inflateView(api,activity);
                     break;
 
                 case "link":
-                    post = new LinkPostView(activity,api,postJson.toString());
+                    post = new Post(postJson);
+                    post.inflateView(api,activity);
                     break;
             }
 
@@ -104,8 +108,8 @@ public class QueueManagerService {
                     }
                 });
             }else{
-                currentView = new PostView(activity,api,c);
-
+                currentView = new Post(new JSONObject(c));
+                currentView.inflateView(api,activity);
                 votes=new JSONArray(sharedPref.getString("votes", "[]"));
                 for(int i=0;i<j.length();i++){
                     //final PostView post = new PostView(activity,api,j.get(i).toString());
@@ -215,7 +219,7 @@ public class QueueManagerService {
     public void vote(int voteValue){
         try {
             if(currentView!=null) {
-                JSONObject vote = new JSONObject().put("id", currentView.getPost().getString("_id")).put("vote", voteValue);
+                JSONObject vote = new JSONObject().put("id", currentView.getId()).put("vote", voteValue);
                 votes.put(vote);
             }
 
@@ -238,10 +242,12 @@ public class QueueManagerService {
                     isVoting = false;
 
                     if (queEmpty) {
-                        queueFragment.forcePostRender(new EmptyView(context, queueFragment));
+                        emptyView=new EmptyPost(queueFragment);
+                        emptyView.inflateView(api,context);
+                        queueFragment.forcePostRender(emptyView);
 
                     } else {
-                        PostView view = queue.remove(0);
+                        Post view = queue.remove(0);
                         currentView = view;
                         queueFragment.forcePostRender(view);
                     }
@@ -260,8 +266,8 @@ public class QueueManagerService {
 
     public void saveQue(){
         JSONArray save=new JSONArray();
-        for (PostView post: queue){
-            save.put(post.getPost());
+        for (Post post: queue){
+            save.put(post.getPostData());
         }
 
         //
@@ -269,7 +275,7 @@ public class QueueManagerService {
 
         editor.putString("que", save.toString());
         if(currentView!=null){
-            editor.putString("currentPost", currentView.getPost().toString());
+            editor.putString("currentPost", currentView.getPostData().toString());
         }else {
             editor.putString("currentPost", null);
         }
@@ -283,8 +289,8 @@ public class QueueManagerService {
     }
 
 
-    public PostView getNextPost(){
-        PostView view=new EmptyView(context,queueFragment);
+    public Post getNextPost(){
+        Post view=new EmptyPost(queueFragment);
         currentView=null;
 
         if(queue.size()==0){
@@ -303,7 +309,7 @@ public class QueueManagerService {
 
         }
 
-        if(!(view instanceof  EmptyView)){
+        if(!(view instanceof  EmptyPost)){
             currentView=view;
         }else{
 

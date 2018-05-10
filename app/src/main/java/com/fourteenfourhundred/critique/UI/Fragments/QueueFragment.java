@@ -1,10 +1,6 @@
 package com.fourteenfourhundred.critique.UI.Fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +9,14 @@ import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.fourteenfourhundred.critique.API.QueueManagerService;
+import com.fourteenfourhundred.critique.Framework.API.QueueManagerService;
+import com.fourteenfourhundred.critique.Framework.Models.EmptyPost;
+import com.fourteenfourhundred.critique.Framework.Models.Post;
 import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
 import com.fourteenfourhundred.critique.UI.Views.FluidMotionOptions;
 import com.fourteenfourhundred.critique.UI.Views.OneFluidMotionView;
 import com.fourteenfourhundred.critique.util.AnimationUtil;
-import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.util.Util.Callback;
 import com.fourteenfourhundred.critique.UI.Views.EmptyView;
 import com.fourteenfourhundred.critique.UI.Views.PostView;
@@ -34,7 +29,7 @@ public class QueueFragment extends HomeFragment{
     public ImageButton voteGood, voteBad;
     public ImageView syncIcon;
     public FrameLayout frame;
-    public PostView activePost;
+    public Post activePost;
     public boolean voteLock=false;
     public OneFluidMotionView motionView;
 
@@ -120,25 +115,29 @@ public class QueueFragment extends HomeFragment{
         renderNextPost();
     }
 
-    public void forcePostRender(final PostView post){
+    public void forcePostRender(final Post post){
         forcePostRender(post,null);
     }
 
 
 
 
-    public void forcePostRender(final PostView post,final Callback callback){
-        post.getSelf().setVisibility(View.INVISIBLE);
-        frame.addView(post.getSelf());
+    public void forcePostRender(final Post post,final Callback callback){
 
-        post.getSelf().post(new Runnable() {
+
+        //Log.e("OK",post.getTitle());
+
+        post.getView().setVisibility(View.INVISIBLE);
+        frame.addView(post.getView());
+
+        post.getView().post(new Runnable() {
             @Override
             public void run() {
-                AnimationUtil.slideUp(post.getSelf(), new Animation.AnimationListener() {
+                AnimationUtil.slideUp(post.getView(), new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         if(activePost!=null){
-                            AnimationUtil.fadeOut(activePost.getSelf(),null);
+                            AnimationUtil.fadeOut(activePost.getView(),null);
                         }
                         activePost=post;
 
@@ -149,8 +148,8 @@ public class QueueFragment extends HomeFragment{
                     public void onAnimationEnd(Animation animation) {
                         if(callback!=null)callback.onFinished();
 
-                        if(activePost instanceof EmptyView){
-                            ((EmptyView)activePost).stopLoad();
+                        if(activePost instanceof EmptyPost){
+                            ((EmptyPost)activePost).stopLoad();
                         }
 
                     }
@@ -170,9 +169,9 @@ public class QueueFragment extends HomeFragment{
 
     public void renderNextPost(boolean showAnimation){
 
-        final PostView nextPost = queue.getNextPost();
+        final Post nextPost = queue.getNextPost();
 
-        if(nextPost instanceof EmptyView){
+        if(nextPost instanceof EmptyPost){
             setVoteLock(true,showAnimation);
             return;
         }

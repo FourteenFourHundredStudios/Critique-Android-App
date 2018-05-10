@@ -5,22 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.SearchView;
 
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.UI.Views.RecycleViewManager;
 import com.fourteenfourhundred.critique.UI.Views.User;
 import com.fourteenfourhundred.critique.UI.Views.UserAdapter;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
-import com.fourteenfourhundred.critique.util.SerializableJSONArray;
 import com.fourteenfourhundred.critique.util.Util;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

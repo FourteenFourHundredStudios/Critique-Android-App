@@ -9,15 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.function.Function;
 
 public class ComposeActivity extends AppCompatActivity {
 

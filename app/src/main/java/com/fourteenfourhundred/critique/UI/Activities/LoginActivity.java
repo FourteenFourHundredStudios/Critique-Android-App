@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.storage.Storage;
 import com.fourteenfourhundred.critique.util.Util;

@@ -3,14 +3,13 @@ package com.fourteenfourhundred.critique.UI.Views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -114,18 +113,11 @@ public class PostView extends View{
             AsyncTask.execute(()->{
                     try {
                         new ApiRequest.GetPatchRequest(api,post.getString("username")).execute(new Util.Callback(){
-                        public void onResponse(final Bitmap img) {
+                            public void onResponse(final Bitmap img) {
 
 
 
                                 ((ImageView) rootView.findViewById(R.id.queProfilePic)).setImageBitmap(img);
-                                //((ImageView) rootView.findViewById(R.id.queProfilePic)).invalidate();
-
-
-                                //Log.e("GETTING PIC","GETTING PIC POST"+post.getString("title"));
-
-
-                            //((ImageView) rootView.findViewById(R.id.queProfilePic)).invalidate();
 
                         }
                     });

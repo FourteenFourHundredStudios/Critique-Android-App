@@ -5,36 +5,27 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
-import com.fourteenfourhundred.critique.UI.Views.LockedScrollView;
-import com.fourteenfourhundred.critique.UI.Views.Post;
+import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.Models.Post;
 import com.fourteenfourhundred.critique.UI.Views.PostAdapter;
 import com.fourteenfourhundred.critique.UI.Views.RecycleViewManager;
-import com.fourteenfourhundred.critique.UI.Views.User;
-import com.fourteenfourhundred.critique.UI.Views.UserAdapter;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
-import com.fourteenfourhundred.critique.UI.Views.PostItemView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AllProfileFragment extends Fragment {
 

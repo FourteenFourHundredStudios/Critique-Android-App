@@ -1,32 +1,22 @@
 package com.fourteenfourhundred.critique.UI.Fragments;
 
 
-import android.content.Context;
 import android.graphics.Bitmap;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
-import com.fourteenfourhundred.critique.UI.Fragments.BestProfileFragment;
-import com.fourteenfourhundred.critique.UI.Fragments.LoadOnViewFragment;
-import com.fourteenfourhundred.critique.UI.Fragments.MeProfileFragment;
-import com.fourteenfourhundred.critique.UI.Fragments.AllProfileFragment;
+import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;

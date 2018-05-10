@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.Framework.Models.Post;
 
 import java.util.ArrayList;
 import java.util.List;

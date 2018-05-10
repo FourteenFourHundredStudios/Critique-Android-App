@@ -1,33 +1,20 @@
 package com.fourteenfourhundred.critique.UI.Fragments;
 
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
-import android.widget.TextView;
 
-import com.fourteenfourhundred.critique.API.API;
-import com.fourteenfourhundred.critique.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
 import com.fourteenfourhundred.critique.UI.Activities.MutualFinderActivity;
 import com.fourteenfourhundred.critique.UI.Views.RecycleViewManager;
@@ -38,11 +25,9 @@ import com.fourteenfourhundred.critique.storage.Storage;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 

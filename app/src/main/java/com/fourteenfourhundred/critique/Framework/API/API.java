@@ -1,8 +1,7 @@
-package com.fourteenfourhundred.critique.API;
+package com.fourteenfourhundred.critique.Framework.API;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -10,14 +9,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.util.VolleyMultipartRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
