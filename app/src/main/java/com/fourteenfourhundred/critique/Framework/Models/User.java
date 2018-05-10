@@ -1,7 +1,4 @@
-package com.fourteenfourhundred.critique.UI.Views;
-
-import android.support.v7.util.DiffUtil;
-import android.util.Log;
+package com.fourteenfourhundred.critique.Framework.Models;
 
 import com.fourteenfourhundred.critique.storage.Data;
 

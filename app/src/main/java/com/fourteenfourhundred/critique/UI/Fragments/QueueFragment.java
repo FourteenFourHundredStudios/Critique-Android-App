@@ -18,8 +18,7 @@ import com.fourteenfourhundred.critique.UI.Views.FluidMotionOptions;
 import com.fourteenfourhundred.critique.UI.Views.OneFluidMotionView;
 import com.fourteenfourhundred.critique.util.AnimationUtil;
 import com.fourteenfourhundred.critique.util.Util.Callback;
-import com.fourteenfourhundred.critique.UI.Views.EmptyView;
-import com.fourteenfourhundred.critique.UI.Views.PostView;
+
 import com.fourteenfourhundred.critique.critique.R;
 
 

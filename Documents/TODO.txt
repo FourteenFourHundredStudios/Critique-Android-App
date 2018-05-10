@@ -5,12 +5,12 @@ Critique Android App Fixes:
         figure out optimal time to inflate views in Queue
 
     aesthetics: 
-        redesign profile page:
+        [NOPE] redesign profile page:
             create cool coordinator layout for profile page info
             redesign the way post previews look
         redesign mutual selection activity
             add cooler blue checkbox next to user selection
-        posts should have real date and time
+        [NOPE] posts should have real date and time
         posts should show real number of votes
         [DONE] redesign post title:
             [DONE] Maybe make date username, and username title?

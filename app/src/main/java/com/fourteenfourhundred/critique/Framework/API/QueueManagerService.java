@@ -10,9 +10,7 @@ import com.fourteenfourhundred.critique.Framework.Models.EmptyPost;
 import com.fourteenfourhundred.critique.Framework.Models.Post;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.util.Util;
-import com.fourteenfourhundred.critique.UI.Views.EmptyView;
-import com.fourteenfourhundred.critique.UI.Views.LinkPostView;
-import com.fourteenfourhundred.critique.UI.Views.PostView;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +33,7 @@ public class QueueManagerService {
 
     public boolean isVoting=false;
 
-    public PostView activePost=null;
+
 
     int t=1;
 

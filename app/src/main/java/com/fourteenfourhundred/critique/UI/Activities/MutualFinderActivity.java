@@ -10,9 +10,9 @@ import android.widget.SearchView;
 
 import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
-import com.fourteenfourhundred.critique.UI.Views.RecycleViewManager;
-import com.fourteenfourhundred.critique.UI.Views.User;
-import com.fourteenfourhundred.critique.UI.Views.UserAdapter;
+import com.fourteenfourhundred.critique.UI.RecycleView.RecycleViewManager;
+import com.fourteenfourhundred.critique.Framework.Models.User;
+import com.fourteenfourhundred.critique.UI.RecycleView.UserAdapter;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;

@@ -1,4 +1,4 @@
-package com.fourteenfourhundred.critique.UI.Views;
+package com.fourteenfourhundred.critique.UI.RecycleView;
 
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
+import com.fourteenfourhundred.critique.Framework.Models.User;
 import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;

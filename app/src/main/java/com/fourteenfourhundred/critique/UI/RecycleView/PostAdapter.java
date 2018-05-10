@@ -1,4 +1,4 @@
-package com.fourteenfourhundred.critique.UI.Views;
+package com.fourteenfourhundred.critique.UI.RecycleView;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;

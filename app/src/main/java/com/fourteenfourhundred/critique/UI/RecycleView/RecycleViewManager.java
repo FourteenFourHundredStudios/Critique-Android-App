@@ -1,4 +1,4 @@
-package com.fourteenfourhundred.critique.UI.Views;
+package com.fourteenfourhundred.critique.UI.RecycleView;
 
 import android.content.Context;
 import android.support.v7.util.DiffUtil;
@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.fourteenfourhundred.critique.Framework.Models.Post;
+import com.fourteenfourhundred.critique.Framework.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
