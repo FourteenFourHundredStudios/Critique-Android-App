@@ -34,7 +34,6 @@ import java.io.IOException;
 
 public class HomeActivity extends AppCompatActivity {
 
-    public JSONArray archive;
     public QueueFragment queue;
     public MutualsFragment mutuals;
 

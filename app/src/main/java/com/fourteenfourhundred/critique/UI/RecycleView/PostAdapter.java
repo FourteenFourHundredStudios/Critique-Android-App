@@ -76,10 +76,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         try {
             Post post=posts.get(position);
-
-           // Log.e("here","yeah");
+            
 
             view.title.setText(post.getTitle());
+
+            String word = " Votes";
+
+            if(post.getVoteTotal()==1)word=" Vote";
+
+            view.votes.setText(post.getVoteTotal()+word);
+
+
+
             view.username.setText("posted by "+post.getUsername());
             new ApiRequest.GetPatchRequest(Data.backgroundApi,post.getUsername()).execute(new Util.Callback(){
                 public void onResponse(final Bitmap img) {

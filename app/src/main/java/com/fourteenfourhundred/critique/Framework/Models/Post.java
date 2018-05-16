@@ -36,7 +36,6 @@ public class Post {
             this.title = postData.getString("title");
             this.id = postData.getString("_id");
             this.type = postData.getString("type");
-
             this.content = postData.getString("content");
 
             Object voteData = postData.get("votes");
@@ -44,9 +43,18 @@ public class Post {
             if(voteData instanceof Integer){
                 voteTotal=(Integer) voteData;
                 votes=new JSONObject();
+
+                //Log.e("votes",postData.toString());
+
             }else{
                 votes=(JSONObject)voteData ;
+
+
+
                 voteTotal = votes.length();
+
+               // Log.e("votes",voteTotal+"");
+
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -113,6 +121,9 @@ public class Post {
         ((TextView) rootView.findViewById(R.id.title)).setText(title);
         ((TextView) rootView.findViewById(R.id.content)).setText(content);
         ((TextView) rootView.findViewById(R.id.caption)).setText("posted by "+username);
+
+      //  Log.e("post",postData.toString());
+
         ((TextView) rootView.findViewById(R.id.vote_count)).setText(voteTotal + " votes");
         AsyncTask.execute(()->{
             try {

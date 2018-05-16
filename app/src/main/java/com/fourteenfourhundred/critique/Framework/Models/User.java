@@ -12,25 +12,12 @@ public class User {
 
     private String name;
     private int score;
-    private boolean isMutual=false;
+
 
     public User(String name,int score){
         this.name=name;
         this.score=score;
 
-        try {
-            JSONArray mutuals = Data.getMutuals();
-
-
-            for (int i = 0; i < mutuals.length(); i++) {
-                if (mutuals.getJSONObject(i).getString("username").equals(name)){
-                    isMutual= mutuals.getJSONObject(i).getBoolean("isMutual");
-                }
-            }
-
-        }catch (Exception e){
-
-        }
 
     }
 
@@ -38,8 +25,18 @@ public class User {
 
 
     public boolean isMutual(){
+        boolean isMutual=false;
+        try {
 
-
+            JSONArray mutuals = Data.getMutuals();
+            for (int i = 0; i < mutuals.length(); i++) {
+                if (mutuals.getJSONObject(i).getString("username").equals(name)) {
+                    isMutual = mutuals.getJSONObject(i).getBoolean("isMutual");
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return isMutual;
     }
