@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,9 +23,10 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
+
     private List<User> users;
-
-
+    public boolean isSelection=false;
+    public ChildItemClickListener clickListener;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -39,6 +41,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         public Button followButton;
         public ProgressBar buttonProgress;
 
+        public CheckBox isSelected;
+
+
         public String usernameVal="";
 
         public ViewHolder(View view) {
@@ -51,6 +56,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             this.pendingButton=view.findViewById(R.id.pendingButton);
             this.followButton=view.findViewById(R.id.followButton);
             this.buttonProgress=view.findViewById(R.id.buttonProgress);
+
+
+            this.isSelected=view.findViewById(R.id.isSelected);
+
 
 
             mutualButton.setOnClickListener(this);
@@ -151,6 +160,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         this.users = users;
     }
 
+    public UserAdapter(List<User> users,boolean isSelection, ChildItemClickListener clickListener) {
+        this.users = users;
+        this.isSelection=isSelection;
+        this.clickListener=clickListener;
+    }
+
+
 
     @Override
     public UserAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -167,6 +183,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public void onBindViewHolder(final ViewHolder view, int position) {
 
         try {
+
+
+
             User user=users.get(position);
 
             view.username.setText(user.getName());
@@ -200,7 +219,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             });
 
 
+            if(isSelection){
+                view.isSelected.setVisibility(View.VISIBLE);
+                view.view.setOnClickListener((View v)->{
+                    clickListener.onClick(v,user.getName());
+                    view.isSelected.toggle();
+                });
 
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -209,6 +235,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     }
 
+
+    public interface ChildItemClickListener {
+        public void onClick(View v, String username);
+    }
 
     @Override
     public int getItemCount() {

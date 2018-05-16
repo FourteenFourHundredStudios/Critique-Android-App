@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fourteenfourhundred.critique.critique.comk.fourteenfourhundred.marc.com.SelectMutualsActivity">
+    tools:context="com.fourteenfourhundred.critique.UI.Activities.SelectMutualsActivity">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/mutualsList"
         android:background="@android:color/transparent"
         android:layout_width="match_parent"

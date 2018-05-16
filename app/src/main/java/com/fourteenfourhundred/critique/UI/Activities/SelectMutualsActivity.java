@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,12 +16,18 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Framework.Models.User;
+import com.fourteenfourhundred.critique.UI.RecycleView.RecycleViewManager;
+import com.fourteenfourhundred.critique.UI.RecycleView.UserAdapter;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.critique.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectMutualsActivity extends AppCompatActivity {
 
@@ -31,6 +38,10 @@ public class SelectMutualsActivity extends AppCompatActivity {
     final Activity me = this;
 
     public API api;
+
+    RecycleViewManager view;
+
+    ArrayList<String> selected = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,97 +59,23 @@ public class SelectMutualsActivity extends AppCompatActivity {
     }
 
 
-    public class User {
-
-        JSONObject self;
-        boolean selected = false;
-
-
-        public User(String self){
-            try {
-                this.self=new JSONObject(self);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public boolean getSelected(){
-            return selected;
-        }
-
-        void toggleSelected(){
-            selected = !selected;
-        }
-
-        public String getUsername(){
-            try {
-                return self.getString("username");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        public String isMutual(){
-            try {
-                return self.getString("isMutual");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-    }
-
-
-
     public void populateMutualsList(){
+        RecyclerView mutualsList=(RecyclerView)findViewById(R.id.mutualsList);
 
 
-        /*
-        new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
-            public void onResponse(JSONObject response) {
-                try {
-                    if(response.get("status").equals("ok")){
-                        JSONArray mutualNames = new JSONArray(response.get("mutuals").toString());
-
-                        mutuals= new User[mutualNames.length()];
-
-                        for(int i=0;i<mutualNames.length();i++){
-                            Log.e("f",mutualNames.get(i).toString());
-                            mutuals[i]=new User(mutualNames.get(i).toString());
-                        }
-
-                        mutualsList = (ListView) findViewById(R.id.mutualsList);
-                        CustomAdapter customAdapter = new CustomAdapter(me.getApplicationContext(), mutuals);
-                        mutualsList.setAdapter(customAdapter);
-
-                    }else{
-                        Util.showDialog(me,response.get("message").toString());
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        List<User> mutuals=User.jsonToUserList(Data.getMutuals());
+        UserAdapter userAdapter = new UserAdapter(mutuals,true,(View view,String username)->{
+            if(selected.indexOf(username)==-1){
+                selected.add(username);
+            }else{
+                selected.remove(username);
             }
-        });*/
-
-        try {
-            mutuals = new User[Data.getMutuals().length()];
-
-            for (int i = 0; i < Data.getMutuals().length(); i++) {
-                //Log.e("f",mutualNames.get(i).toString());
-                mutuals[i] = new User(Data.getMutuals().get(i).toString());
-            }
-
-            mutualsList = (ListView) findViewById(R.id.mutualsList);
-            CustomAdapter customAdapter = new CustomAdapter(me.getApplicationContext(), mutuals);
-            mutualsList.setAdapter(customAdapter);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
+        });
+        view = new RecycleViewManager(mutualsList, this,userAdapter,mutuals);
     }
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -153,9 +90,13 @@ public class SelectMutualsActivity extends AppCompatActivity {
     //in the future it would make more sense to have this Activity return the selected users so it is reusable
     public void send(){
         JSONArray to = new JSONArray();
-        for(User i : mutuals)if(i.getSelected())to.put(i.getUsername());
 
-        //Util.showDialog(this, to.toString());
+
+        //TODO
+
+        for(String username:selected)to.put(username);
+
+
 
         Intent returnIntent = new Intent();
         //Util.showDialog(this,to.toString());
@@ -206,58 +147,7 @@ public class SelectMutualsActivity extends AppCompatActivity {
     }
 
 
-    class CustomAdapter extends BaseAdapter {
-        Context context;
-        User mutualsList[];
-        LayoutInflater inflter;
-        boolean[] checkBoxes;
 
-
-        public CustomAdapter(Context applicationContext, User[] mutualsList) {
-            this.context = context;
-            this.mutualsList = mutualsList;
-            inflter = (LayoutInflater.from(applicationContext));
-            checkBoxes=new boolean[mutualsList.length];
-        }
-
-        @Override
-        public int getCount() {
-            return mutualsList.length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(final int i, View view, ViewGroup viewGroup) {
-            view = inflter.inflate(R.layout.mutual_list_item, null);
-            final CheckBox mutual = (CheckBox) view.findViewById(R.id.mutualName);
-
-            view.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    //mutual.setChecked(!mutual.isChecked());
-                    mutual.toggle();
-                    mutuals[i].toggleSelected();
-                    //checkBoxes[i]=!checkBoxes[i];
-                }
-
-            });
-
-            mutual.setText(mutualsList[i].getUsername());
-
-
-            return view;
-        }
-    }
 
 
 }
