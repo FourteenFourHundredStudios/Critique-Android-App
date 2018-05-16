@@ -21,6 +21,7 @@ import com.fourteenfourhundred.critique.UI.RecycleView.RecycleViewManager;
 import com.fourteenfourhundred.critique.UI.RecycleView.UserAdapter;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.critique.R;
+import com.fourteenfourhundred.critique.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,11 +65,19 @@ public class SelectMutualsActivity extends AppCompatActivity {
 
 
         List<User> mutuals=User.jsonToUserList(Data.getMutuals());
-        UserAdapter userAdapter = new UserAdapter(mutuals,true,(View view,String username)->{
-            if(selected.indexOf(username)==-1){
-                selected.add(username);
+        UserAdapter userAdapter = new UserAdapter(mutuals,true,(View view,User user)->{
+            if(selected.indexOf(user.getName())==-1){
+
+                if(user.isMutual()){
+                    selected.add(user.getName());
+                }else{
+                    ((CheckBox)view.findViewById(R.id.isSelected)).toggle();
+                    Util.showDialog(this,"This user is not your mutual!");
+                }
+
+
             }else{
-                selected.remove(username);
+                selected.remove(user.getName());
             }
         });
         view = new RecycleViewManager(mutualsList, this,userAdapter,mutuals);

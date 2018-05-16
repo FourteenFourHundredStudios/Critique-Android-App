@@ -49,9 +49,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         public ViewHolder(View view) {
             super(view);
             this.view = view;
-            this.username = view.findViewById(R.id.username);
-            this.points = view.findViewById(R.id.points);
-            this.profPic = view.findViewById(R.id.profPic);
+            this.username = view.findViewById(R.id.title);
+            this.points = view.findViewById(R.id.caption);
+            this.profPic = view.findViewById(R.id.picture);
             this.mutualButton=view.findViewById(R.id.mutualButton);
             this.pendingButton=view.findViewById(R.id.pendingButton);
             this.followButton=view.findViewById(R.id.followButton);
@@ -222,7 +222,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             if(isSelection){
                 view.isSelected.setVisibility(View.VISIBLE);
                 view.view.setOnClickListener((View v)->{
-                    clickListener.onClick(v,user.getName());
+                    clickListener.onClick(v,user);
                     view.isSelected.toggle();
                 });
 
@@ -237,7 +237,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
 
     public interface ChildItemClickListener {
-        public void onClick(View v, String username);
+        public void onClick(View v, User user);
     }
 
     @Override

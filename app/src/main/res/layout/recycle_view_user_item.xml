@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,79 +11,24 @@
     <CheckBox
         android:id="@+id/isSelected"
         android:layout_width="wrap_content"
-
+        android:layout_centerVertical="true"
         android:visibility="gone"
         android:layout_height="match_parent" />
 
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/queProfilePicHolder"
-        android:layout_width="0dp"
-        android:layout_weight="15"
-        android:layout_height="50dp"
-        android:background="#ffffff"
-        android:padding="5dp"
-        android:scaleType="centerCrop"
-        app:cardCornerRadius="10dp">
-
-    <ImageView
-        android:id="@+id/profPic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop" />
-
-    </android.support.v7.widget.CardView>
-
-
-    <LinearLayout
-
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginLeft="10dp"
-        android:weightSum="100"
-
-        android:layout_weight="50">
-
-        <TextView
-            android:id="@+id/username"
-            android:text="Marc"
-
-
-            android:layout_marginTop="0dp"
-
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-
-
-            android:autoSizeTextType="uniform"
-
-            android:layout_weight="40"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <TextView
-            android:id="@+id/points"
-            android:text="5000 points"
-            android:autoSizeTextType="uniform"
-            android:layout_margin="0dp"
-            android:layout_weight="60"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
+    <include android:layout_toRightOf="@id/isSelected"  android:layout_centerVertical="true" android:layout_height="wrap_content" android:layout_width="match_parent" layout="@layout/layout_user_heading"></include>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="35"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:id="@+id/buttonHolder">
 
 
         <Button
             android:id="@+id/mutualButton"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
 
 
@@ -98,8 +43,8 @@
             android:id="@+id/pendingButton"
             android:background="@drawable/round_button_good"
             android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
             android:layout_margin="10dp"
 
@@ -114,8 +59,8 @@
             android:id="@+id/followButton"
             android:background="@drawable/round_button_follow"
             android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
             android:layout_margin="10dp"
 
@@ -140,4 +85,4 @@
 
 
 
-</LinearLayout>
+</RelativeLayout>

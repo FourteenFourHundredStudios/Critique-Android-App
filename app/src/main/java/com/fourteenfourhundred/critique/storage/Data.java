@@ -28,7 +28,7 @@ public class Data {
     public static API backgroundApi;
 
     //public static String url="http://75.102.199.218:5000/";
-    public static String url="http://75.102.225.242:5000/";
+    public static String url="http://75.102.215.3:5000/";
     //public static String url="http://75.102.218.43:5000/";
 
 

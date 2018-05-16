@@ -110,17 +110,15 @@ public class Post {
         LayoutInflater inflater = LayoutInflater.from(context);
         rootView = inflater.inflate(R.layout.post_view, null, false);
 
-        Log.e("content",content);
-
         ((TextView) rootView.findViewById(R.id.title)).setText(title);
         ((TextView) rootView.findViewById(R.id.content)).setText(content);
-        ((TextView) rootView.findViewById(R.id.username)).setText(username);
+        ((TextView) rootView.findViewById(R.id.caption)).setText("posted by "+username);
         ((TextView) rootView.findViewById(R.id.vote_count)).setText(voteTotal + " votes");
         AsyncTask.execute(()->{
             try {
                 new ApiRequest.GetPatchRequest(api,getUsername()).execute(new Util.Callback(){
                     public void onResponse(final Bitmap img) {
-                        ((ImageView) rootView.findViewById(R.id.queProfilePic)).setImageBitmap(img);
+                        ((ImageView) rootView.findViewById(R.id.picture)).setImageBitmap(img);
                     }
                 });
             } catch (Exception e) {

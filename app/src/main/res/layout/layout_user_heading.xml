@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="10dp"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:weightSum="100">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/queProfilePicHolder"
+        android:layout_width="0dp"
+        android:layout_weight="15"
+        android:layout_height="50dp"
+        android:background="#ffffff"
+        android:padding="5dp"
+        android:scaleType="centerCrop"
+        app:cardCornerRadius="10dp">
+
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            />
+
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:minWidth="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+
+        android:layout_weight="85">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+
+
+            android:text="Title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+
+
+
+            <TextView
+                android:id="@+id/caption"
+                android:text="caption"
+                android:autoSizeTextType="uniform"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
