@@ -76,7 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
         try {
             Post post=posts.get(position);
-            
+
 
             view.title.setText(post.getTitle());
 

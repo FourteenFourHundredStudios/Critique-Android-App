@@ -137,9 +137,11 @@ public class QueueFragment extends HomeFragment{
                     public void onAnimationStart(Animation animation) {
                         if(activePost!=null){
                             AnimationUtil.fadeOut(activePost.getView(),null);
+                            activePost.onRemoved();
                         }
-                        activePost=post;
 
+                        activePost=post;
+                        activePost.onPresented();
 
                     }
 

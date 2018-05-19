@@ -81,6 +81,10 @@ public class Post {
         return username;
     }
 
+    public String getContent(){
+        return content;
+    }
+
     public String getId(){
         return id;
     }
@@ -114,15 +118,17 @@ public class Post {
         return postData;
     }
 
+    public int getViewId(){
+        return R.layout.post_view;
+    }
+
     public void inflateView(API api, Context context){
         LayoutInflater inflater = LayoutInflater.from(context);
-        rootView = inflater.inflate(R.layout.post_view, null, false);
+        rootView = inflater.inflate(getViewId(), null, false);
 
         ((TextView) rootView.findViewById(R.id.title)).setText(title);
-        ((TextView) rootView.findViewById(R.id.content)).setText(content);
         ((TextView) rootView.findViewById(R.id.caption)).setText("posted by "+username);
 
-      //  Log.e("post",postData.toString());
 
         ((TextView) rootView.findViewById(R.id.vote_count)).setText(voteTotal + " votes");
         AsyncTask.execute(()->{
@@ -136,8 +142,25 @@ public class Post {
                 e.printStackTrace();
             }
         });
+        modifyValues(api);
     }
 
+
+    public void modifyValues(API api){
+
+        TextView view = ((TextView) rootView.findViewById(R.id.content));
+        view.setText(content);
+        view.requestFocus();
+        //((View)view.getParent()).requestFocus();
+    }
+
+    public void onRemoved(){
+
+    }
+
+    public void onPresented(){
+
+    }
 
 
 }

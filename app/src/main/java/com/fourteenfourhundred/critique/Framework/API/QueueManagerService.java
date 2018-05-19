@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import com.fourteenfourhundred.critique.Framework.Models.EmptyPost;
 import com.fourteenfourhundred.critique.Framework.Models.Post;
+import com.fourteenfourhundred.critique.Framework.Models.WebPost;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.util.Util;
 
@@ -62,25 +64,33 @@ public class QueueManagerService {
 
     }
 
+    public Post createPostFromJSON(JSONObject postJson){
+        Post post = null;
+        try {
+
+
+            switch (postJson.getString("type")) {
+                case "text":
+                    post = new Post(postJson);
+                    break;
+
+                case "link":
+                    post = new WebPost(postJson);
+                    break;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return post;
+    }
+
+
     public void addToQueue(String postData){
 
         try {
             JSONObject postJson = new JSONObject(postData);
-            Post post=null;
-
-            switch (postJson.getString("type")){
-                case "text":
-                    post = new Post(postJson);
-                    post.inflateView(api,activity);
-                    break;
-
-                case "link":
-                    post = new Post(postJson);
-                    post.inflateView(api,activity);
-                    break;
-            }
-
-
+            Post post = createPostFromJSON(postJson);
+            post.inflateView(api,activity);
             queue.add(post);
         }catch (Exception e){
             e.printStackTrace();
@@ -106,8 +116,13 @@ public class QueueManagerService {
                     }
                 });
             }else{
-                currentView = new Post(new JSONObject(c));
+                //currentView = new Post(new JSONObject(c));
+                //currentView.inflateView(api,activity);
+
+                currentView=createPostFromJSON(new JSONObject(c));
                 currentView.inflateView(api,activity);
+
+
                 votes=new JSONArray(sharedPref.getString("votes", "[]"));
                 for(int i=0;i<j.length();i++){
                     //final PostView post = new PostView(activity,api,j.get(i).toString());

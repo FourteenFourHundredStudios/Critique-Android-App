@@ -27,8 +27,8 @@ public class Data {
     //private static final long serialVersionUID = 1L;
     public static API backgroundApi;
 
-    //public static String url="http://75.102.199.218:5000/";
-    public static String url="http://75.102.215.3:5000/";
+    public static String url="http://10.0.0.4:5000/";
+    //public static String url="http://75.102.234.95:5000/";
     //public static String url="http://75.102.218.43:5000/";
 
 

@@ -3,6 +3,7 @@ package com.fourteenfourhundred.critique.UI.Views;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -110,6 +111,7 @@ public class OneFluidMotionView extends FrameLayout {
 
 
                     int dragThreshold=70;
+
 
 
                     if (lastX - event.getX() > dragThreshold) {
