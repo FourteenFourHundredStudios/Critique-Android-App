@@ -32,6 +32,9 @@ public class Post {
 
     public Post(JSONObject postData){
         try {
+
+            Log.e("yeah",postData.toString());
+
             this.postData=postData;
             this.username = postData.getString("username");
             this.title = postData.getString("title");

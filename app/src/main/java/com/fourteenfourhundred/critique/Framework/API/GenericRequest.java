@@ -1,5 +1,7 @@
 package com.fourteenfourhundred.critique.Framework.API;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -42,18 +44,21 @@ public class GenericRequest {
                     Util.showDialog(api.activity,"Error from server: " + response.getString("response"));
                     //prob logout of something
                 }else{
-                    Object data = new JSONTokener(response.get("response").toString()).nextValue();
+
+                    if(response.has("response")) {
+                        Object data = new JSONTokener(response.get("response").toString()).nextValue();
 
 
-                    if (data instanceof JSONObject){
-                        callback.onResponse(new JSONObject(data.toString()));
-                    } else if (data instanceof JSONArray){
-                        callback.onResponse(new JSONArray(data.toString()));
+                        if (data instanceof JSONObject) {
+                            callback.onResponse(new JSONObject(data.toString()));
+                        } else if (data instanceof JSONArray) {
+                            callback.onResponse(new JSONArray(data.toString()));
+                        }
                     }
-
                 }
             }catch (Exception e){
-                Util.showDialog(api.activity,"App error" + e.getMessage());
+//                Util.showDialog(api.activity,"App error" + e.getMessage());
+                Log.e("FAILED AT ",getURL());
                 e.printStackTrace();
             }
 

@@ -27,8 +27,8 @@ public class Data {
     //private static final long serialVersionUID = 1L;
     public static API backgroundApi;
 
-    //public static String url="http://10.0.0.4:5000/";
-    public static String url="http://75.102.230.66:5000/";
+    public static String url="http://10.0.0.4:5000/";
+    //public static String url="http://75.102.230.66:5000/";
     //public static String url="http://75.102.218.43:5000/";
 
 
@@ -109,6 +109,7 @@ public class Data {
                 File file = me.getApplication().getFileStreamPath("userdata");
                 if (file.exists()) file.delete();
                 SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
+                //SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
                 sharedPref.edit().clear().commit();
                 Log.e("nuke", "files deleted...");
 

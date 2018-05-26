@@ -56,7 +56,7 @@ public class User {
        // Log.e("okay",users.toString());
         List<User> list = new ArrayList<User>();
         try {
-            Log.e("MESSAGE",users.toString());
+            //Log.e("MESSAGE",users.toString());
             for (int i = 0; i < users.length(); i++) {
                 list.add(new User(users.getJSONObject(i).getString("username"), users.getJSONObject(i).getInt("score")));
             }

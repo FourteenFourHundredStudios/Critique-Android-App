@@ -198,9 +198,11 @@ public class QueueFragment extends HomeFragment{
         if (locked) {
             motionView.setLocked(true);
             if(showAnimation) ((HomeActivity) getActivity()).startLoadAnimation();
+            Log.e("LOCK","LOCKED");
         } else {
             ((HomeActivity) getActivity()).stopLoadAnimation();
             motionView.setLocked(false);
+            Log.e("LOCK","UNLOCKED");
         }
 
 

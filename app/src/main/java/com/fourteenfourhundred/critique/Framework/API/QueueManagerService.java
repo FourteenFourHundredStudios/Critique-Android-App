@@ -68,8 +68,6 @@ public class QueueManagerService {
     public Post createPostFromJSON(JSONObject postJson){
         Post post = null;
         try {
-
-
             switch (postJson.getString("type")) {
                 case "text":
                     post = new Post(postJson);
@@ -129,7 +127,7 @@ public class QueueManagerService {
 
                 }
                 queueFragment.forcePostRender(currentView,response -> {
-
+                        Log.e("LOCK","FORCE POST RENDER");
                         queueFragment.setVoteLock(false);
 
                 });
@@ -249,8 +247,7 @@ public class QueueManagerService {
             save.put(post.getPostData());
         }
 
-        //
-        // if(currentView!=null)save.put(currentView.getPost());
+
 
         editor.putString("que", save.toString());
         if(currentView!=null){
