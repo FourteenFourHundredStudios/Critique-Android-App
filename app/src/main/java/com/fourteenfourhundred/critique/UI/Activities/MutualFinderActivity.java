@@ -17,6 +17,7 @@ import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.util.Util;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -112,23 +113,10 @@ public class MutualFinderActivity extends AppCompatActivity {
         } else {
 
             final ApiRequest.DoSearchRequest request = new ApiRequest.DoSearchRequest(searchApi, text);
-            request.execute(new Util.Callback() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-
-                        if(!request.search.equals(currentText))return;
-
-
-                        ArrayList<User> newResults = (ArrayList<User>) User.jsonToUserList(response.getJSONArray("results"));
-
-                        view.update(newResults,0);
-
-                        //searchResults=newResults;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            request.execute( response -> {
+                if(!request.search.equals(currentText))return;
+                ArrayList<User> newResults = (ArrayList<User>) User.jsonToUserList((JSONArray) response);
+                view.update(newResults,0);
             });
 
         }

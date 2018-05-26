@@ -68,22 +68,10 @@ public class ComposeActivity extends AppCompatActivity {
                     content=linkURL;
                 }
 
-                new ApiRequest.SendPostRequest(api,new JSONArray(data.getStringExtra("selected")), type, title, content).execute( new Util.Callback() {
-                    public void onResponse(JSONObject response) {
-                        try {
+                new ApiRequest.SendPostRequest(api,new JSONArray(data.getStringExtra("selected")), type, title, content).execute( __ ->{
 
-                            String status = response.getString("status");
-                            if (status.equals("error")) {
-                                String msg = response.getString("message");
-                            } else {
-                                finish();
-                            }
+                    finish();
 
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
                 });
                 finish();
             }catch (Exception e){
@@ -108,12 +96,10 @@ public class ComposeActivity extends AppCompatActivity {
     }
 
     public void selectLink(){
-        Util.showInputDialog(this,"Website URL",new Util.Callback(){
-            public void onResponse(String s){
-                type="link";
-                linkURL=s;
-                selectMutuals();
-            }
+        Util.showInputDialog(this,"Website URL", s -> {
+            type="link";
+            linkURL=(String) s;
+            selectMutuals();
         });
     }
 

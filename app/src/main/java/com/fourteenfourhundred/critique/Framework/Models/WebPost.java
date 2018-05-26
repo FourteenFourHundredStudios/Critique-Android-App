@@ -29,19 +29,6 @@ public class WebPost extends Post{
     }
 
     public void modifyValues(API api){
-
-
-
-    }
-
-    public void onRemoved(){
-        view.destroy();
-
-    }
-
-    public void onPresented(){
-
-
         view= ((WebView) rootView.findViewById(R.id.webcontent));
 
 
@@ -53,21 +40,17 @@ public class WebPost extends Post{
             }
         });
 
-        /*
-        ((View)view.getParent()).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_UP:
-                        if (!v.hasFocus()) {
-                            v.requestFocus();
-                        }
-                        break;
-                }
-                return false;
-            }
-        });*/
+    }
+
+    public void onRemoved(){
+        view.destroy();
+    }
+
+
+    public void onPresented(){
+
+
+
         view.loadUrl(getContent());
     }
 

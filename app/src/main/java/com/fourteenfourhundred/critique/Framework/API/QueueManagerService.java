@@ -11,6 +11,7 @@ import com.fourteenfourhundred.critique.Framework.Models.EmptyPost;
 import com.fourteenfourhundred.critique.Framework.Models.Post;
 import com.fourteenfourhundred.critique.Framework.Models.WebPost;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
+import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 
 
@@ -106,16 +107,12 @@ public class QueueManagerService {
         queueFragment.setVoteLock(true);
         try{
             JSONArray j=new JSONArray(q);
-            if(j.length()==0 && c==null){
-            //    Util.showDialog(activity,"THIS");
-                loadPostsIntoQue(new Util.Callback(){
-                    @Override
-                    public void onFinished() {
-                        queueFragment.renderNextPost();
-                        queueFragment.setVoteLock(false);
-                    }
+            if(j.length()==0 && c==null) {
+                loadPostsIntoQue( response -> {
+                    queueFragment.renderNextPost();
+                    queueFragment.setVoteLock(false);
                 });
-            }else{
+            } else{
                 //currentView = new Post(new JSONObject(c));
                 //currentView.inflateView(api,activity);
 
@@ -131,10 +128,10 @@ public class QueueManagerService {
                     addToQueue(j.get(i).toString());
 
                 }
-                queueFragment.forcePostRender(currentView,new Util.Callback(){
-                    public void onFinished(){
+                queueFragment.forcePostRender(currentView,response -> {
+
                         queueFragment.setVoteLock(false);
-                    }
+
                 });
             }
 
@@ -146,41 +143,25 @@ public class QueueManagerService {
     }
 
 
-    public void loadPostsIntoQue(final Util.Callback callback){
-        //System.out.println((t/t));
-        //t--;
-       // Log.e("from here","from here");
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
+    public void loadPostsIntoQue(final Callback.Response callback){
 
-                new ApiRequest.GetQueRequest(api).execute(new Util.Callback(){
-                    public void onResponse(JSONObject response) {
-                        try {
-                            if (response.getString("status").equals("ok")) {
-                                JSONArray posts = new JSONArray(response.getString("message"));
-                                queEmpty = (posts.length() == 0);
-                                for (int i = 0; i < posts.length(); i++) {
-                                    String postData = posts.get(i).toString();
-                                    //final PostView post = new PostView(activity, api,postData);
-                                    //queueFragment..add(post.getSelf());
-                                    //queue.add(post);
-                                    addToQueue(postData);
-                                }
-                                saveQue();
-                                if (callback != null) callback.onFinished();
-                            } else {
-                                Util.showDialog(activity, "Error loading queue! " + response.getString("message"));
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+        AsyncTask.execute(() -> new ApiRequest.GetQueRequest(api).execute(response -> {
+            try {
+                    JSONArray posts = (JSONArray) response;
+                    queEmpty = (posts.length() == 0);
+                    for (int i = 0; i < posts.length(); i++) {
+                        String postData = posts.get(i).toString();
+                        addToQueue(postData);
                     }
-                });
+                    saveQue();
 
+                    if (callback != null) callback.onResponse(null);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        }));
     }
 
     public void castVotes(final boolean loadingQue) {
@@ -194,33 +175,20 @@ public class QueueManagerService {
             saveVotes();
             votes = new JSONArray();
 
-            new ApiRequest.CastVotesRequest(api,v).execute(new Util.Callback(){
-                public void onResponse(JSONObject response) {
-                    try {
-                        if (!response.getString("status").equals("error")) {
-
-                            if(loadingQue) {
-                                //Log.e("HERE","HERE");
-                                loadPostsIntoQue(new Util.Callback() {
-                                    @Override
-                                    public void onFinished() {
-                                        queueFragment.setVoteLock(false);
-                                        isVoting = false;
-                                        saveVotes();
-                                    }
-                                });
-                            }else{
-                                queueFragment.setVoteLock(false);
-                                isVoting = false;
-                            }
-
-                        } else {
-                            Util.showDialog(activity, "error voting: " + response.getString("message"));
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            new ApiRequest.CastVotesRequest(api,v).execute(response -> {
+                try {
+                    if(loadingQue) {
+                        loadPostsIntoQue( resp -> {
+                            queueFragment.setVoteLock(false);
+                            isVoting = false;
+                            saveVotes();
+                        });
+                    }else{
+                        queueFragment.setVoteLock(false);
+                        isVoting = false;
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }catch (Exception e){
@@ -248,9 +216,7 @@ public class QueueManagerService {
     }
 
     public void checkForNewPosts(){
-            loadPostsIntoQue(new Util.Callback() {
-                @Override
-                public void onFinished() {
+            loadPostsIntoQue(resp -> {
                     queueFragment.setVoteLock(false);
                     isVoting = false;
 
@@ -265,7 +231,7 @@ public class QueueManagerService {
                         queueFragment.forcePostRender(view);
                     }
 
-                }
+
             });
 
     }
@@ -332,34 +298,22 @@ public class QueueManagerService {
 
                 if(votes.length()>0) {
 
-                    //AsyncTask.execute(new Runnable() {
-                        //@Override
-                     //   public void run() {
                             try {
 
                                 JSONArray v = new JSONArray(votes.toString());
                                 votes = new JSONArray();
-                                new ApiRequest.CastVotesRequest(api, v).execute(new Util.Callback() {
-                                    public void onResponse(JSONObject response) {
-                                        try {
-                                            if (!response.getString("status").equals("error")) {
-                                                checkForNewPosts();
-                                            } else {
-                                                Util.showDialog(activity, "error voting: " + response.getString("message"));
-                                            }
+                                new ApiRequest.CastVotesRequest(api, v).execute( (Callback.Response<JSONObject>) response -> {
 
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
+                                    checkForNewPosts();
+
+
+
+
                                 });
 
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
-
-                        //}
-                    //});
 
                 }else{
                     checkForNewPosts();

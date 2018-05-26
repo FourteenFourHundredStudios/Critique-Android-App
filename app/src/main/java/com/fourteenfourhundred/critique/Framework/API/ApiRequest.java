@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 
 import org.json.JSONArray;
@@ -18,45 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ApiRequest{
-
-
-    public static void jsonRequestchain(Util.Callback cb,GenericRequest... requests){
-        jsonRequestchainRecursive(requests,new ArrayList<JSONObject>(),cb);
-    }
-
-
-    public static void jsonRequestchainRecursive(GenericRequest[] requests, final ArrayList<JSONObject> values, final Util.Callback cb){
-
-        final ArrayList<GenericRequest> requestsList = new ArrayList<GenericRequest>(Arrays.asList(requests));
-
-        GenericRequest r = requestsList.remove(0);
-
-        if(requestsList.size()>0) {
-            Log.e("here","not size");
-            r.execute(new Util.Callback() {
-                public void onResponse(final JSONObject obj) {
-
-                    GenericRequest[] requestArray = new GenericRequest[requestsList.size()];
-
-                    values.add(obj);
-
-                    GenericRequest[] p = (GenericRequest[]) requestsList.toArray();
-
-                    ApiRequest.jsonRequestchainRecursive(p,values,cb);
-                }
-            });
-        }else{
-            Log.e("here","size");
-            r.execute(new Util.Callback() {
-                public void onResponse(JSONObject obj) {
-
-                   cb.onResponse(values);
-                }
-            });
-        }
-
-
-    }
 
 
     public static class SendPostRequest  extends GenericRequest{
@@ -168,7 +130,7 @@ public class ApiRequest{
 
         @Override
         public String getURL() {
-            return "getPosts";
+            return "getQueue";
         }
 
     }
@@ -182,7 +144,7 @@ public class ApiRequest{
 
         @Override
         public String getURL() {
-            return "reset";
+            return "debug/reset";
         }
 
     }
@@ -283,22 +245,19 @@ public class ApiRequest{
 
         @Override
         public String getURL() {
-            return "getPatch/"+Data.getApiKey()+"/"+username;
+            return "getPatch/"+username;
         }
 
-        public void execute(final Util.Callback callback){
-            responseListener = new Response.Listener<Bitmap>(){
-                public void onResponse(Bitmap response) {
-                    callback.onResponse(response);
-                }
-            };
+        public void execute( Callback.Response callback){
 
-            errorListener = new Response.ErrorListener(){
-                public void onErrorResponse(VolleyError error) {
-                    callback.onError(error.getMessage());
+            responseListener = (  img -> {
+                callback.onResponse(img);
+            }) ;
 
-                    if(Data.isDebugMode())Util.showDialog(api.activity,error.getMessage());
-                }
+            errorListener = error -> {
+                //callback.onError(error.getMessage());
+
+                if(Data.isDebugMode())Util.showDialog(api.activity,error.getMessage());
             };
 
             try {

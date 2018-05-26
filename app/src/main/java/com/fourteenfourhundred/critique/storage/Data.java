@@ -27,8 +27,8 @@ public class Data {
     //private static final long serialVersionUID = 1L;
     public static API backgroundApi;
 
-    public static String url="http://10.0.0.4:5000/";
-    //public static String url="http://75.102.234.95:5000/";
+    //public static String url="http://10.0.0.4:5000/";
+    public static String url="http://75.102.230.66:5000/";
     //public static String url="http://75.102.218.43:5000/";
 
 
@@ -104,43 +104,28 @@ public class Data {
     public static void nuke(final Activity me){
         if(debug) {
             Log.e("nuke", "nuking...");
-            new ApiRequest.ResetRequest(new API(me)).execute(new Util.Callback() {
-                @Override
-                public void onResponse(JSONObject e) {
-                    Log.e("nuke", "server reset...");
-                    File file = me.getApplication().getFileStreamPath("userdata");
-                    if (file.exists()) file.delete();
-                    SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
-                    sharedPref.edit().clear().commit();
+            new ApiRequest.ResetRequest(new API(me)).execute(__ ->{
+                Log.e("nuke", "server reset...");
+                File file = me.getApplication().getFileStreamPath("userdata");
+                if (file.exists()) file.delete();
+                SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
+                sharedPref.edit().clear().commit();
+                Log.e("nuke", "files deleted...");
 
-                    Log.e("nuke", "files deleted...");
-                    //System.exit(0);
-
-
-                }
             });
         }
     }
 
     public static void loadBackgroundData(final API api){
-        new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
-            public void onResponse(JSONObject response) {
-                try {
-                    if(response.get("status").equals("ok")){
-                        dataSerializer.mutuals=new SerializableJSONArray(response.get("mutuals").toString());
-                        Storage.saveData(api.activity.getApplicationContext());
-                    }else{
-                        //idk what activity to show error in, so imma just close the app
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(1);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        new ApiRequest.GetMutualsRequest(api).execute( response -> {
+            try {
+                dataSerializer.mutuals = new SerializableJSONArray((String) response);
+                Storage.saveData(api.activity.getApplicationContext());
+            }catch (Exception e){
+                e.printStackTrace();
             }
         });
     }
-
 
 
 

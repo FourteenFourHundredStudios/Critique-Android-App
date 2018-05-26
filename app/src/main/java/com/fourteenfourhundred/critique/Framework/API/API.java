@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.util.VolleyMultipartRequest;
 
@@ -33,6 +34,7 @@ public class API {
     public API(Activity activity){
         this.activity=activity;
         queue=Volley.newRequestQueue(activity);
+
     }
 
 
@@ -40,18 +42,21 @@ public class API {
 
 
 
-    public static void changePatch(final Activity me, final Bitmap img, final Util.Callback callback) {
+    public static void changePatch(final Activity me, final Bitmap img, final Callback.Response callback) {
+
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, Data.getURL() + "setPatch",
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
                         try {
                             JSONObject obj = new JSONObject(new String(response.data));
+                            //callback.onResponse((Object)obj);
                             callback.onResponse(obj);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        //Toast.makeText(getApplicationContext(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+
                     }
                 },
                 new Response.ErrorListener() {

@@ -22,6 +22,7 @@ import com.fourteenfourhundred.critique.Framework.Models.User;
 import com.fourteenfourhundred.critique.UI.RecycleView.UserAdapter;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.storage.Storage;
+import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -101,12 +102,9 @@ public class MutualsFragment extends HomeFragment {
 
 
     public void updateData(){
-        new ApiRequest.GetMutualsRequest(api).execute(new Util.Callback(){
-            public void onResponse(JSONObject response) {
+        new ApiRequest.GetMutualsRequest(api).execute( (Callback.JSONResponse) response -> {
                 try {
-                    Data.setMutuals(response.getJSONArray("mutuals"));
 
-                    //Util.showDialog(getActivity(),Data.getMutuals().toString());
 
                     Storage.saveData(home.getApplicationContext());
 
@@ -118,7 +116,7 @@ public class MutualsFragment extends HomeFragment {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-            }
+
         });
     }
 
@@ -127,7 +125,7 @@ public class MutualsFragment extends HomeFragment {
         try {
 
 
-            mutualsList=(RecyclerView)rootView.findViewById(R.id.mutualsList);
+            mutualsList=rootView.findViewById(R.id.mutualsList);
 
             List<User> m=User.jsonToUserList(Data.getMutuals());
 
@@ -145,13 +143,10 @@ public class MutualsFragment extends HomeFragment {
         home=(HomeActivity)getActivity();
 
 
-        swipeListener = new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //view.update();
-                updateData();
-            }
-        };
+        //view.update();
+
+        //UPDATES DATA WHEN SWIPED
+        swipeListener = this::updateData;
 
         swipe.setOnRefreshListener(swipeListener);
 

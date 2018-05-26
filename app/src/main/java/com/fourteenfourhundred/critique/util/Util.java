@@ -48,46 +48,8 @@ public class Util {
     }
 
 
-    public static class Callback {
-
-        public void onResponse(JSONObject response){
-
-        }
-
-        public void onFinished(){
-
-        }
-
-        public void onFinished(boolean state){
-
-        }
-
-        public void onResponse(Bitmap image){
-
-        }
-
-        public void onResponse(String response){
-
-        }
-
-        public void onResponse(Object response){
-
-        }
-
-        public void onResponse(ArrayList<JSONObject> response){
-
-        }
 
 
-        public void onError(int code){
-
-        }
-
-        public void onError(String error){
-
-        }
-
-    }
 
     public static void postRequest(Activity activity,String url,JSONObject data,Response.Listener rl,Response.ErrorListener re){
         RequestQueue queue = Volley.newRequestQueue(activity);
@@ -128,7 +90,7 @@ public class Util {
         alert.show();
     }
 
-    public static void showInputDialog(Activity activity, String msg, final Callback callback){
+    public static void showInputDialog(Activity activity, String msg, final Callback.Response callback){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(msg);
 
@@ -155,18 +117,18 @@ public class Util {
     }
 
 
-    public static void showYesNoDialog(Context context, String text, final Callback callback){
+    public static void showYesNoDialog(Context context, String text, final Callback.Response callback){
 
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        callback.onFinished(true);
+                        callback.onResponse(true);
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        callback.onFinished(false);
+                        callback.onResponse(false);
                         break;
                 }
             }

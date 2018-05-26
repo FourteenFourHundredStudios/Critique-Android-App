@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -71,19 +72,23 @@ public class ProfileFragment extends HomeFragment {
         viewPager.setAdapter(new SectionPagerAdapter(getFragmentManager()));
         tablayout.setupWithViewPager(viewPager);
 
-        new ApiRequest.GetPatchRequest(api, "self").execute(new Util.Callback() {
-            public void onResponse(Bitmap img) {
-                ImageView userPatch = (ImageView) rootView.findViewById(R.id.userPatch);
-                userPatch.setImageBitmap(img);
+        //ImageView userPatch;
 
 
 
+        new ApiRequest.GetPatchRequest(api, Data.getUsername()).execute(  img -> {
 
-                viewPager.setOffscreenPageLimit(5);
-                //onFinishedRendering();
 
-            }
-        });
+
+            ImageView userPatch = rootView.findViewById(R.id.userPatch);
+            userPatch.setImageBitmap((Bitmap) img);
+
+
+
+            viewPager.setOffscreenPageLimit(5);
+
+
+        }) ;
 
 
         return rootView;

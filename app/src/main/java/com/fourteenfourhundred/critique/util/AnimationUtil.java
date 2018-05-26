@@ -17,7 +17,7 @@ public class AnimationUtil {
         view.startAnimation(animate);
     }
 
-    public static void fadeOut(final View view, final Util.Callback callback){
+    public static void fadeOut(final View view, final Callback.Response callback){
 
 
         AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
@@ -33,7 +33,7 @@ public class AnimationUtil {
             public void onAnimationEnd(android.view.animation.Animation animation) {
                 view.setVisibility(View.GONE);
                //
-                if(callback!=null)callback.onFinished();
+                if(callback!=null)callback.onResponse(null);
             }
 
             @Override

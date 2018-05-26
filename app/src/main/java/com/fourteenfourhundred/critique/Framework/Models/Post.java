@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.critique.R;
+import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 
 import org.json.JSONObject;
@@ -133,10 +134,9 @@ public class Post {
         ((TextView) rootView.findViewById(R.id.vote_count)).setText(voteTotal + " votes");
         AsyncTask.execute(()->{
             try {
-                new ApiRequest.GetPatchRequest(api,getUsername()).execute(new Util.Callback(){
-                    public void onResponse(final Bitmap img) {
-                        ((ImageView) rootView.findViewById(R.id.picture)).setImageBitmap(img);
-                    }
+                new ApiRequest.GetPatchRequest(api,getUsername()).execute( img -> {
+                    ((ImageView) rootView.findViewById(R.id.picture)).setImageBitmap((Bitmap) img);
+
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -151,7 +151,7 @@ public class Post {
         TextView view = ((TextView) rootView.findViewById(R.id.content));
         view.setText(content);
         view.requestFocus();
-        //((View)view.getParent()).requestFocus();
+
     }
 
     public void onRemoved(){

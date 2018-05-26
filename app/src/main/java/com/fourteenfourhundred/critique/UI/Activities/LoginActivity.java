@@ -3,6 +3,7 @@ package com.fourteenfourhundred.critique.UI.Activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.storage.Storage;
+import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -21,32 +23,22 @@ public class LoginActivity extends AppCompatActivity {
     API loginAPI;
 
 
-    public void login(final String username, String password){
+    public void login(final String username, String password) {
 
-        new ApiRequest.LoginRequest(loginAPI,username,password).execute(new Util.Callback(){
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-
-                    if (response.get("status").equals("error")) {
-                        Util.showDialog(LoginActivity.this, response.getString("message"));
-                    } else {
-                        startApp(response,username);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
+        new ApiRequest.LoginRequest(loginAPI, username, password).execute( response -> {
+            startApp((JSONObject)response,username);
         });
 
     }
 
+
     public void startApp(JSONObject response,String username){
 
         try{
-            Data.setApiKey(response.getString("apiKey"));
+            Log.e("RESPONSE",response.toString());
+            Data.setApiKey(response.getString("sessionKey"));
             Data.setUsername(username);
-            Data.setMutuals(response.getJSONArray("mutuals"));
+            Data.setMutuals(response.getJSONArray("following"));
             Data.setScore(response.getInt("score"));
             Storage.saveData(getApplicationContext());
 

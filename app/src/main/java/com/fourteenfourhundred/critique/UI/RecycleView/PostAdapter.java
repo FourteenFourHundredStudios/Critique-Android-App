@@ -89,10 +89,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
 
             view.username.setText("posted by "+post.getUsername());
-            new ApiRequest.GetPatchRequest(Data.backgroundApi,post.getUsername()).execute(new Util.Callback(){
-                public void onResponse(final Bitmap img) {
-                    view.profPic.setImageBitmap(img);
-                }
+            new ApiRequest.GetPatchRequest(Data.backgroundApi,post.getUsername()).execute(img -> {
+                view.profPic.setImageBitmap((Bitmap) img);
+
             });
 
 

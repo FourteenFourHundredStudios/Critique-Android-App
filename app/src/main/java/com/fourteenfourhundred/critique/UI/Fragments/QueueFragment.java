@@ -17,7 +17,7 @@ import com.fourteenfourhundred.critique.UI.Activities.HomeActivity;
 import com.fourteenfourhundred.critique.UI.Views.FluidMotionOptions;
 import com.fourteenfourhundred.critique.UI.Views.OneFluidMotionView;
 import com.fourteenfourhundred.critique.util.AnimationUtil;
-import com.fourteenfourhundred.critique.util.Util.Callback;
+import com.fourteenfourhundred.critique.util.Callback;
 
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -121,7 +121,7 @@ public class QueueFragment extends HomeFragment{
 
 
 
-    public void forcePostRender(final Post post,final Callback callback){
+    public void forcePostRender(final Post post,final Callback.Response callback){
 
 
         //Log.e("OK",post.getTitle());
@@ -147,7 +147,7 @@ public class QueueFragment extends HomeFragment{
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        if(callback!=null)callback.onFinished();
+                        if(callback!=null)callback.onResponse(null);
 
                         if(activePost instanceof EmptyPost){
                             ((EmptyPost)activePost).stopLoad();

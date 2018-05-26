@@ -71,12 +71,10 @@ public class AllProfileFragment extends Fragment {
 
 
 
-        new ApiRequest.GetArchiveRequest(api,0,1).execute(new Util.Callback(){
-            @Override
-            public void onResponse(final JSONObject response) {
+        new ApiRequest.GetArchiveRequest(api,0,1).execute(response -> {
                 try {
 
-                    archive = response.getJSONArray("archive");
+                    archive = (JSONArray) response;
                     ArrayList<Post> posts = new ArrayList<Post>();
                     for(int i=0;i<archive.length();i++){
                         JSONObject post = new JSONObject(archive.getString(i));
@@ -92,7 +90,7 @@ public class AllProfileFragment extends Fragment {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-            }
+
         });
 
 
@@ -138,13 +136,12 @@ public class AllProfileFragment extends Fragment {
 
 
         archive=new JSONArray();
-        new ApiRequest.GetArchiveRequest(api,0,page+1).execute(new Util.Callback(){
-            @Override
-            public void onResponse(final JSONObject response) {
+        new ApiRequest.GetArchiveRequest(api,0,page+1).execute( response -> {
+
+
+
                 try {
-
-
-                    archive = response.getJSONArray("archive");
+                    archive = (JSONArray) response;
                     moreContent=false;
 
 
@@ -165,7 +162,7 @@ public class AllProfileFragment extends Fragment {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-            }
+
         });
     }
 
@@ -186,12 +183,10 @@ public class AllProfileFragment extends Fragment {
 
         page++;
 
-        new ApiRequest.GetArchiveRequest(api,page,1).execute(new Util.Callback(){
-            @Override
-            public void onResponse(final JSONObject response) {
+        new ApiRequest.GetArchiveRequest(api,page,1).execute( response -> {
                 try {
                     moreContent=false;
-                    JSONArray newContent = response.getJSONArray("archive");
+                    JSONArray newContent = (JSONArray) response;
 
 
 
@@ -210,7 +205,7 @@ public class AllProfileFragment extends Fragment {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-            }
+
         });
     }
 

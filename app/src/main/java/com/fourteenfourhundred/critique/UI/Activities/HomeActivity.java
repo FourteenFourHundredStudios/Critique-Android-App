@@ -23,6 +23,7 @@ import com.fourteenfourhundred.critique.UI.Fragments.MutualsFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.ProfileFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.storage.Data;
+import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
@@ -176,19 +177,17 @@ public class HomeActivity extends AppCompatActivity {
 
                     try {
                         final Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), path);
-                        API.changePatch(HomeActivity.this,bitmap,new Util.Callback(){
-                            public void onResponse(JSONObject response){
-                                try {
-                                    if (response.get("status").equals("ok")) {
-                                        setProfilePatch(bitmap);
-                                    }else{
-                                        Util.showDialog(HomeActivity.this,response.getString("message"));
-                                    }
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
+
+
+
+                        API.changePatch(HomeActivity.this,bitmap, test -> {
+
+                            setProfilePatch(bitmap);
+
+
                         });
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
