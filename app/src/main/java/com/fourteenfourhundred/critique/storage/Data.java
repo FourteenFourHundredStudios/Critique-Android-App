@@ -2,11 +2,13 @@ package com.fourteenfourhundred.critique.storage;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
+import com.fourteenfourhundred.critique.UI.Activities.LoginActivity;
 import com.fourteenfourhundred.critique.util.SerializableJSONArray;
 import com.fourteenfourhundred.critique.util.Util;
 
@@ -104,7 +106,8 @@ public class Data {
     public static void nuke(final Activity me){
         if(debug) {
             Log.e("nuke", "nuking...");
-            new ApiRequest.ResetRequest(new API(me)).execute(__ ->{
+
+            new ApiRequest.ResetRequest(new API(me)).execute(__ -> {
                 Log.e("nuke", "server reset...");
                 File file = me.getApplication().getFileStreamPath("userdata");
                 if (file.exists()) file.delete();
@@ -112,6 +115,12 @@ public class Data {
                 //SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
                 sharedPref.edit().clear().commit();
                 Log.e("nuke", "files deleted...");
+
+
+                Intent intent = new Intent(me.getApplicationContext(), LoginActivity.class);
+                me.startActivity(intent);
+
+                me.finish();
 
             });
         }

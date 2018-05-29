@@ -69,9 +69,8 @@ public class ApiRequest{
 
         public JSONArray votes;
 
-        public CastVotesRequest(API api,JSONArray votes) {
+        public CastVotesRequest(API api, JSONArray votes) {
             super(api);
-
             this.votes=votes;
         }
 
@@ -142,9 +141,10 @@ public class ApiRequest{
             super(api);
         }
 
+
         @Override
         public String getURL() {
-            return "debug/reset";
+            return "debug/reset/hard";
         }
 
     }

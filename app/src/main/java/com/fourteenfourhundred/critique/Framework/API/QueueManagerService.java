@@ -175,6 +175,7 @@ public class QueueManagerService {
 
             new ApiRequest.CastVotesRequest(api,v).execute(response -> {
                 try {
+                    Log.e("here","HERE!");
                     if(loadingQue) {
                         loadPostsIntoQue( resp -> {
                             queueFragment.setVoteLock(false);
