@@ -163,6 +163,29 @@ public class ApiRequest{
 
     }
 
+    public static class setNotificationKey extends GenericRequest{
+
+        public String key;
+
+        public setNotificationKey(API api,String key) {
+            super(api);
+            this.key=key;
+        }
+
+        @Override
+        public String getURL() {
+            return "setNotificationKey";
+        }
+
+        public JSONObject getParams() throws JSONException {
+            JSONObject params=new JSONObject();
+            params.put("apiKey", Data.getApiKey());
+            params.put("key", key);
+            return params;
+        }
+
+    }
+
     public static class DoSearchRequest extends GenericRequest{
 
         public String search;
