@@ -26,6 +26,7 @@ import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 import com.fourteenfourhundred.critique.critique.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -97,14 +98,14 @@ public class MutualsFragment extends HomeFragment {
         super.onResume();
 
         updateData();
-        Log.e("FIRST","FIRSTTT");
     }
 
 
     public void updateData(){
-        new ApiRequest.GetMutualsRequest(api).execute( (Callback.JSONResponse) response -> {
+        new ApiRequest.GetMutualsRequest(api).execute( response -> {
                 try {
 
+                    Data.setMutuals((JSONArray) response);
 
                     Storage.saveData(home.getApplicationContext());
 

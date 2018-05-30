@@ -172,9 +172,16 @@ public class ApiRequest{
             this.search=search;
         }
 
+        public JSONObject getParams() throws JSONException {
+            JSONObject params=new JSONObject();
+            params.put("apiKey", Data.getApiKey());
+            params.put("search", search);
+            return params;
+        }
+
         @Override
         public String getURL() {
-            return "search/"+search;
+            return "search";
         }
 
     }
@@ -184,7 +191,7 @@ public class ApiRequest{
         public String username;
         public boolean following;
 
-        public FollowRequest(API api,String username,boolean following) {
+        public FollowRequest(API api, String username, boolean following) {
             super(api);
             this.username=username;
             this.following=following;
@@ -193,7 +200,7 @@ public class ApiRequest{
         @Override
         public JSONObject getParams() throws JSONException {
             JSONObject params=new JSONObject();
-            params.put("user",username);
+            params.put("user", username);
             params.put("apiKey", Data.getApiKey());
             params.put("following", following);
             return params;

@@ -3,6 +3,7 @@ package com.fourteenfourhundred.critique.UI.RecycleView;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,11 +78,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         @Override
         public void onClick(final View view) {
 
+
+
             switch (view.getId()){
                 case R.id.followButton:
                     startButtonLoad((Button) view);
 
                     new ApiRequest.FollowRequest(Data.backgroundApi,usernameVal,true).execute(__ ->{
+
+                        //Log.e("OK....","here");
+
                         pendingButton.setText("pending");
                         pendingButton.setVisibility(View.VISIBLE);
                         mutualButton.setVisibility(View.GONE);

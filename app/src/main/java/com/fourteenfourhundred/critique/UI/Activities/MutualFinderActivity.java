@@ -107,7 +107,6 @@ public class MutualFinderActivity extends AppCompatActivity {
 
         if (text.isEmpty()) {
             ArrayList<User> mutuals= (ArrayList<User>) User.jsonToUserList(Data.getMutuals());
-            Log.e("EMPTY",mutuals.size()+"");
             view.update(mutuals,0);
 
         } else {

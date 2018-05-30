@@ -38,8 +38,8 @@ public class GenericRequest {
 
 
     public void execute (final Callback.Response callback){
-        responseListener = (Response.Listener<JSONObject>) response -> {
 
+        responseListener = (Response.Listener<JSONObject>) response -> {
             try {
                 if (response.getString("status").equals("error")){
                     Util.showDialog(api.activity,"Error from server: " + response.getString("response"));
