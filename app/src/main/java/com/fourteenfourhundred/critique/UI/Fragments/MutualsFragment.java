@@ -103,21 +103,10 @@ public class MutualsFragment extends HomeFragment {
 
     public void updateData(){
         new ApiRequest.GetMutualsRequest(api).execute( response -> {
-                try {
-
-                    Data.setMutuals((JSONArray) response);
-
-                    Storage.saveData(home.getApplicationContext());
-
-
-                    view.update((ArrayList) User.jsonToUserList(Data.getMutuals()),0);
-
-                    swipe.setRefreshing(false);
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-
+            Data.setMutuals((JSONArray) response);
+            Storage.saveData(home.getApplicationContext());
+            view.update((ArrayList) User.jsonToUserList(Data.getMutuals()),0);
+            swipe.setRefreshing(false);
         });
     }
 

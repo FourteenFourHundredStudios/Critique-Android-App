@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.critique.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class WebPost extends Post{
@@ -20,7 +21,7 @@ public class WebPost extends Post{
         super(postData);
     }
 
-    public WebPost(String username, String title, String id, String type, JSONObject votes, String content) {
+    public WebPost(String username, String title, String id, String type, JSONArray votes, String content) {
         super(username, title, id, type, votes, content);
     }
 

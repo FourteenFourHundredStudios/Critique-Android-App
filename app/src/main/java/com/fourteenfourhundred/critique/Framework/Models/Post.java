@@ -15,6 +15,7 @@ import com.fourteenfourhundred.critique.critique.R;
 import com.fourteenfourhundred.critique.util.Callback;
 import com.fourteenfourhundred.critique.util.Util;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Post {
@@ -26,7 +27,7 @@ public class Post {
     private String content;
     private String type;
     private String id;
-    private JSONObject votes;
+    private JSONArray votes;
     private int voteTotal;
 
 
@@ -46,12 +47,12 @@ public class Post {
 
             if(voteData instanceof Integer){
                 voteTotal=(Integer) voteData;
-                votes=new JSONObject();
+                votes=new JSONArray();
 
                 //Log.e("votes",postData.toString());
 
             }else{
-                votes=(JSONObject)voteData ;
+                votes=(JSONArray)voteData ;
 
 
 
@@ -65,7 +66,7 @@ public class Post {
         }
     }
 
-    public Post(String username,String title, String id, String type,JSONObject votes,String content){
+    public Post(String username,String title, String id, String type,JSONArray votes,String content){
         try {
             this.postData=new JSONObject();
             this.username = username;

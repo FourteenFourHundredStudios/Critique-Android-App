@@ -8,6 +8,7 @@ import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
 import com.fourteenfourhundred.critique.critique.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class EmptyPost extends Post{
@@ -16,7 +17,7 @@ public class EmptyPost extends Post{
     QueueFragment queue;
 
     public EmptyPost(QueueFragment queue) {
-        super("none","Oh no!","none","empty",new JSONObject(),"Your queue is empty!");
+        super("none","Oh no!","none","empty",new JSONArray(),"Your queue is empty!");
         this.queue=queue;
     }
 
