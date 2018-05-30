@@ -19,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.fourteenfourhundred.critique.Framework.API.API;
+import com.fourteenfourhundred.critique.Notifications.InstanceIdService;
 import com.fourteenfourhundred.critique.UI.Fragments.MutualsFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.ProfileFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
@@ -78,6 +79,9 @@ public class HomeActivity extends AppCompatActivity {
         queue=new QueueFragment();
         mutuals=new MutualsFragment();
 
+
+        InstanceIdService note = new InstanceIdService();
+        note.onTokenRefresh();
     }
 
 
