@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.Framework.API.ApiRequest;
+import com.fourteenfourhundred.critique.Notifications.NotificationHandler;
 import com.fourteenfourhundred.critique.storage.Data;
 import com.fourteenfourhundred.critique.storage.Storage;
 import com.fourteenfourhundred.critique.util.Callback;
@@ -52,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.fourteenfourhundred.critique.Framework.API.API;
 import com.fourteenfourhundred.critique.Notifications.InstanceIdService;
+import com.fourteenfourhundred.critique.Notifications.NotificationHandler;
 import com.fourteenfourhundred.critique.UI.Fragments.MutualsFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.ProfileFragment;
 import com.fourteenfourhundred.critique.UI.Fragments.QueueFragment;
@@ -82,8 +83,16 @@ public class HomeActivity extends AppCompatActivity {
 
         InstanceIdService note = new InstanceIdService();
         note.onTokenRefresh();
+
+
+
     }
 
+
+    public void onPause(){
+        super.onPause();
+
+    }
 
 
 

@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
 
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
 
     <application
         android:allowBackup="true"
@@ -21,11 +23,20 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.fourteenfourhundred.critique.Notifications.MessageReceiver">
+        <service android:name="com.fourteenfourhundred.critique.Notifications.MessageReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+
+        <service android:name="com.fourteenfourhundred.critique.Notifications.InstanceIdService">
+        <intent-filter>
+            <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+        </intent-filter>
+        </service>
+
 
         <meta-data
             android:name="preloaded_fonts"
