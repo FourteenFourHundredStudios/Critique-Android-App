@@ -38,7 +38,8 @@ public class MessageReceiver extends FirebaseMessagingService {
 
         Map<String, String> data = remoteMessage.getData();
 
-       // Log.e("GOT NOT","GOT NOTE");
+       //
+        // Log.e("GOT NOT","GOT NOTE");
 
         NotificationHandler.newPost(this,data.get("title"), data.get("body"));
     }

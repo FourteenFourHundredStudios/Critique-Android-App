@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.fourteenfourhundred.critique.Framework.API.API;
@@ -111,8 +112,10 @@ public class Data {
                 Log.e("nuke", "server reset...");
                 File file = me.getApplication().getFileStreamPath("userdata");
                 if (file.exists()) file.delete();
-                SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
                 //SharedPreferences sharedPref = me.getPreferences(Context.MODE_PRIVATE);
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(me);
+
                 sharedPref.edit().clear().commit();
                 Log.e("nuke", "files deleted...");
 
